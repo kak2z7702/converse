@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="container">
-    @isset($category)
     <div class="row mb-3">
         <div class="col-12">
             <div class="card">
@@ -91,7 +90,6 @@
             </div>
         </div>
     </div>
-    @endisset
 </div>
 <!-- Category Delete Modal -->
 <div class="modal fade" id="categoryDeleteModal" tabindex="-1" role="dialog" aria-labelledby="categoryDeleteModal" aria-hidden="true">

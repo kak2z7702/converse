@@ -12,7 +12,6 @@
 
 @section('content')
 <div class="container">
-    @isset ($thread)
     <div class="row mb-3">
         <div class="col-12">
             <div class="card">
@@ -146,7 +145,6 @@
             @endauth
         </div>
     </div>
-    @endisset
 </div>
 <!-- Thread Delete Modal -->
 <div class="modal fade" id="threadDeleteModal" tabindex="-1" role="dialog" aria-labelledby="threadDeleteModal" aria-hidden="true">

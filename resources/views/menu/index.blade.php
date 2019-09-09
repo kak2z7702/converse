@@ -3,7 +3,6 @@
 
 @section('content')
 <div class="container">
-    @isset ($menus)
     <div class="row mb-3">
         <div class="col-12">
             <div class="card">
@@ -72,7 +71,6 @@
             </div>
         </div>
     </div>
-    @endisset
 </div>
 <!-- Menu Delete Modal -->
 <div class="modal fade" id="menuDeleteModal" tabindex="-1" role="dialog" aria-labelledby="menuDeleteModal" aria-hidden="true">

@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="container">
-    @isset ($topic)
     <div class="row mb-3">
         <div class="col-12">
             <div class="card">
@@ -87,7 +86,6 @@
             </div>
         </div>
     </div>
-    @endisset
 </div>
 <!-- Topic Delete Modal -->
 <div class="modal fade" id="topicDeleteModal" tabindex="-1" role="dialog" aria-labelledby="topicDeleteModal" aria-hidden="true">

@@ -3,7 +3,6 @@
 
 @section('content')
 <div class="container">
-    @isset ($pages)
     <div class="row mb-3">
         <div class="col-12">
             <div class="card">
@@ -36,7 +35,7 @@
                                     @can('delete', $page)
                                     <a href="#" class="dropdown-item" 
                                         data-toggle="modal" data-target="#pageDeleteModal" 
-                                        onclick="$('#pageDeleteModal #deleteButton').attr('href', '{{ route('page.delete', ['page' => $page->id]) }}')">Delete</a>
+                                        onclick="$('#pageDeleteModal #deleteButton').attr('href', '{{ route('page.delete', ['page' => $page->id, 'redirect=page.index']) }}')">Delete</a>
                                     @endcan
                                 </div>
                             </div>
@@ -58,7 +57,6 @@
             </div>
         </div>
     </div>
-    @endisset
 </div>
 <!-- Page Delete Modal -->
 <div class="modal fade" id="pageDeleteModal" tabindex="-1" role="dialog" aria-labelledby="pageDeleteModal" aria-hidden="true">

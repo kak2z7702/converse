@@ -32,17 +32,7 @@ class PageController extends Controller
      */
     public function show($slug)
     {
-        $slugs = explode('/', $slug);
-
-        $page = null;
-
-        while ($slugs)
-        {
-            $current_parent = ($page) ? $page->id : null;
-            $current_slug = array_shift($slugs);
-
-            $page = Page::where('parent_id', $current_parent)->where('slug', $current_slug)->firstOrFail();
-        }
+        $page = Page::where('slug', $slug)->firstOrFail();
 
         return view('page.show', ['page' => $page]);
     }

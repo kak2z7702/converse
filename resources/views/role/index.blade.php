@@ -3,7 +3,6 @@
 
 @section('content')
 <div class="container">
-    @isset ($roles)
     <div class="row mb-3">
         <div class="col-12">
             <div class="card">
@@ -58,7 +57,6 @@
             </div>
         </div>
     </div>
-    @endisset
 </div>
 <!-- Role Delete Modal -->
 <div class="modal fade" id="roleDeleteModal" tabindex="-1" role="dialog" aria-labelledby="roleDeleteModal" aria-hidden="true">

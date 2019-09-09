@@ -3,7 +3,6 @@
 
 @section('content')
 <div class="container">
-    @isset ($users)
     <div class="row mb-3">
         <div class="col-12">
             <div class="card">
@@ -58,7 +57,6 @@
             </div>
         </div>
     </div>
-    @endisset
 </div>
 <!-- User Delete Modal -->
 <div class="modal fade" id="userDeleteModal" tabindex="-1" role="dialog" aria-labelledby="userDeleteModal" aria-hidden="true">
