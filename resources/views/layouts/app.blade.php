@@ -36,6 +36,12 @@
     @endif
 
     <style>
+        .blockquote {
+            background: #eeeeee;
+            border-left: 5px solid lightsteelblue;
+            padding-left: 5px;
+        }
+
         .img-border {
             border: 3px solid #cccccc;
         }

@@ -8,6 +8,17 @@
 @section('styles')
 <!-- summernote css -->
 <link href="{{ asset('third-party/summernote-0.8.12/summernote-bs4.css') }}" rel="stylesheet">
+
+<style>
+    .quotefrom {
+        background: #eeeeee;
+        color: crimson;
+    }
+
+    .quotefrom > strong {
+        color: slategray;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -58,8 +69,8 @@
                             <small>{{ __('Posted At') }}<br />{{ $comment->created_at->format('Y-m-d H:i') }}</small>
                         </div>
                         <div class="col-md-10">
-                            <div class="row">
-                                <div class="@auth @canany(['update', 'delete'], $comment){{ 'col-10' }}@else{{ 'col-12' }}@endcanany @else{{ 'col-12' }}@endauth">
+                            <div class="row h-100">
+                                <div id="commentContent-{{ $comment->id }}" class="@auth @canany(['update', 'delete'], $comment){{ 'col-10' }}@else{{ 'col-12' }}@endcanany @else{{ 'col-12' }}@endauth">
                                     {!! $comment->content !!}
                                 </div>
                                 @auth
@@ -81,6 +92,13 @@
                                 </div>
                                 @endcanany
                                 @endauth
+                                @can('create', 'App\Comment')
+                                @if ($comment->user != auth()->user())
+                                <div class="col-12 d-flex align-items-end">
+                                    <button class="btn btn-primary btn-sm mt-1 float-right" onclick="reply('{{ $comment->user->name }}', 'commentContent-{{ $comment->id }}')">{{ __('Reply To') }}</button>
+                                </div>
+                                @endif
+                                @endcan
                             </div>
                         </div>
                     </div>
@@ -109,11 +127,11 @@
 
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <textarea id="content" class="form-control @error('content') is-invalid @enderror" name="content">@error('content'){{ old('content') }}@elseif(isset($page)){{ $page->content }}@enderror</textarea>
+                                <textarea id="newCommentContent" class="form-control @error('content') is-invalid @enderror" name="content">@error('content'){{ old('content') }}@elseif(isset($page)){{ $page->content }}@enderror</textarea>
 
                                 <script>
                                     window.addEventListener('DOMContentLoaded', (event) => {
-                                        $('#content').summernote({
+                                        $('#newCommentContent').summernote({
                                             height: 150,
                                             placeholder: 'Write here...',
                                             codeviewFilter: true,
@@ -122,7 +140,27 @@
                                                 onImageUploadError: function (msg) { alert(msg + " Choose images less than equal to 1 MB."); }
                                             }
                                         });
+
+                                        $('#newCommentContent').summernote('code', '');
                                     });
+
+                                    /**
+                                     * Reply to a comment.
+                                     * 
+                                     * @param {String} comment Tag id of the comment being replied to.
+                                     * @return void
+                                     */
+                                    function reply(from, comment)
+                                    {
+                                        let content = $('#' + comment).html();
+                                        let html = '<div class="quotefrom">Quote <strong>@' + from + '</strong></div>' + '<blockquote class="blockquote">' + content + '</blockquote>';
+                                        let code = $('#newCommentContent').summernote('code');
+
+                                        if (code == '<br>') code = '';
+
+                                        $('#newCommentContent').summernote('code', code + html);
+                                        $('#newCommentContent').summernote('focus');
+                                    }
                                 </script>
 
                                 @error('content')
