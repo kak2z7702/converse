@@ -48,6 +48,10 @@
                                                 onImageUploadError: function (msg) { alert(msg + " Choose images less than equal to 1 MB."); }
                                             }
                                         });
+
+                                        @unless(isset($page))
+                                        $('#content').summernote('code', '');
+                                        @endunless
                                     });
                                 </script>
 
