@@ -294,7 +294,7 @@ class TopicController extends Controller
     /**
      * Get redirection link.
      * 
-     * @param $request Incoming requets.
+     * @param $request Incoming request.
      * @param $category Current category.
      * @param $topic Current topic.
      * @return string

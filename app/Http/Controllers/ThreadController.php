@@ -213,7 +213,7 @@ class ThreadController extends Controller
     /**
      * Get redirection link.
      * 
-     * @param $request Incoming requets.
+     * @param $request Incoming request.
      * @param $topic Current topic.
      * @param $thread Current thread.
      * @return string

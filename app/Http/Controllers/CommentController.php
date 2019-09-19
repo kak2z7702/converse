@@ -109,7 +109,7 @@ class CommentController extends Controller
     /**
      * Get redirection link.
      * 
-     * @param $request Incoming requets.
+     * @param $request Incoming request.
      * @param $comment Current comment.
      * @return string
      */

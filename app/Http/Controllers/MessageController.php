@@ -171,7 +171,7 @@ class MessageController extends Controller
     /**
      * Get redirection link.
      * 
-     * @param $request Incoming requets.
+     * @param $request Incoming request.
      * @param $message Current message.
      * @return string
      */
