@@ -44,24 +44,6 @@
                             <div class="col-md-8">
                                 <textarea id="content" class="form-control @error('content') is-invalid @enderror" name="content">{{ old('content', isset($thread) ? $thread->content : null) }}</textarea>
 
-                                <script>
-                                    window.addEventListener('DOMContentLoaded', (event) => {
-                                        $('#content').summernote({
-                                            height: 300,
-                                            placeholder: 'Write here...',
-                                            codeviewFilter: true,
-                                            maximumImageFileSize: 1024 * 1024, // 1 MB 
-                                            callbacks: { 
-                                                onImageUploadError: function (msg) { alert(msg + " Choose images less than equal to 1 MB."); }
-                                            }
-                                        });
-
-                                        @unless(isset($thread))
-                                        $('#content').summernote('code', '');
-                                        @endunless
-                                    });
-                                </script>
-
                                 @error('content')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -104,4 +86,21 @@
         </div>
     </div>
 </div>
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        $('#content').summernote({
+            height: 300,
+            placeholder: 'Write here...',
+            codeviewFilter: true,
+            maximumImageFileSize: 1024 * 1024, // 1 MB 
+            callbacks: { 
+                onImageUploadError: function (msg) { alert(msg + " Choose images less than equal to 1 MB."); }
+            }
+        });
+
+        @unless(isset($thread))
+        $('#content').summernote('code', '');
+        @endunless
+    });
+</script>
 @endsection

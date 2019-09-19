@@ -92,13 +92,16 @@
                                 </div>
                                 @endcanany
                                 @endauth
-                                @can('create', 'App\Comment')
                                 @if ($comment->user != auth()->user())
                                 <div class="col-12 d-flex align-items-end">
-                                    <button class="btn btn-primary btn-sm mt-1 float-right" onclick="reply('{{ $comment->user->name }}', 'commentContent-{{ $comment->id }}')">{{ __('Reply To') }}</button>
+                                    @can('create', 'App\Comment')
+                                    <button class="btn btn-primary btn-sm mt-1" onclick="reply('{{ $comment->user->name }}', 'commentContent-{{ $comment->id }}')">{{ __('Reply To') }}</button>
+                                    @endcan
+                                    @can('create', 'App\Message')
+                                    <a href="{{ route('message.create', ['receiver' => $comment->user->id]) }}" class="btn btn-primary btn-sm mt-1 ml-1">{{ __('Message To') }}</a>
+                                    @endcan
                                 </div>
                                 @endif
-                                @endcan
                             </div>
                         </div>
                     </div>
@@ -129,40 +132,6 @@
                             <div class="col-md-12">
                                 <textarea id="newCommentContent" class="form-control @error('content') is-invalid @enderror" name="content">@error('content'){{ old('content') }}@elseif(isset($page)){{ $page->content }}@enderror</textarea>
 
-                                <script>
-                                    window.addEventListener('DOMContentLoaded', (event) => {
-                                        $('#newCommentContent').summernote({
-                                            height: 150,
-                                            placeholder: 'Write here...',
-                                            codeviewFilter: true,
-                                            maximumImageFileSize: 1024 * 1024, // 1 MB 
-                                            callbacks: { 
-                                                onImageUploadError: function (msg) { alert(msg + " Choose images less than equal to 1 MB."); }
-                                            }
-                                        });
-
-                                        $('#newCommentContent').summernote('code', '');
-                                    });
-
-                                    /**
-                                     * Reply to a comment.
-                                     * 
-                                     * @param {String} comment Tag id of the comment being replied to.
-                                     * @return void
-                                     */
-                                    function reply(from, comment)
-                                    {
-                                        let content = $('#' + comment).html();
-                                        let html = '<div class="quotefrom">Quote <strong>@' + from + '</strong></div>' + '<blockquote class="blockquote">' + content + '</blockquote>';
-                                        let code = $('#newCommentContent').summernote('code');
-
-                                        if (code == '<br>') code = '';
-
-                                        $('#newCommentContent').summernote('code', code + html);
-                                        $('#newCommentContent').summernote('focus');
-                                    }
-                                </script>
-
                                 @error('content')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -174,6 +143,7 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-primary">{{ __('Submit') }}</button>
+                                <button type="button" class="btn btn-secondary" onclick="clearNewComment()">{{ __('Clear') }}</button>
                             </div>
                         </div>
                     </form>
@@ -220,4 +190,46 @@
         </div>
     </div>
 </div>
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        $('#newCommentContent').summernote({
+            height: 150,
+            placeholder: 'Write here...',
+            codeviewFilter: true,
+            maximumImageFileSize: 1024 * 1024, // 1 MB 
+            callbacks: { 
+                onImageUploadError: function (msg) { alert(msg + " Choose images less than equal to 1 MB."); }
+            }
+        });
+
+        $('#newCommentContent').summernote('code', '');
+    });
+
+    /**
+     * Reply to a comment.
+     * 
+     * @param {String} comment Tag id of the comment being replied to.
+     * @return void
+     */
+    function reply(from, comment)
+    {
+        let content = $('#' + comment).html();
+        let html = '<div class="quotefrom">Quote <strong>@' + from + '</strong></div>' + '<blockquote class="blockquote">' + content + '</blockquote>';
+        let code = $('#newCommentContent').summernote('code');
+
+        if (code == '<br>') code = '';
+
+        $('#newCommentContent').summernote('code', code + html);
+        $('#newCommentContent').summernote('focus');
+    }
+
+    /**
+     * Clear new comment content.
+     */
+    function clearNewComment()
+    {
+        $('#newCommentContent').summernote('code', '');
+        $('#newCommentContent').summernote('focus');
+    }
+</script>
 @endsection
