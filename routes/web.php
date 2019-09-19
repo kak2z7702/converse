@@ -68,6 +68,18 @@ Route::prefix('page')->group(function () {
     });
 });
 
+Route::prefix('message')->group(function () {
+    Route::name('message.')->group(function () {
+        Route::middleware('auth')->group(function () {
+            Route::match(['get', 'post'], 'create', 'MessageController@create')->name('create');
+            Route::match(['get', 'post'], 'update/{message}', 'MessageController@update')->where(['message' => '[0-9]+'])->name('update');
+            Route::get('delete/{message}', 'MessageController@delete')->where(['message' => '[0-9]+'])->name('delete');
+            Route::get('/{message}', 'MessageController@show')->where(['message' => '[0-9]+'])->name('show');
+            Route::get('/', 'MessageController@index')->name('index');
+        });
+    });
+});
+
 Route::prefix('category')->group(function () {
     Route::name('category.')->group(function () {
         Route::middleware('auth')->group(function () {

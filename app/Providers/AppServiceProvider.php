@@ -36,10 +36,12 @@ class AppServiceProvider extends ServiceProvider
 
         // view composer for app
         view()->composer('layouts.app', function ($view) {
-            // header menus
+            $new_messages = (auth()->check()) ? \App\Message::where('receiver_id', auth()->user()->id)->where('is_seen', false)->count() : 0;
             $menus = \App\Menu::orderBy('order', 'asc')->get();
 
-            $view->with('menus', $menus)->with('is_installed', Storage::exists('installed'));
+            $view->with('new_messages', $new_messages)
+                ->with('menus', $menus)
+                ->with('is_installed', Storage::exists('installed'));
         });
     }
 }

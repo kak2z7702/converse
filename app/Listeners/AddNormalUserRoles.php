@@ -31,9 +31,11 @@ class AddNormalUserRoles
         {
             $thread_management_role = Role::findOrFail(2);
             $comment_management_role = Role::findOrFail(3);
+            $message_management_role = Role::findOrFail(4);
 
             $event->user->roles()->attach($thread_management_role);
             $event->user->roles()->attach($comment_management_role);
+            $event->user->roles()->attach($message_management_role);
         }
     }
 }
