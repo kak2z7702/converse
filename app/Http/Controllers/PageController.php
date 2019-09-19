@@ -86,10 +86,6 @@ class PageController extends Controller
 
         if ($request->isMethod('get'))
         {
-            $data = array(
-                'page' => $page
-            );
-
             return view('page.form', [
                 'page' => $page,
                 'redirect' => $this->getRedirect($request, $page)
