@@ -59,7 +59,7 @@ class ThreadPolicy
     {
         if ($user->is_admin) return true;
 
-        $is_owner = $user->id == $thread->user_id;
+        $is_owner = $user->id === $thread->user_id;
 
         $has_permission = $user->roles()->whereHas('permissions', function($query) {
             $query->where('slug', 'thread_update');
@@ -83,7 +83,7 @@ class ThreadPolicy
     {
         if ($user->is_admin) return true;
 
-        $is_owner = $user->id == $thread->user_id;
+        $is_owner = $user->id === $thread->user_id;
 
         $has_permission = $user->roles()->whereHas('permissions', function($query) {
             $query->where('slug', 'thread_delete');
@@ -107,7 +107,7 @@ class ThreadPolicy
     {
         if ($user->is_admin) return true;
 
-        $is_owner = $user->id == $thread->user_id;
+        $is_owner = $user->id === $thread->user_id;
 
         $has_permission = $user->roles()->whereHas('permissions', function($query) {
             $query->where('slug', 'thread_restore');
@@ -131,7 +131,7 @@ class ThreadPolicy
     {
         if ($user->is_admin) return true;
 
-        $is_owner = $user->id == $thread->user_id;
+        $is_owner = $user->id === $thread->user_id;
 
         $has_permission = $user->roles()->whereHas('permissions', function($query) {
             $query->where('slug', 'thread_force_delete');

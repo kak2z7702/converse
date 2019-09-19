@@ -61,7 +61,7 @@ class TopicPolicy
     {
         if ($user->is_admin) return true;
 
-        $is_owner = $user->id == $topic->user_id;
+        $is_owner = $user->id === $topic->user_id;
 
         $has_permission = $user->roles()->whereHas('permissions', function($query) {
             $query->where('slug', 'topic_update');
@@ -85,7 +85,7 @@ class TopicPolicy
     {
         if ($user->is_admin) return true;
 
-        $is_owner = $user->id == $topic->user_id;
+        $is_owner = $user->id === $topic->user_id;
 
         $has_permission = $user->roles()->whereHas('permissions', function($query) {
             $query->where('slug', 'topic_delete');
@@ -109,7 +109,7 @@ class TopicPolicy
     {
         if ($user->is_admin) return true;
 
-        $is_owner = $user->id == $topic->user_id;
+        $is_owner = $user->id === $topic->user_id;
 
         $has_permission = $user->roles()->whereHas('permissions', function($query) {
             $query->where('slug', 'topic_restore');
@@ -133,7 +133,7 @@ class TopicPolicy
     {
         if ($user->is_admin) return true;
 
-        $is_owner = $user->id == $topic->user_id;
+        $is_owner = $user->id === $topic->user_id;
 
         $has_permission = $user->roles()->whereHas('permissions', function($query) {
             $query->where('slug', 'topic_force_delete');
@@ -157,7 +157,7 @@ class TopicPolicy
     {
         if ($user->is_admin) return true;
 
-        $is_owner = $user->id == $topic->user_id;
+        $is_owner = $user->id === $topic->user_id;
 
         $has_permission = $user->roles()->whereHas('permissions', function($query) {
             $query->where('slug', 'topic_move');

@@ -59,7 +59,7 @@ class CommentPolicy
     {
         if ($user->is_admin) return true;
 
-        $is_owner = $user->id == $comment->user_id;
+        $is_owner = $user->id === $comment->user_id;
 
         $has_permission = $user->roles()->whereHas('permissions', function($query) {
             $query->where('slug', 'comment_update');
@@ -84,7 +84,7 @@ class CommentPolicy
         if ($comment->is_original) return false;
         if ($user->is_admin) return true;
 
-        $is_owner = $user->id == $comment->user_id;
+        $is_owner = $user->id === $comment->user_id;
 
         $has_permission = $user->roles()->whereHas('permissions', function($query) {
             $query->where('slug', 'comment_delete');
@@ -108,7 +108,7 @@ class CommentPolicy
     {
         if ($user->is_admin) return true;
 
-        $is_owner = $user->id == $comment->user_id;
+        $is_owner = $user->id === $comment->user_id;
 
         $has_permission = $user->roles()->whereHas('permissions', function($query) {
             $query->where('slug', 'comment_restore');
@@ -132,7 +132,7 @@ class CommentPolicy
     {
         if ($user->is_admin) return true;
 
-        $is_owner = $user->id == $comment->user_id;
+        $is_owner = $user->id === $comment->user_id;
 
         $has_permission = $user->roles()->whereHas('permissions', function($query) {
             $query->where('slug', 'comment_force_delete');
