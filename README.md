@@ -34,7 +34,7 @@ For example, let's say you have started Converse via PHP's development server, y
 
 Installation wizard makes a seal proof file at *storage/app/installation* so we can tell if installation is already done. There is also an *options.json* file which stores Converse configuration.
 
-After installation you can login with the email you provided as an admin and make changes.
+After installation you are going to be logged in as administration to make changes.
 
 ## Re-installation
 

@@ -83,6 +83,18 @@ class InstallController extends Controller
                 new Permission(['title' => 'Comment Deletion', 'slug' => 'comment_delete'])
             ]);
 
+            // message management role
+            $message_role = new Role(['title' => 'Message Management']);
+            $message_role->is_protected = true;
+
+            $message_role->save();
+            
+            $message_role->permissions()->saveMany([
+                new Permission(['title' => 'Message Creation', 'slug' => 'message_create']),
+                new Permission(['title' => 'Message Updating', 'slug' => 'message_update']),
+                new Permission(['title' => 'Message Deletion', 'slug' => 'message_delete'])
+            ]);
+
             // about page
             $about_page = new Page(['title' => 'About', 'slug' => 'about', 'content' => 'About page.']);
             $about_page->user_id = $user->id;
@@ -141,6 +153,9 @@ class InstallController extends Controller
 
             // installation seal proof
             Storage::put('installed', null);
+
+            // login admin user
+            auth()->guard()->login($user);
 
             return view('result', [
                 'message' => __('Installation was successful.'),
