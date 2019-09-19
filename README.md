@@ -55,6 +55,7 @@ If you are willing to deploy, you can follow [deployment instructions](https://l
 - Role editor for different authorization rules.
 - Dynamic menu and page editor.
 - Categorization of topics and threads.
+- Direct messaging.
 - Profile editor.
 - In-place content management.
 - Easy to use [summrnote](https://summernote.org/) WYSIWYG editor implementation for pages, threads and comments.
