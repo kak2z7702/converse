@@ -71,9 +71,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="no_photo" id="no_photo" {{ old('no_photo') ? 'checked' : '' }}>
 
-                                    <label class="form-check-label" for="no_photo">
-                                        {{ __('No Photo') }}
-                                    </label>
+                                    <label class="form-check-label" for="no_photo">{{ __('No Photo') }}</label>
                                 </div>
                             </div>
                         </div>
