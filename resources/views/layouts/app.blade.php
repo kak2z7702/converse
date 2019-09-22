@@ -100,14 +100,14 @@
                             @endif
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    @if ($new_messages > 0)
+                                    @if ($messages > 0)
                                     <span class="badge badge-pill badge-danger">!</span>
                                     @endif
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('message.index') }}">{{ __('Messages') }} @if ($new_messages > 0)<span class="badge badge-pill badge-danger">{{ $new_messages }}</span>@endif</a>
+                                    <a class="dropdown-item" href="{{ route('message.index') }}">{{ __('Messages') }} @if ($messages > 0)<span class="badge badge-pill badge-danger">{{ $messages }}</span>@endif</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('user.profile') }}">{{ __('Profile') }}</a>
                                     <div class="dropdown-divider"></div>
