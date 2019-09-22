@@ -113,6 +113,65 @@
     @empty
     <p>{{ __('Start creating some categories!') }}</p>
     @endforelse
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">{{ __('Activity') }}</div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-2 text-md-right">Today</div>
+                        <div class="col-md-10">{{ now() }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2 text-md-right">{{ __('Active Thread') }}</div>
+                        <div class="col-md-4">
+                            @isset($activity['active_thread'])
+                            <a href="{{ route('thread.show', ['category_slug' => $activity['active_thread']->topic->category->slug, 'topic_slug' => $activity['active_thread']->topic->slug, 'thread_slug' => $activity['active_thread']->slug]) }}">{{ $activity['active_thread']->title }}</a>
+                            @else
+                            {{ __('None') }}
+                            @endisset
+                        </div>
+                        <div class="col-md-2 text-md-right">{{ __('Members') }}</div>
+                        <div class="col-md-4">{{ $activity['members_count'] }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2 text-md-right">{{ __('Active User') }}</div>
+                        <div class="col-md-4">
+                            @isset($activity['active_user'])
+                            {{ $activity['active_user']->name }}
+                            @else
+                            {{ __('None') }}
+                            @endisset
+                        </div>
+                        <div class="col-md-2 text-md-right">{{ __('Topics') }}</div>
+                        <div class="col-md-4">{{ $activity['topics_count'] }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2 text-md-right">{{ __('Latest Thread') }}</div>
+                        <div class="col-md-4">
+                            @isset($activity['latest_thread'])
+                            <a href="{{ route('thread.show', ['category_slug' => $activity['latest_thread']->topic->category->slug, 'topic_slug' => $activity['latest_thread']->topic->slug, 'thread_slug' => $activity['latest_thread']->slug]) }}">{{ $activity['latest_thread']->title }}</a>
+                            @else
+                            {{ __('None') }}
+                            @endisset
+                        </div>
+                        <div class="col-md-2 text-md-right">{{ __('Threads') }}</div>
+                        <div class="col-md-4">{{ $activity['threads_count'] }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2 text-md-right">Latest Memeber</div>
+                        <div class="col-md-4">
+                            @isset($activity['latest_user'])
+                            {{ $activity['latest_user']->name }}
+                            @else
+                            {{ __('None') }}
+                            @endisset
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- Category Delete Modal -->
 <div class="modal fade" id="categoryDeleteModal" tabindex="-1" role="dialog" aria-labelledby="categoryDeleteModal" aria-hidden="true">
