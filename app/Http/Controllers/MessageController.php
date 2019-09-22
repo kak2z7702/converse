@@ -59,7 +59,7 @@ class MessageController extends Controller
             return view('message.form', [
                 'title' => $request->title,
                 'users' => $users,
-                'receiver_id' => $request->receiver,
+                'receiver' => $request->receiver,
                 'redirect' => route('message.index')
             ]);
         }

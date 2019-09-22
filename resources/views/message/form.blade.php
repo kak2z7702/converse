@@ -52,7 +52,7 @@
                             <div class="col-md-11">
                                 <select id="receiver" class="form-control @error('receiver') is-invalid @enderror" name="receiver" required>
                                     @foreach ($users as $user)
-                                    <option value="{{ $user->id }}"{{ (isset($receiver_id) && $user->id == $receiver_id) ? 'selected' : '' }}>{{ $user->name }}</option>
+                                    <option value="{{ $user->id }}"{{ (isset($receiver) && $user->id == $receiver) ? 'selected' : '' }}>{{ $user->name }}</option>
                                     @endforeach
                                 </select>
 
