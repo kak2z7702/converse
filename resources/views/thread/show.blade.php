@@ -130,7 +130,7 @@
 
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <textarea id="newCommentContent" class="form-control @error('content') is-invalid @enderror" name="content">@error('content'){{ old('content') }}@elseif(isset($page)){{ $page->content }}@enderror</textarea>
+                                <textarea id="newCommentContent" class="form-control @error('content') is-invalid @enderror" name="content">{{ old('content') }}</textarea>
 
                                 @error('content')
                                 <span class="invalid-feedback" role="alert">
