@@ -174,10 +174,7 @@ class InstallController extends Controller
     {   
         if ($request->isMethod('get'))
         {
-            $options = Storage::exists('options.json') ? json_decode(Storage::get('options.json')) : null;
-
             return view('options', [
-                'options' => $options,
                 'redirect' => route('index')
             ]);
         }

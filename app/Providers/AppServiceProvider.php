@@ -24,15 +24,23 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // community options
+        $options = null;
+
         // read options file
         if (Storage::exists('options.json'))
         {
-            // community options
+            // decode from json
             $options = json_decode(Storage::get('options.json'));
 
             // set app name
             config(['app.name' => $options->community->name]);
         }
+
+        // view composer for all views
+        view()->composer('*', function ($view) use ($options) {
+            $view->with('options', $options);
+        });
 
         // view composer for app
         view()->composer('layouts.app', function ($view) {
