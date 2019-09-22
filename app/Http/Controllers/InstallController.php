@@ -144,7 +144,8 @@ class InstallController extends Controller
             // community options
             $options = [
                 'community' => [
-                    'name' => $data['community_name']
+                    'name' => $data['community_name'],
+                    'birthday' => now()->format('Y-m-d H:i')->toDateTimeString()
                 ]
             ];
 
@@ -185,9 +186,20 @@ class InstallController extends Controller
             ]);
 
             // community options
+            $options = null;
+
+            // read options file
+            if (Storage::exists('options.json'))
+            {
+                // decode from json
+                $options = json_decode(Storage::get('options.json'));
+            }
+
+            // community options
             $options = [
                 'community' => [
-                    'name' => $data['community_name']
+                    'name' => $data['community_name'],
+                    'birthday' => ($options) ? $options->community->birthday : now()->format('Y-m-d H:i')->toDateTimeString()
                 ]
             ];
 

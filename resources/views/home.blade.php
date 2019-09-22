@@ -119,8 +119,10 @@
                 <div class="card-header">{{ __('Activity') }}</div>
                 <div class="card-body">
                     <div class="row mb-3">
-                        <div class="col-md-2 text-md-right">Today</div>
-                        <div class="col-md-10">{{ now() }}</div>
+                        <div class="col-md-2 text-md-right">{{ __('Today') }}</div>
+                        <div class="col-md-4">{{ now()->format('Y-m-d H:i') }}</div>
+                        <div class="col-md-2 text-md-right">{{ __('Born') }}</div>
+                        <div class="col-md-4">{{ $options->community->birthday }}</div>
                     </div>
                     <div class="row">
                         <div class="col-md-2 text-md-right">{{ __('Active Thread') }}</div>
