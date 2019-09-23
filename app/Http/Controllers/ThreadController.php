@@ -23,7 +23,7 @@ class ThreadController extends Controller
         $category = \App\Category::where('slug', $category_slug)->firstOrFail();
         $topic = $category->topics()->where('slug', $topic_slug)->firstOrFail();
         $thread = $topic->threads()->where('slug', $thread_slug)->firstOrFail();
-        $comments = $thread->comments()->orderBy('created_at', 'asc')->paginate();
+        $comments = $thread->comments()->orderBy('created_at', 'asc')->paginate(null, ['*'], 'page');
 
         if (!$request->has('page'))
             $comments = $thread->comments()->orderBy('created_at', 'asc')->paginate(null, ['*'], 'page', $comments->lastPage());
@@ -163,6 +163,8 @@ class ThreadController extends Controller
         $thread = Thread::findOrFail($thread);
 
         $this->authorize('delete', $thread);
+
+        $thread->comments()->delete();
 
         $thread->delete();
 
