@@ -57,6 +57,7 @@ If you are willing to deploy, you can follow [deployment instructions](https://l
 - Categorization of topics and threads.
 - Direct messaging.
 - Profile editor.
+- User ban.
 - In-place content management.
 - Easy to use [summrnote](https://summernote.org/) WYSIWYG editor implementation for pages, threads and comments.
 - Human friendly URLs.
