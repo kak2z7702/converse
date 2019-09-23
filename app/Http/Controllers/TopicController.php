@@ -188,9 +188,12 @@ class TopicController extends Controller
      */
     public function delete(Request $request, $topic)
     {
-        $topic = Topic::findOrFail($topic);
+        $topic = Topic::with('threads')->findOrFail($topic);
 
         $this->authorize('delete', $topic);
+
+        foreach ($topic->threads as $thread)
+            $thread->comments()->delete();
 
         \App\Permission::where('slug', 'topic_management_' . $topic->hash)->delete();
 
