@@ -37,10 +37,14 @@
 
                 <div class="card-body">
                     {!! $message->content !!}
+                    @auth
+                    @can('create', 'App\Comment')
                     @if ($message->user != auth()->user())
                     <br />
                     <a href="{{ route('message.create', ['title' => 'Re: ' . $message->title, 'receiver' => $message->user_id]) }}" class="btn btn-primary btn-sm mt-1">{{ __('Reply To') }}</a>
                     @endif
+                    @endcan
+                    @endauth
                 </div>
             </div>
         </div>
