@@ -145,7 +145,7 @@ class InstallController extends Controller
             $options = [
                 'community' => [
                     'name' => $data['community_name'],
-                    'birthday' => now()->format('Y-m-d H:i')->toDateTimeString()
+                    'birthday' => now()->format('Y-m-d H:i')
                 ]
             ];
 
