@@ -17,17 +17,48 @@ class CommentController extends Controller
     {
         $this->authorize('create', 'App\Comment');
 
-        $data = $request->validate([
-            'content' => 'required|string',
-            'thread' => 'required|numeric|exists:threads,id',
-        ]);
+        $rules = array(
+            'content' => ['required', 'string']
+        );
 
-        $thread = \App\Thread::findOrFail($data['thread']);
+        if ($request->has('page'))
+            $rules['page'] = ['required', 'numeric', 'exists:pages,id'];
+        else if ($request->has('thread'))
+            $rules['thread'] = ['required', 'numeric', 'exists:threads,id'];
+        else
+            return redirect()->back();
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails())
+        {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $data = $validator->valid();
+
+        $model = null;
+
+        if ($request->has('page'))
+        {
+            $model = \App\Page::findOrFail($data['page']);
+
+            $this->authorize('comment', $model);
+
+            $data['content'] = strip_tags($data['content']);
+        }
+        else if ($request->has('thread'))
+        {
+            $model = \App\Thread::findOrFail($data['thread']);
+        }
 
         $comment = new Comment($data);
         $comment->user_id = auth()->user()->id;
 
-        $thread->comments()->save($comment);
+        $model->comments()->save($comment);
 
         return view('result', [
             'message' => __('Comment was posted successfully.'),
@@ -57,15 +88,23 @@ class CommentController extends Controller
         else if ($request->isMethod('post'))
         {
             $validator = Validator::make($request->all(), [
-                'content' => 'required|string'
+                'content' => ['required', 'string']
             ]);
 
             if ($validator->fails())
             {
+                $redirect = null;
+
+                switch ($comment->entity_type)
+                {
+                    case "App\Page": $redirect = 'page.show'; break;
+                    case "App\Thread": $redirect = 'page.thread'; break;
+                }
+
                 return redirect()
                     ->route('comment.update', [
                             'comment' => $comment->id,
-                            'redirect' => 'thread.show'
+                            'redirect' => $redirect
                         ])
                     ->withErrors($validator)
                     ->withInput();
@@ -73,11 +112,16 @@ class CommentController extends Controller
 
             $data = $validator->valid();
 
-            $thread = \App\Thread::findOrFail($comment->thread_id);
+            if ($comment->entity_type == 'App\Page')
+            {
+                $this->authorize('comment', $comment->page);
+
+                $data['content'] = strip_tags($data['content']);
+            }
 
             $comment->fill($data);
             
-            $thread->comments()->save($comment);
+            $comment->save();
 
             return view('result', [
                 'message' => __('Comment was updated successfully.'),
@@ -97,6 +141,9 @@ class CommentController extends Controller
         $comment = Comment::findOrFail($comment);
 
         $this->authorize('delete', $comment);
+
+        if ($comment->entity_type == 'App\Page')
+            $this->authorize('comment', $comment->page);
 
         $comment->delete();
 
@@ -121,6 +168,11 @@ class CommentController extends Controller
         {
             switch ($request->redirect)
             {
+                case 'page.show':
+                    $redirect = route($request->redirect, [
+                        'slug' => $comment->page->slug
+                    ]);
+                break;
                 case 'thread.show':
                     $redirect = route($request->redirect, [
                         'category_slug' => $comment->thread->topic->category->slug,

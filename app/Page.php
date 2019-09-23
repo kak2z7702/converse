@@ -14,8 +14,26 @@ class Page extends Model
     protected $fillable = [
         'title',
         'slug',
-        'content'
+        'content',
+        'can_have_comments'
     ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'can_have_comments' => 'boolean'
+    ];
+
+    /**
+     * The comments related to the page.
+     */
+    public function comments()
+    {
+        return $this->morphMany('App\Comment', 'entity');
+    }
 
     /**
      * The user who created the page.
@@ -23,5 +41,15 @@ class Page extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    /**
+     * Can have comments mutator.
+     * 
+     * @param $value Incoming value.
+     */
+    public function setCanHaveCommentsAttribute($value)
+    {
+        $this->attributes['can_have_comments'] = is_bool($value) ? $value : ($value == 'on');
     }
 }

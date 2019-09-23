@@ -18,12 +18,12 @@
                 <div class="card-header">{{ __('Update Comment') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('comment.update', ['comment' => $comment->id, 'redirect=thread.show']) }}">
+                    <form method="POST" action="{{ route('comment.update', ['comment' => $comment->id, 'redirect' => request('redirect')]) }}">
                         @csrf
 
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <textarea id="content" class="form-control @error('content') is-invalid @enderror" name="content">{{ old('content', isset($comment) ? $comment->content : null) }}</textarea>
+                                <textarea id="content" class="form-control @error('content') is-invalid @enderror" name="content" required>{{ old('content', isset($comment) ? $comment->content : null) }}</textarea>
 
                                 @error('content')
                                 <span class="invalid-feedback" role="alert">
@@ -45,6 +45,7 @@
         </div>
     </div>
 </div>
+@if ($comment->entity_type != 'App\\Page')
 <script>
     window.addEventListener('DOMContentLoaded', (event) => {
         $('#content').summernote({
@@ -58,4 +59,5 @@
         });
     });
 </script>
+@endif
 @endsection

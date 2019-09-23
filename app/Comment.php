@@ -25,11 +25,19 @@ class Comment extends Model
     ];
 
     /**
+     * The page that owns the comment.
+     */
+    public function page()
+    {
+        return $this->belongsTo('App\Page', 'entity_id');
+    }
+
+    /**
      * The thread that owns the comment.
      */
     public function thread()
     {
-        return $this->belongsTo('App\Thread');
+        return $this->belongsTo('App\Thread', 'entity_id');
     }
 
     /**
@@ -38,5 +46,13 @@ class Comment extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    /**
+     * The entity that the comment is morphing to.
+     */
+    public function entity()
+    {
+        return $this->morphTo();
     }
 }

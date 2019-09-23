@@ -18,6 +18,7 @@ class CreatePagesTable extends Migration
             $table->string('title');
             $table->string('slug');
             $table->mediumText('content');
+            $table->tinyInteger('can_have_comments')->default(0);
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 

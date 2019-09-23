@@ -91,4 +91,16 @@ class PagePolicy
     {
         return $user->is_admin;
     }
+
+    /**
+     * Determine whether the user can post a comment on the page.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Page  $page
+     * @return mixed
+     */
+    public function comment(User $user, Page $page)
+    {
+        return $page->can_have_comments;
+    }
 }

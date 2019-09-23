@@ -45,6 +45,17 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <div class="form-check">
+                                    <input type="hidden" name="can_have_comments" value="off" /> <!-- This field will be sent as check box value when it's not checked -->
+                                    <input class="form-check-input" type="checkbox" name="can_have_comments" id="can_have_comments" {{ old('can_have_comments', isset($page) ? $page->can_have_comments : null) ? 'checked' : '' }}>
+
+                                    <label class="form-check-label" for="can_have_comments">{{ __('Can have comments') }}</label>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0">
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-primary">{{ __('Submit') }}</button>

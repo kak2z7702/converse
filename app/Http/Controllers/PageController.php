@@ -27,14 +27,22 @@ class PageController extends Controller
     /**
      * Show the custom page.
      *
+     * @param $request Incoming request.
      * @param $slug Page slug.
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function show($slug)
+    public function show(Request $request, $slug)
     {
         $page = Page::where('slug', $slug)->firstOrFail();
+        $comments = $page->comments()->orderBy('created_at', 'asc')->paginate(null, ['*'], 'comments_page');
 
-        return view('page.show', ['page' => $page]);
+        if (!$request->has('comments_page'))
+            $comments = $page->comments()->orderBy('created_at', 'asc')->paginate(null, ['*'], 'comments_page', $comments->lastPage());
+
+        return view('page.show', [
+            'page' => $page,
+            'comments' => $comments
+        ]);
     }
 
     /**
@@ -57,6 +65,7 @@ class PageController extends Controller
             $data = $request->validate([
                 'title' => 'required|string|max:255',
                 'content' => 'required|string',
+                'can_have_comments' => 'required|in:on,off'
             ]);
 
             $page = new Page($data);
@@ -96,6 +105,7 @@ class PageController extends Controller
             $validator = Validator::make($request->all(), [
                 'title' => 'required|string|max:255',
                 'content' => 'required|string',
+                'can_have_comments' => 'required|in:on,off'
             ]);
 
             if ($validator->fails())
@@ -137,6 +147,8 @@ class PageController extends Controller
         $page = Page::findOrFail($page);
 
         $this->authorize('delete', $page);
+
+        $page->comments()->delete();
 
         $page->delete();
 
