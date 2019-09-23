@@ -107,7 +107,7 @@
                     </div>
                     @if (!$loop->last)<hr />@endif
                     @endforeach
-                    @if ($comments->count() > $comments->perPage())
+                    @if ($comments->count() >= $comments->perPage())
                     <div class="row mt-3">
                         <div class="col-12 d-flex justify-content-center">
                         {{ $comments->links() }}
