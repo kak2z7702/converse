@@ -18,15 +18,15 @@
                         @canany(['update', 'delete'], $topic)
                         <div class="col-2">
                             <div class="dropdown float-right">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="topicManageButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</button>
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="topicManageButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Manage') }}</button>
                                 <div class="dropdown-menu" aria-labelledby="topicManageButton">
                                     @can('update', $topic)
-                                    <a href="{{ route('topic.update', ['topic' => $topic->id, 'redirect=topic.show']) }}" class="dropdown-item">Edit</a>
+                                    <a href="{{ route('topic.update', ['topic' => $topic->id, 'redirect=topic.show']) }}" class="dropdown-item">{{ __('Edit') }}</a>
                                     @endcan
                                     @can('delete', $topic)
                                     <a href="#" class="dropdown-item" 
                                         data-toggle="modal" data-target="#topicDeleteModal" 
-                                        onclick="$('#topicDeleteModal #deleteButton').attr('href', '{{ route('topic.delete', ['topic' => $topic->id, 'redirect=category.show']) }}')">Delete</a>
+                                        onclick="$('#topicDeleteModal #deleteButton').attr('href', '{{ route('topic.delete', ['topic' => $topic->id, 'redirect=category.show']) }}')">{{ __('Delete') }}</a>
                                     @endcan
                                 </div>
                             </div>
@@ -56,15 +56,15 @@
                         @canany(['update', 'delete'], $thread)
                         <div class="col-2 pt-1">
                             <div class="dropdown float-right">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="threadManageButton-{{ $thread->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</button>
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="threadManageButton-{{ $thread->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Manage') }}</button>
                                 <div class="dropdown-menu" aria-labelledby="threadManageButton-{{ $thread->id }}">
                                     @can('update', $thread)
-                                    <a href="{{ route('thread.update', ['thread' => $thread->id, 'redirect=topic.show']) }}" class="dropdown-item">Edit</a>
+                                    <a href="{{ route('thread.update', ['thread' => $thread->id, 'redirect=topic.show']) }}" class="dropdown-item">{{ __('Edit') }}</a>
                                     @endcan
                                     @can('delete', $thread)
                                     <a href="#" class="dropdown-item" 
                                         data-toggle="modal" data-target="#threadDeleteModal" 
-                                        onclick="$('#threadDeleteModal #deleteButton').attr('href', '{{ route('thread.delete', ['thread' => $thread->id, 'redirect=topic.show']) }}')">Delete</a>
+                                        onclick="$('#threadDeleteModal #deleteButton').attr('href', '{{ route('thread.delete', ['thread' => $thread->id, 'redirect=topic.show']) }}')">{{ __('Delete') }}</a>
                                     @endcan
                                 </div>
                             </div>
@@ -92,15 +92,15 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="topicDeleteModal">Are you sure?</h5>
+                <h5 class="modal-title" id="topicDeleteModal">{{ __('Are you sure?') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                Do you really want to delete this topic?
+                {{ __('Do you really want to delete this topic?') }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a id="deleteButton" href="#" class="btn btn-danger">Delete</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
+                <a id="deleteButton" href="#" class="btn btn-danger">{{ __('Delete') }}</a>
             </div>
         </div>
     </div>
@@ -110,15 +110,15 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="threadDeleteModal">Are you sure?</h5>
+                <h5 class="modal-title" id="threadDeleteModal">{{ __('Are you sure?') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                Do you really want to delete this thread?
+                {{ __('Do you really want to delete this thread?') }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a id="deleteButton" href="#" class="btn btn-danger">Delete</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
+                <a id="deleteButton" href="#" class="btn btn-danger">{{ __('Delete') }}</a>
             </div>
         </div>
     </div>

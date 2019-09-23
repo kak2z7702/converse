@@ -81,11 +81,11 @@
     window.addEventListener('DOMContentLoaded', (event) => {
         $('#content').summernote({
             height: 300,
-            placeholder: 'Write here...',
+            placeholder: {!! '\'' . __('Write here...') . '\'' !!},
             codeviewFilter: true,
             maximumImageFileSize: 1024 * 1024, // 1 MB 
             callbacks: { 
-                onImageUploadError: function (msg) { alert(msg + " Choose images less than equal to 1 MB."); }
+                onImageUploadError: function (msg) { alert(msg + " {{ __('Choose images less than equal to 1 MB.') }}"); }
             }
         });
 

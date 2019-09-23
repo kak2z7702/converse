@@ -8,7 +8,7 @@
                 <div class="card-header">Result</div>
 
                 <div class="card-body">
-                    {{ __($message) }}<br /><a href="{{ $redirect }}">&larr; Back</a>
+                    {{ $message }}<br /><a href="{{ $redirect }}">&larr; {{ __('Back') }}</a>
                 </div>
             </div>
         </div>

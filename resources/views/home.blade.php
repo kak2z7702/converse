@@ -26,25 +26,25 @@
                         @canany(['update', 'delete'], $category)
                         <div class="col-2">
                             <div class="dropdown float-right">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="categoryManageButton-{{ $category->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</button>
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="categoryManageButton-{{ $category->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Manage') }}</button>
                                 <div class="dropdown-menu" aria-labelledby="categoryManageButton-{{ $category->id }}">
                                     @can('update', $category)
-                                    <a href="{{ route('category.update', ['category' => $category->id]) }}" class="dropdown-item">Edit</a>
+                                    <a href="{{ route('category.update', ['category' => $category->id]) }}" class="dropdown-item">{{ __('Edit') }}</a>
                                     @endcan
                                     @can('delete', $category)
                                     <a href="#" class="dropdown-item" 
                                         data-toggle="modal" data-target="#categoryDeleteModal" 
-                                        onclick="$('#categoryDeleteModal #deleteButton').attr('href', '{{ route('category.delete', ['category' => $category->id]) }}')">Delete</a>
+                                        onclick="$('#categoryDeleteModal #deleteButton').attr('href', '{{ route('category.delete', ['category' => $category->id]) }}')">{{ __('Delete') }}</a>
                                     @endcan
                                     @can('move', $category)
                                     @if ($category->order != 1 || $category->order != $last_category_order)
                                     <div class="dropdown-divider"></div>
                                     @endif
                                     @if ($category->order != 1)
-                                    <a href="{{ route('category.move', ['category' => $category->id, 'dir' => 'up']) }}" class="dropdown-item">Move up</a>
+                                    <a href="{{ route('category.move', ['category' => $category->id, 'dir' => 'up']) }}" class="dropdown-item">{{ __('Move up') }}</a>
                                     @endif
                                     @if ($category->order != $last_category_order)
-                                    <a href="{{ route('category.move', ['category' => $category->id, 'dir' => 'down']) }}" class="dropdown-item">Move down</a>
+                                    <a href="{{ route('category.move', ['category' => $category->id, 'dir' => 'down']) }}" class="dropdown-item">{{ __('Move down') }}</a>
                                     @endif
                                     @endcan
                                 </div>
@@ -76,25 +76,25 @@
                         @canany(['update', 'delete'], $topic)
                         <div class="col-2 pt-1">
                             <div class="dropdown float-right">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="topicManageButton-{{ $topic->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</button>
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="topicManageButton-{{ $topic->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Manage') }}</button>
                                 <div class="dropdown-menu" aria-labelledby="topicManageButton-{{ $topic->id }}">
                                     @can('update', $topic)
-                                    <a href="{{ route('topic.update', ['topic' => $topic->id]) }}" class="dropdown-item">Edit</a>
+                                    <a href="{{ route('topic.update', ['topic' => $topic->id]) }}" class="dropdown-item">{{ __('Edit') }}</a>
                                     @endcan
                                     @can('delete', $topic)
                                     <a href="#" class="dropdown-item" 
                                         data-toggle="modal" data-target="#topicDeleteModal" 
-                                        onclick="$('#topicDeleteModal #deleteButton').attr('href', '{{ route('topic.delete', ['topic' => $topic->id]) }}')">Delete</a>
+                                        onclick="$('#topicDeleteModal #deleteButton').attr('href', '{{ route('topic.delete', ['topic' => $topic->id]) }}')">{{ __('Delete') }}</a>
                                     @endcan
                                     @can('move', $topic)
                                     @if ($topic->order != 1 || $topic->order != $category->last_topic_order)
                                     <div class="dropdown-divider"></div>
                                     @endif
                                     @if ($topic->order != 1)
-                                    <a href="{{ route('topic.move', ['topic' => $topic->id, 'dir' => 'up']) }}" class="dropdown-item">Move up</a>
+                                    <a href="{{ route('topic.move', ['topic' => $topic->id, 'dir' => 'up']) }}" class="dropdown-item">{{ __('Move up') }}</a>
                                     @endif
                                     @if ($topic->order != $category->last_topic_order)
-                                    <a href="{{ route('topic.move', ['topic' => $topic->id, 'dir' => 'down']) }}" class="dropdown-item">Move down</a>
+                                    <a href="{{ route('topic.move', ['topic' => $topic->id, 'dir' => 'down']) }}" class="dropdown-item">{{ __('Move down') }}</a>
                                     @endif
                                     @endcan
                                 </div>
@@ -161,7 +161,7 @@
                         <div class="col-md-4">{{ $activity['threads_count'] }}</div>
                     </div>
                     <div class="row">
-                        <div class="col-md-2 text-md-right">Latest Memeber</div>
+                        <div class="col-md-2 text-md-right">{{ __('Latest Memeber') }}</div>
                         <div class="col-md-4">
                             @isset($activity['latest_user'])
                             {{ $activity['latest_user']->name }}
@@ -180,15 +180,15 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="categoryDeleteModal">Are you sure?</h5>
+                <h5 class="modal-title" id="categoryDeleteModal">{{ __('Are you sure?') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                Do you really want to delete this category?
+                {{ __('Do you really want to delete this category?') }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a id="deleteButton" href="#" class="btn btn-danger">Delete</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
+                <a id="deleteButton" href="#" class="btn btn-danger">{{ __('Delete') }}</a>
             </div>
         </div>
     </div>
@@ -198,15 +198,15 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="topicDeleteModal">Are you sure?</h5>
+                <h5 class="modal-title" id="topicDeleteModal">{{ __('Are you sure?') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                Do you really want to delete this topic?
+                {{ __('Do you really want to delete this topic?') }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a id="deleteButton" href="#" class="btn btn-danger">Delete</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
+                <a id="deleteButton" href="#" class="btn btn-danger">{{ __('Delete') }}</a>
             </div>
         </div>
     </div>

@@ -40,15 +40,15 @@
                         @canany(['update', 'delete'], $thread)
                         <div class="col-2">
                             <div class="dropdown float-right">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="threadManageButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</button>
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="threadManageButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Manage') }}</button>
                                 <div class="dropdown-menu" aria-labelledby="threadManageButton">
                                     @can('update', $thread)
-                                    <a href="{{ route('thread.update', ['thread' => $thread->id, 'redirect=thread.show']) }}" class="dropdown-item">Edit</a>
+                                    <a href="{{ route('thread.update', ['thread' => $thread->id, 'redirect=thread.show']) }}" class="dropdown-item">{{ __('Edit') }}</a>
                                     @endcan
                                     @can('delete', $thread)
                                     <a href="#" class="dropdown-item" 
                                         data-toggle="modal" data-target="#threadDeleteModal" 
-                                        onclick="$('#threadDeleteModal #deleteButton').attr('href', '{{ route('thread.delete', ['thread' => $thread->id, 'redirect=topic.show']) }}')">Delete</a>
+                                        onclick="$('#threadDeleteModal #deleteButton').attr('href', '{{ route('thread.delete', ['thread' => $thread->id, 'redirect=topic.show']) }}')">{{ __('Delete') }}</a>
                                     @endcan
                                 </div>
                             </div>
@@ -77,15 +77,15 @@
                                 @canany(['update', 'delete'], $comment)
                                 <div class="col-2">
                                     <div class="dropdown float-right">
-                                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="commentManageButton-{{ $comment->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</button>
+                                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="commentManageButton-{{ $comment->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Manage') }}</button>
                                         <div class="dropdown-menu" aria-labelledby="commentManageButton-{{ $comment->id }}">
                                             @can('update', $comment)
-                                            <a href="{{ route('comment.update', ['comment' => $comment->id, 'redirect=thread.show']) }}" class="dropdown-item">Edit</a>
+                                            <a href="{{ route('comment.update', ['comment' => $comment->id, 'redirect=thread.show']) }}" class="dropdown-item">{{ __('Edit') }}</a>
                                             @endcan
                                             @can('delete', $comment)
                                             <a href="#" class="dropdown-item" 
                                                 data-toggle="modal" data-target="#commentDeleteModal" 
-                                                onclick="$('#commentDeleteModal #deleteButton').attr('href', '{{ route('comment.delete', ['comment' => $comment->id, 'redirect=thread.show']) }}')">Delete</a>
+                                                onclick="$('#commentDeleteModal #deleteButton').attr('href', '{{ route('comment.delete', ['comment' => $comment->id, 'redirect=thread.show']) }}')">{{ __('Delete') }}</a>
                                             @endcan
                                         </div>
                                     </div>
@@ -159,15 +159,15 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="threadDeleteModal">Are you sure?</h5>
+                <h5 class="modal-title" id="threadDeleteModal">{{ __('Are you sure?') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                Do you really want to delete this thread?
+                {{ __('Do you really want to delete this thread?') }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a id="deleteButton" href="#" class="btn btn-danger">Delete</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
+                <a id="deleteButton" href="#" class="btn btn-danger">{{ __('Delete') }}</a>
             </div>
         </div>
     </div>
@@ -177,15 +177,15 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="commentDeleteModal">Are you sure?</h5>
+                <h5 class="modal-title" id="commentDeleteModal">{{ __('Are you sure?') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                Do you really want to delete this comment?
+                {{ __('Do you really want to delete this comment?') }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a id="deleteButton" href="#" class="btn btn-danger">Delete</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
+                <a id="deleteButton" href="#" class="btn btn-danger">{{ __('Delete') }}</a>
             </div>
         </div>
     </div>
@@ -194,11 +194,11 @@
     window.addEventListener('DOMContentLoaded', (event) => {
         $('#newCommentContent').summernote({
             height: 150,
-            placeholder: 'Write here...',
+            placeholder: {!! '\'' . __('Write here...') . '\'' !!},
             codeviewFilter: true,
             maximumImageFileSize: 1024 * 1024, // 1 MB 
             callbacks: { 
-                onImageUploadError: function (msg) { alert(msg + " Choose images less than equal to 1 MB."); }
+                onImageUploadError: function (msg) { alert(msg + " {{ __('Choose images less than equal to 1 MB.') }}"); }
             }
         });
 

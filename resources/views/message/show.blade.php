@@ -17,15 +17,15 @@
                         @canany(['update', 'delete'], $message)
                         <div class="col-2">
                             <div class="dropdown float-right">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="messageManageButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</button>
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="messageManageButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Manage') }}</button>
                                 <div class="dropdown-menu" aria-labelledby="messageManageButton">
                                     @can('update', $message)
-                                    <a href="{{ route('message.update', ['message' => $message->id, 'redirect=message.show']) }}" class="dropdown-item">Edit</a>
+                                    <a href="{{ route('message.update', ['message' => $message->id, 'redirect=message.show']) }}" class="dropdown-item">{{ __('Edit') }}</a>
                                     @endcan
                                     @can('delete', $message)
                                     <a href="#" class="dropdown-item" 
                                         data-toggle="modal" data-target="#messageDeleteModal" 
-                                        onclick="$('#messageDeleteModal #deleteButton').attr('href', '{{ route('message.delete', ['message' => $message->id, 'redirect=message.index']) }}')">Delete</a>
+                                        onclick="$('#messageDeleteModal #deleteButton').attr('href', '{{ route('message.delete', ['message' => $message->id, 'redirect=message.index']) }}')">{{ __('Delete') }}</a>
                                     @endcan
                                 </div>
                             </div>
@@ -51,15 +51,15 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="messageDeleteModal">Are you sure?</h5>
+                <h5 class="modal-title" id="messageDeleteModal">{{ __('Are you sure?') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                Do you really want to delete this message?
+                {{ __('Do you really want to delete this message?') }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a id="deleteButton" href="#" class="btn btn-danger">Delete</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
+                <a id="deleteButton" href="#" class="btn btn-danger">{{ __('Delete') }}</a>
             </div>
         </div>
     </div>

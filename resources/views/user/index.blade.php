@@ -27,15 +27,15 @@
                         @canany(['update', 'delete'], $user)
                         <div class="col-2 pt-1">
                             <div class="dropdown float-right">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="userManageButton-{{ $user->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</button>
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="userManageButton-{{ $user->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Manage') }}</button>
                                 <div class="dropdown-menu" aria-labelledby="userManageButton-{{ $user->id }}">
                                     @can('update', $user)
-                                    <a href="{{ route('user.update', ['user' => $user->id, 'redirect=user.index']) }}" class="dropdown-item">Edit</a>
+                                    <a href="{{ route('user.update', ['user' => $user->id, 'redirect=user.index']) }}" class="dropdown-item">{{ __('Edit') }}</a>
                                     @endcan
                                     @can('delete', $user)
                                     <a href="#" class="dropdown-item" 
                                         data-toggle="modal" data-target="#userDeleteModal" 
-                                        onclick="$('#userDeleteModal #deleteButton').attr('href', '{{ route('user.delete', ['user' => $user->id, 'redirect=user.index']) }}')">Delete</a>
+                                        onclick="$('#userDeleteModal #deleteButton').attr('href', '{{ route('user.delete', ['user' => $user->id, 'redirect=user.index']) }}')">{{ __('Delete') }}</a>
                                     @endcan
                                 </div>
                             </div>
@@ -63,15 +63,15 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="userDeleteModal">Are you sure?</h5>
+                <h5 class="modal-title" id="userDeleteModal">{{ __('Are you sure?') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                Do you really want to delete this user?
+                {{ __('Do you really want to delete this user?') }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a id="deleteButton" href="#" class="btn btn-danger">Delete</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
+                <a id="deleteButton" href="#" class="btn btn-danger">{{ __('Delete') }}</a>
             </div>
         </div>
     </div>

@@ -30,25 +30,25 @@
                         @canany(['update', 'delete'], $menu)
                         <div class="col-2 pt-1">
                             <div class="dropdown float-right">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="menuManageButton-{{ $menu->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</button>
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="menuManageButton-{{ $menu->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Manage') }}</button>
                                 <div class="dropdown-menu" aria-labelledby="menuManageButton-{{ $menu->id }}">
                                     @can('update', $menu)
-                                    <a href="{{ route('menu.update', ['menu' => $menu->id]) }}" class="dropdown-item">Edit</a>
+                                    <a href="{{ route('menu.update', ['menu' => $menu->id]) }}" class="dropdown-item">{{ __('Edit') }}</a>
                                     @endcan
                                     @can('delete', $menu)
                                     <a href="#" class="dropdown-item" 
                                         data-toggle="modal" data-target="#menuDeleteModal" 
-                                        onclick="$('#menuDeleteModal #deleteButton').attr('href', '{{ route('menu.delete', ['menu' => $menu->id]) }}')">Delete</a>
+                                        onclick="$('#menuDeleteModal #deleteButton').attr('href', '{{ route('menu.delete', ['menu' => $menu->id]) }}')">{{ __('Delete') }}</a>
                                     @endcan
                                     @can('move', $menu)
                                     @if ($menu->order != 1 || $menu->order != $last_menu_order)
                                     <div class="dropdown-divider"></div>
                                     @endif
                                     @if ($menu->order != 1)
-                                    <a href="{{ route('menu.move', ['menu' => $menu->id, 'dir' => 'up']) }}" class="dropdown-item">Move up</a>
+                                    <a href="{{ route('menu.move', ['menu' => $menu->id, 'dir' => 'up']) }}" class="dropdown-item">{{ __('Move up') }}</a>
                                     @endif
                                     @if ($menu->order != $last_menu_order)
-                                    <a href="{{ route('menu.move', ['menu' => $menu->id, 'dir' => 'down']) }}" class="dropdown-item">Move down</a>
+                                    <a href="{{ route('menu.move', ['menu' => $menu->id, 'dir' => 'down']) }}" class="dropdown-item">{{ __('Move down') }}</a>
                                     @endif
                                     @endcan
                                 </div>
@@ -77,15 +77,15 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="menuDeleteModal">Are you sure?</h5>
+                <h5 class="modal-title" id="menuDeleteModal">{{ __('Are you sure?') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                Do you really want to delete this menu?
+                {{ __('Do you really want to delete this menu?') }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a id="deleteButton" href="#" class="btn btn-danger">Delete</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
+                <a id="deleteButton" href="#" class="btn btn-danger">{{ __('Delete') }}</a>
             </div>
         </div>
     </div>

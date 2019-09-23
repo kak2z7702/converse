@@ -5,15 +5,15 @@
     @auth
     @canany(['update', 'delete'], $page)
     <div class="dropdown">
-        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="pageManageButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</button>
+        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="pageManageButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Manage') }}</button>
         <div class="dropdown-menu" aria-labelledby="pageManageButton">
             @can('update', $page)
-            <a href="{{ route('page.update', ['page' => $page->id, 'redirect=page.show']) }}" class="dropdown-item">Edit</a>
+            <a href="{{ route('page.update', ['page' => $page->id, 'redirect=page.show']) }}" class="dropdown-item">{{ __('Edit') }}</a>
             @endcan
             @can('delete', $page)
             <a href="#" class="dropdown-item" 
                 data-toggle="modal" data-target="#pageDeleteModal" 
-                onclick="$('#pageDeleteModal #deleteButton').attr('href', '{{ route('page.delete', ['page' => $page->id]) }}')">Delete</a>
+                onclick="$('#pageDeleteModal #deleteButton').attr('href', '{{ route('page.delete', ['page' => $page->id]) }}')">{{ __('Delete') }}</a>
             @endcan
         </div>
     </div>
@@ -36,15 +36,15 @@
         @canany(['update', 'delete'], $comment)
         <div class="col-2 pt-1">
             <div class="dropdown float-right">
-                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="commentManageButton-{{ $comment->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</button>
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="commentManageButton-{{ $comment->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Manage') }}</button>
                 <div class="dropdown-menu" aria-labelledby="commentManageButton-{{ $comment->id }}">
                     @can('update', $comment)
-                    <a href="{{ route('comment.update', ['comment' => $comment->id, 'redirect=page.show']) }}" class="dropdown-item">Edit</a>
+                    <a href="{{ route('comment.update', ['comment' => $comment->id, 'redirect=page.show']) }}" class="dropdown-item">{{ __('Edit') }}</a>
                     @endcan
                     @can('delete', $comment)
                     <a href="#" class="dropdown-item" 
                         data-toggle="modal" data-target="#commentDeleteModal" 
-                        onclick="$('#commentDeleteModal #deleteButton').attr('href', '{{ route('comment.delete', ['comment' => $comment->id, 'redirect=page.show']) }}')">Delete</a>
+                        onclick="$('#commentDeleteModal #deleteButton').attr('href', '{{ route('comment.delete', ['comment' => $comment->id, 'redirect=page.show']) }}')">{{ __('Delete') }}</a>
                     @endcan
                 </div>
             </div>
@@ -53,7 +53,7 @@
         @endauth
     </div>
     @empty
-    <p>No comments have been posted to this page.</p>
+    <p>{{ __('No comments have been posted to this page.') }}</p>
     @endforelse
     @if ($comments->count() >= $comments->perPage())
     <div class="row mt-3">
@@ -102,15 +102,15 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="pageDeleteModal">Are you sure?</h5>
+                <h5 class="modal-title" id="pageDeleteModal">{{ __('Are you sure?') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                Do you really want to delete this page?
+                {{ __('Do you really want to delete this page?') }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a id="deleteButton" href="#" class="btn btn-danger">Delete</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
+                <a id="deleteButton" href="#" class="btn btn-danger">{{ __('Delete') }}</a>
             </div>
         </div>
     </div>
@@ -120,15 +120,15 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="commentDeleteModal">Are you sure?</h5>
+                <h5 class="modal-title" id="commentDeleteModal">{{ __('Are you sure?') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                Do you really want to delete this comment?
+                {{ __('Do you really want to delete this comment?') }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a id="deleteButton" href="#" class="btn btn-danger">Delete</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
+                <a id="deleteButton" href="#" class="btn btn-danger">{{ __('Delete') }}</a>
             </div>
         </div>
     </div>

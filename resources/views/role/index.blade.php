@@ -21,21 +21,21 @@
                     @forelse ($roles as $role)
                     <div class="row @if (!$loop->last){{ 'mb-3' }}@endif">
                         <div class="@auth @canany(['update', 'delete'], $role){{ 'col-10' }}@else{{ 'col-12' }}@endcanany @else{{ 'col-12' }}@endauth">
-                            <h5 class="mt-2 mb-1">{{ $role->title }} @if ($role->is_protected)<span class="badge badge-info">Protected</span>@endif</h5>
+                            <h5 class="mt-2 mb-1">{{ $role->title }} @if ($role->is_protected)<span class="badge badge-info">{{ __('Protected') }}</span>@endif</h5>
                         </div>
                         @auth
                         @canany(['update', 'delete'], $role)
                         <div class="col-2 pt-1">
                             <div class="dropdown float-right">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="roleManageButton-{{ $role->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</button>
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="roleManageButton-{{ $role->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Manage') }}</button>
                                 <div class="dropdown-menu" aria-labelledby="roleManageButton-{{ $role->id }}">
                                     @can('update', $role)
-                                    <a href="{{ route('role.update', ['role' => $role->id]) }}" class="dropdown-item">Edit</a>
+                                    <a href="{{ route('role.update', ['role' => $role->id]) }}" class="dropdown-item">{{ __('Edit') }}</a>
                                     @endcan
                                     @can('delete', $role)
                                     <a href="#" class="dropdown-item" 
                                         data-toggle="modal" data-target="#roleDeleteModal" 
-                                        onclick="$('#roleDeleteModal #deleteButton').attr('href', '{{ route('role.delete', ['role' => $role->id]) }}')">Delete</a>
+                                        onclick="$('#roleDeleteModal #deleteButton').attr('href', '{{ route('role.delete', ['role' => $role->id]) }}')">{{ __('Delete') }}</a>
                                     @endcan
                                 </div>
                             </div>
@@ -63,15 +63,15 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="roleDeleteModal">Are you sure?</h5>
+                <h5 class="modal-title" id="roleDeleteModal">{{ __('Are you sure?') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                Do you really want to delete this role?
+                {{ __('Do you really want to delete this role?') }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a id="deleteButton" href="#" class="btn btn-danger">Delete</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
+                <a id="deleteButton" href="#" class="btn btn-danger">{{ __('Delete') }}</a>
             </div>
         </div>
     </div>
