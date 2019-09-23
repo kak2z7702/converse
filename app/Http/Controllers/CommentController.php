@@ -21,9 +21,9 @@ class CommentController extends Controller
             'content' => ['required', 'string']
         );
 
-        if ($request->has('page'))
+        if ($request->filled('page'))
             $rules['page'] = ['required', 'numeric', 'exists:pages,id'];
-        else if ($request->has('thread'))
+        else if ($request->filled('thread'))
             $rules['thread'] = ['required', 'numeric', 'exists:threads,id'];
         else
             return redirect()->back();
