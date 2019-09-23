@@ -71,7 +71,9 @@ class ThreadPolicy
             $query->where('slug', 'topic_management_' . $thread->topic->hash);
         })->first() !== null;
 
-        return ($is_owner && $has_permission) || $has_topic_permission;
+        $has_topic_role = $user->roles()->where('slug', 'topic_management')->first() !== null;
+
+        return ($is_owner && $has_permission) || ($has_topic_permission || $has_topic_role);
     }
 
     /**
@@ -96,7 +98,9 @@ class ThreadPolicy
             $query->where('slug', 'topic_management_' . $thread->topic->hash);
         })->first() !== null;
 
-        return ($is_owner && $has_permission) || $has_topic_permission;
+        $has_topic_role = $user->roles()->where('slug', 'topic_management')->first() !== null;
+
+        return ($is_owner && $has_permission) || ($has_topic_permission || $has_topic_role);
     }
 
     /**
@@ -121,7 +125,9 @@ class ThreadPolicy
             $query->where('slug', 'topic_management_' . $thread->topic->hash);
         })->first() !== null;
 
-        return ($is_owner && $has_permission) || $has_topic_permission;
+        $has_topic_role = $user->roles()->where('slug', 'topic_management')->first() !== null;
+
+        return ($is_owner && $has_permission) || ($has_topic_permission || $has_topic_role);
     }
 
     /**
@@ -146,6 +152,8 @@ class ThreadPolicy
             $query->where('slug', 'topic_management_' . $thread->topic->hash);
         })->first() !== null;
 
-        return ($is_owner && $has_permission) || $has_topic_permission;
+        $has_topic_role = $user->roles()->where('slug', 'topic_management')->first() !== null;
+
+        return ($is_owner && $has_permission) || ($has_topic_permission || $has_topic_role);
     }
 }

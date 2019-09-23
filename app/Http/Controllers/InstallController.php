@@ -58,6 +58,7 @@ class InstallController extends Controller
 
             // topic management role
             $topic_role = new Role(['title' => 'Topic Management']);
+            $topic_role->slug = 'topic_management';
             $topic_role->is_protected = true;
 
             $topic_role->save();
@@ -71,6 +72,7 @@ class InstallController extends Controller
 
             // thread management role
             $thread_role = new Role(['title' => 'Thread Management']);
+            $thread_role->slug = 'thread_management';
             $thread_role->is_protected = true;
 
             $thread_role->save();
@@ -83,6 +85,7 @@ class InstallController extends Controller
 
             // comment management role
             $comment_role = new Role(['title' => 'Comment Management']);
+            $comment_role->slug = 'comment_management';
             $comment_role->is_protected = true;
 
             $comment_role->save();
@@ -95,6 +98,7 @@ class InstallController extends Controller
 
             // message management role
             $message_role = new Role(['title' => 'Message Management']);
+            $message_role->slug = 'message_management';
             $message_role->is_protected = true;
 
             $message_role->save();

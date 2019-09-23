@@ -67,11 +67,18 @@ class CommentPolicy
             $query->where('slug', 'comment_update');
         })->first() !== null;
         
-        $has_topic_permission = $user->roles()->whereHas('permissions', function($query) use ($comment) {
-            $query->where('slug', 'topic_management_' . $comment->thread->topic->hash);
-        })->first() !== null;
+        if ($comment->entity_type == 'App\Thread')
+        {
+            $has_topic_permission = $user->roles()->whereHas('permissions', function($query) use ($comment) {
+                $query->where('slug', 'topic_management_' . $comment->thread->topic->hash);
+            })->first() !== null;
+    
+            $has_topic_role = $user->roles()->where('slug', 'topic_management')->first() !== null;
 
-        return ($is_owner && $has_permission) || $has_topic_permission;
+            return ($is_owner && $has_permission) || ($has_topic_permission || $has_topic_role);
+        }
+
+        return $is_owner && $has_permission;
     }
 
     /**
@@ -93,11 +100,18 @@ class CommentPolicy
             $query->where('slug', 'comment_delete');
         })->first() !== null;
         
-        $has_topic_permission = $user->roles()->whereHas('permissions', function($query) use ($comment) {
-            $query->where('slug', 'topic_management_' . $comment->thread->topic->hash);
-        })->first() !== null;
+        if ($comment->entity_type == 'App\Thread')
+        {
+            $has_topic_permission = $user->roles()->whereHas('permissions', function($query) use ($comment) {
+                $query->where('slug', 'topic_management_' . $comment->thread->topic->hash);
+            })->first() !== null;
 
-        return ($is_owner && $has_permission) || $has_topic_permission;
+            $has_topic_role = $user->roles()->where('slug', 'topic_management')->first() !== null;
+
+            return ($is_owner && $has_permission) || ($has_topic_permission || $has_topic_role);
+        }
+
+        return $is_owner && $has_permission;
     }
 
     /**
@@ -118,11 +132,18 @@ class CommentPolicy
             $query->where('slug', 'comment_restore');
         })->first() !== null;
         
-        $has_topic_permission = $user->roles()->whereHas('permissions', function($query) use ($comment) {
-            $query->where('slug', 'topic_management_' . $comment->thread->topic->hash);
-        })->first() !== null;
+        if ($comment->entity_type == 'App\Thread')
+        {
+            $has_topic_permission = $user->roles()->whereHas('permissions', function($query) use ($comment) {
+                $query->where('slug', 'topic_management_' . $comment->thread->topic->hash);
+            })->first() !== null;
 
-        return ($is_owner && $has_permission) || $has_topic_permission;
+            $has_topic_role = $user->roles()->where('slug', 'topic_management')->first() !== null;
+
+            return ($is_owner && $has_permission) || ($has_topic_permission || $has_topic_role);
+        }
+
+        return $is_owner && $has_permission;
     }
 
     /**
@@ -143,10 +164,17 @@ class CommentPolicy
             $query->where('slug', 'comment_force_delete');
         })->first() !== null;
         
-        $has_topic_permission = $user->roles()->whereHas('permissions', function($query) use ($comment) {
-            $query->where('slug', 'topic_management_' . $comment->thread->topic->hash);
-        })->first() !== null;
+        if ($comment->entity_type == 'App\Thread')
+        {
+            $has_topic_permission = $user->roles()->whereHas('permissions', function($query) use ($comment) {
+                $query->where('slug', 'topic_management_' . $comment->thread->topic->hash);
+            })->first() !== null;
 
-        return ($is_owner && $has_permission) || $has_topic_permission;
+            $has_topic_role = $user->roles()->where('slug', 'topic_management')->first() !== null;
+
+            return ($is_owner && $has_permission) || ($has_topic_permission || $has_topic_role);
+        }
+        
+        return $is_owner && $has_permission;
     }
 }

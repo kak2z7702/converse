@@ -73,7 +73,9 @@ class TopicPolicy
             $query->where('slug', 'topic_management_' . $topic->hash);
         })->first() !== null;
 
-        return ($is_owner && $has_permission) || $has_topic_permission;
+        $has_topic_role = $user->roles()->where('slug', 'topic_management')->first() !== null;
+
+        return ($is_owner && $has_permission) || ($has_topic_permission || $has_topic_role);
     }
 
     /**
@@ -98,7 +100,9 @@ class TopicPolicy
             $query->where('slug', 'topic_management_' . $topic->hash);
         })->first() !== null;
 
-        return ($is_owner && $has_permission) || $has_topic_permission;
+        $has_topic_role = $user->roles()->where('slug', 'topic_management')->first() !== null;
+
+        return ($is_owner && $has_permission) || ($has_topic_permission || $has_topic_role);
     }
 
     /**
@@ -123,7 +127,9 @@ class TopicPolicy
             $query->where('slug', 'topic_management_' . $topic->hash);
         })->first() !== null;
 
-        return ($is_owner && $has_permission) || $has_topic_permission;
+        $has_topic_role = $user->roles()->where('slug', 'topic_management')->first() !== null;
+
+        return ($is_owner && $has_permission) || ($has_topic_permission || $has_topic_role);
     }
 
     /**
@@ -148,7 +154,9 @@ class TopicPolicy
             $query->where('slug', 'topic_management_' . $topic->hash);
         })->first() !== null;
 
-        return ($is_owner && $has_permission) || $has_topic_permission;
+        $has_topic_role = $user->roles()->where('slug', 'topic_management')->first() !== null;
+
+        return ($is_owner && $has_permission) || ($has_topic_permission || $has_topic_role);
     }
 
     /**
@@ -173,6 +181,29 @@ class TopicPolicy
             $query->where('slug', 'topic_management_' . $topic->hash);
         })->first() !== null;
 
-        return ($is_owner && $has_permission) || $has_topic_permission;
+        $has_topic_role = $user->roles()->where('slug', 'topic_management')->first() !== null;
+
+        return ($is_owner && $has_permission) || ($has_topic_permission || $has_topic_role);
+    }
+
+    /**
+     * Determine whether the user can manage the topic.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Topic  $topic
+     * @return mixed
+     */
+    public function manage(User $user, Topic $topic)
+    {
+        if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
+
+        $has_topic_permission = $user->roles()->whereHas('permissions', function($query) use ($topic) {
+            $query->where('slug', 'topic_management_' . $topic->hash);
+        })->first() !== null;
+
+        $has_topic_role = $user->roles()->where('slug', 'topic_management')->first() !== null;
+
+        return $has_topic_permission || $has_topic_role;
     }
 }
