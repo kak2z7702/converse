@@ -21,10 +21,14 @@
                     @forelse ($users as $user)
                     <div class="row @if (!$loop->last){{ 'mb-3' }}@endif">
                         <div class="@auth @canany(['update', 'delete'], $user){{ 'col-10' }}@else{{ 'col-12' }}@endcanany @else{{ 'col-12' }}@endauth">
-                            <h5 class="mt-2 mb-1">{{ $user->name }} @if ($user->is_admin)<span class="badge badge-info">Admin</span>@endif</h5>
+                            <h5 class="mt-2 mb-1">
+                                {{ $user->name }} 
+                                @if ($user->is_admin)<span class="badge badge-info">{{ __('Admin') }}</span>@endif
+                                @if ($user->is_banned)<span class="badge badge-danger">{{ __('Banned') }}</span>@endif
+                            </h5>
                         </div>
                         @auth
-                        @canany(['update', 'delete'], $user)
+                        @canany(['update', 'delete', 'ban'], $user)
                         <div class="col-2 pt-1">
                             <div class="dropdown float-right">
                                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="userManageButton-{{ $user->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Manage') }}</button>
@@ -36,6 +40,10 @@
                                     <a href="#" class="dropdown-item" 
                                         data-toggle="modal" data-target="#userDeleteModal" 
                                         onclick="$('#userDeleteModal #deleteButton').attr('href', '{{ route('user.delete', ['user' => $user->id, 'redirect=user.index']) }}')">{{ __('Delete') }}</a>
+                                    @endcan
+                                    @can('ban', $user)
+                                    <div class="dropdown-divider"></div>
+                                    <a href="{{ route('user.ban', ['user' => $user->id, 'redirect=user.index']) }}" class="dropdown-item">{{ (!$user->is_banned) ? __('Ban') : __('Unban') }}</a>
                                     @endcan
                                 </div>
                             </div>

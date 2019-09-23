@@ -42,6 +42,7 @@ class TopicPolicy
     public function create(User $user)
     {
         if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
 
         $has_permission = $user->roles()->whereHas('permissions', function($query) {
             $query->where('slug', 'topic_create');
@@ -60,6 +61,7 @@ class TopicPolicy
     public function update(User $user, Topic $topic)
     {
         if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
 
         $is_owner = $user->id === $topic->user_id;
 
@@ -84,6 +86,7 @@ class TopicPolicy
     public function delete(User $user, Topic $topic)
     {
         if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
 
         $is_owner = $user->id === $topic->user_id;
 
@@ -108,6 +111,7 @@ class TopicPolicy
     public function restore(User $user, Topic $topic)
     {
         if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
 
         $is_owner = $user->id === $topic->user_id;
 
@@ -132,6 +136,7 @@ class TopicPolicy
     public function forceDelete(User $user, Topic $topic)
     {
         if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
 
         $is_owner = $user->id === $topic->user_id;
 
@@ -156,6 +161,7 @@ class TopicPolicy
     public function move(User $user, Topic $topic)
     {
         if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
 
         $is_owner = $user->id === $topic->user_id;
 

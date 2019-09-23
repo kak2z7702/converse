@@ -42,6 +42,7 @@ class MessagePolicy
     public function create(User $user)
     {
         if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
 
         return $user->roles()->whereHas('permissions', function($query) {
             $query->where('slug', 'message_create');
@@ -58,6 +59,7 @@ class MessagePolicy
     public function update(User $user, Message $message)
     {
         if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
 
         $is_owner = $user->id === $message->user_id;
 
@@ -78,6 +80,7 @@ class MessagePolicy
     public function delete(User $user, Message $message)
     {
         if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
 
         $is_owner = $user->id === $message->user_id;
         $is_receiver = $user->id === $message->receiver_id;
@@ -99,6 +102,7 @@ class MessagePolicy
     public function restore(User $user, Message $message)
     {
         if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
 
         $is_owner = $user->id === $message->user_id;
         $is_receiver = $user->id === $message->receiver_id;
@@ -120,6 +124,7 @@ class MessagePolicy
     public function forceDelete(User $user, Message $message)
     {
         if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
 
         $is_owner = $user->id === $message->user_id;
         $is_receiver = $user->id === $message->receiver_id;

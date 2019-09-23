@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('photo')->nullable();
             $table->tinyInteger('is_admin')->default(0);
+            $table->tinyInteger('is_banned')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

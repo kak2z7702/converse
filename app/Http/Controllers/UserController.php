@@ -199,6 +199,28 @@ class UserController extends Controller
     }
 
     /**
+     * Ban a user.
+     * 
+     * @param $request Incoming request.
+     * @param $user User id.
+     */
+    public function ban(Request $request, $user)
+    {
+        $user = User::findOrFail($user);
+
+        $this->authorize('ban', $user);
+
+        $user->is_banned = !$user->is_banned;
+
+        $user->save();
+
+        return view('result', [
+            'message' => __('User was :status successfully.', ['status' => ($user->is_banned ? 'banned' : 'unbanned')]),
+            'redirect' => route('user.index')
+        ]);
+    }
+
+    /**
      * Show the user profile to update information.
      * 
      * @param $request Incoming request.

@@ -42,6 +42,7 @@ class CommentPolicy
     public function create(User $user)
     {
         if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
 
         return $user->roles()->whereHas('permissions', function($query) {
             $query->where('slug', 'comment_create');
@@ -58,6 +59,7 @@ class CommentPolicy
     public function update(User $user, Comment $comment)
     {
         if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
 
         $is_owner = $user->id === $comment->user_id;
 
@@ -83,6 +85,7 @@ class CommentPolicy
     {
         if ($comment->is_original) return false;
         if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
 
         $is_owner = $user->id === $comment->user_id;
 
@@ -107,6 +110,7 @@ class CommentPolicy
     public function restore(User $user, Comment $comment)
     {
         if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
 
         $is_owner = $user->id === $comment->user_id;
 
@@ -131,6 +135,7 @@ class CommentPolicy
     public function forceDelete(User $user, Comment $comment)
     {
         if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
 
         $is_owner = $user->id === $comment->user_id;
 

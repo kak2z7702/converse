@@ -42,6 +42,7 @@ class ThreadPolicy
     public function create(User $user)
     {
         if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
 
         return $user->roles()->whereHas('permissions', function($query) {
             $query->where('slug', 'thread_create');
@@ -58,6 +59,7 @@ class ThreadPolicy
     public function update(User $user, Thread $thread)
     {
         if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
 
         $is_owner = $user->id === $thread->user_id;
 
@@ -82,6 +84,7 @@ class ThreadPolicy
     public function delete(User $user, Thread $thread)
     {
         if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
 
         $is_owner = $user->id === $thread->user_id;
 
@@ -106,6 +109,7 @@ class ThreadPolicy
     public function restore(User $user, Thread $thread)
     {
         if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
 
         $is_owner = $user->id === $thread->user_id;
 
@@ -130,6 +134,7 @@ class ThreadPolicy
     public function forceDelete(User $user, Thread $thread)
     {
         if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
 
         $is_owner = $user->id === $thread->user_id;
 

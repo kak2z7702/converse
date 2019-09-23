@@ -30,6 +30,7 @@ Route::prefix('user')->group(function () {
             Route::match(['get', 'post'], 'create', 'UserController@create')->name('create');
             Route::match(['get', 'post'], 'update/{user}', 'UserController@update')->where(['user' => '[0-9]+'])->name('update');
             Route::get('delete/{user}', 'UserController@delete')->where(['user' => '[0-9]+'])->name('delete');
+            Route::get('ban/{user}', 'UserController@ban')->where(['user' => '[0-9]+'])->name('ban');
             Route::get('/', 'UserController@index')->name('index');
         });
     });

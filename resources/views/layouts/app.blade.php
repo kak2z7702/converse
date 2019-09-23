@@ -124,6 +124,18 @@
             </div>
         </nav>
 
+        @auth
+        @if (auth()->user()->is_banned)
+        <section class="pt-4">
+            <div class="container">
+                <div class="alert alert-warning mb-0" role="alert">
+                    {{ __('You have been banned from the community!') }}
+                </div>
+            </div>
+        </section>
+        @endif
+        @endauth
+
         <main class="py-4">
             @yield('content')
         </main>
