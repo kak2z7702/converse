@@ -40,6 +40,23 @@
                         </div>
 
                         <div class="form-group row">
+                            <label for="password" class="col-md-2 col-form-label text-md-right">{{ __('Password') }}</label>
+
+                            <div class="col-md-8">
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" @if (!isset($user)){{ 'required' }}@endif autocomplete="new-password">
+                                @isset($user)
+                                <small class="text-muted">{{ __('Enter password if you want to set a new password otherwise leave empty.') }}</small>
+                                @endisset
+
+                                @error('password')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label for="photo" class="col-md-2 col-form-label text-md-right">{{ __('Avatar') }}</label>
 
                             <div class="col-md-8">
@@ -75,22 +92,24 @@
                         </div>
                         @endif
 
+                        @if (!isset($user) || (isset($user) && !$user->is_admin))
                         <div class="form-group row">
-                            <label for="password" class="col-md-2 col-form-label text-md-right">{{ __('Password') }}</label>
+                            <label for="badge" class="col-md-2 col-form-label text-md-right">{{ __('Badge') }}</label>
 
                             <div class="col-md-8">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" @if (!isset($user)){{ 'required' }}@endif autocomplete="new-password">
-                                @isset($user)
-                                <small class="text-muted">{{ __('Enter password if you want to set a new password otherwise leave empty.') }}</small>
-                                @endisset
+                                <select id="badge" class="form-control @error('badge') is-invalid @enderror" name="badge">
+                                    <option value="None"{{ (isset($user) && $user->badge == 'None') ? 'selected' : '' }}>{{ __('None') }}</option>
+                                    <option value="Moderator"{{ (isset($user) && $user->badge == 'Moderator') ? 'selected' : '' }}>{{ __('Moderator') }}</option>
+                                </select>
 
-                                @error('password')
+                                @error('badge')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
                             </div>
                         </div>
+                        @endif
 
                         @unless (isset($user) && $user->is_admin)
                         <div class="form-group row">

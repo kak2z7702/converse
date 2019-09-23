@@ -62,9 +62,15 @@
                     @foreach ($comments as $comment)
                     <div class="row @if (!$loop->last){{ 'mb-3' }}@endif">
                         <div class="col-md-2 text-center">
-                            <strong @if ($comment->user->is_admin)style="color: hotpink"@endif>{{ $comment->user->name }}</strong><br />
+                            <strong @if ($comment->user->is_admin)style="color: hotpink"@elseif ($comment->user->badge && $comment->user->badge == 'Moderator')style="color: seagreen"@endif>
+                                {{ $comment->user->name }}
+                            </strong><br />
                             <img src="@isset($comment->user->photo){{ asset('storage') . '/' . $comment->user->photo }}@else{{ asset('img/64x64.png') }}@endisset" class="rounded-circle img-border" width="64" height="64"><br />
-                            @if ($comment->user->is_admin)<h6 class="mt-2"><span class="badge badge-info">{{ __('Admin') }}</span></h6>@endif
+                            @if ($comment->user->is_admin)
+                            <h6 class="mt-2"><span class="badge badge-info">{{ __('Admin') }}</span></h6>
+                            @elseif ($comment->user->badge && $comment->user->badge != 'None')
+                            <h6 class="mt-2"><span class="badge badge-info">{{ __($comment->user->badge) }}</span></h6>
+                            @endif
                             <small>{{ __('Member Since') }}<br />{{ $comment->user->created_at->format('Y-m-d') }}</small><br />
                             <small>{{ __('Posted At') }}<br />{{ $comment->created_at->format('Y-m-d H:i') }}</small>
                         </div>
