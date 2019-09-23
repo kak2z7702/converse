@@ -125,13 +125,7 @@
         </nav>
 
         <main class="py-4">
-            @if ($is_installed || request()->path() == 'install')
             @yield('content')
-            @else
-            <div class="container">
-                <p>{!! __('Install your community by going to <a href=":url">/install</a> route!', ['url' => route('install')]) !!}</p>
-            </div>
-            @endif
         </main>
 
         <footer class="footer mt-auto py-3">

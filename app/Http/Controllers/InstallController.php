@@ -14,6 +14,16 @@ use Illuminate\Support\Facades\Storage;
 class InstallController extends Controller
 {
     /**
+     * Show the application help page.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function help()
+    {   
+        return view('help');
+    }
+
+    /**
      * Show the application install page.
      *
      * @param $request Incoming request.

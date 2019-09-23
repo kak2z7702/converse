@@ -13,6 +13,7 @@
 
 Route::get('/', 'HomeController@index')->name('index');
 
+Route::get('/help', 'InstallController@help')->name('help');
 Route::match(['get', 'post'], '/install', 'InstallController@install')->name('install');
 Route::match(['get', 'post'], '/options', 'InstallController@options')->middleware('auth', 'admin')->name('options');
 
