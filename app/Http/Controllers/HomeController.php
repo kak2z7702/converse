@@ -43,4 +43,12 @@ class HomeController extends Controller
             ]
         ]);
     }
+
+    /**
+     * Accept cookie consent.
+     */
+    public function consent()
+    {
+        return response('Cookie consent accepted.')->cookie('converse_cookie_consent', 'true', now()->addYear()->diffInMinutes());
+    }
 }

@@ -21,6 +21,12 @@
             $(document).on('change', '.custom-file-input', function (event) {
                 $(this).next('.custom-file-label').html(event.target.files[0].name);
             });
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
         });
     </script>
 
@@ -148,6 +154,17 @@
                 </span>
             </div>
         </footer>
+
+        @if ($is_installed && $options && $options->display_cookie_consent && !$has_cookie_consent)
+        <section id="cookieConsent" class="fixed-bottom bg-white p-3">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10">{{ __('Please note that on our website we use cookies necessary for the functioning of our website, cookies that optimize the performance. To learn more about our cookies, how we use them and their benefits, please read our policy page.') }}</div>
+                    <div class="col-md-2"><button type="button" class="btn btn-primary float-right" onclick="$.ajax({url: '{{ route('consent') }}'}); $('#cookieConsent').hide()">{{ __('Accept') }}</button></div>
+                </div>
+            </div>
+        </section>
+        @endif
     </div>
 </body>
 </html>

@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'HomeController@index')->name('index');
+Route::get('/consent', 'HomeController@consent')->name('consent');
 
 Route::get('/help', 'InstallController@help')->name('help');
 Route::match(['get', 'post'], '/install', 'InstallController@install')->name('install');

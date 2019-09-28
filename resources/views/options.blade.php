@@ -25,6 +25,20 @@
                             </div>
                         </div>
 
+                        <hr />
+
+                        <div class="form-group row">
+                            <div class="col-md-10 offset-md-2">
+                                <div class="form-check">
+                                    <input type="hidden" name="display_cookie_consent" value="off" /> <!-- This field will be sent as check box value when it's not checked -->
+                                    <input class="form-check-input" type="checkbox" name="display_cookie_consent" id="display_cookie_consent" {{ old('display_cookie_consent', $options->display_cookie_consent) ? 'checked' : '' }}>
+
+                                    <label class="form-check-label" for="display_cookie_consent">{{ __('Display cookie consent') }}</label>
+                                    <small class="text-muted">{{ __('Display a notice regarding compliance with the EU Cookies Directive.') }}</small>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0">
                             <div class="col-md-10 offset-md-2">
                                 <button type="submit" class="btn btn-primary">{{ __('Submit') }}</button>

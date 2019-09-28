@@ -160,7 +160,8 @@ class InstallController extends Controller
                 'community' => [
                     'name' => $data['community_name'],
                     'birthday' => now()->format('Y-m-d H:i')
-                ]
+                ],
+                'display_cookie_consent' => false
             ];
 
             // make options file
@@ -196,7 +197,8 @@ class InstallController extends Controller
         else if ($request->isMethod('post'))
         {
             $data = $request->validate([
-                'community_name' => 'required|string|max:64'
+                'community_name' => 'required|string|max:64',
+                'display_cookie_consent' => 'required|in:on,off'
             ]);
 
             // community options
@@ -214,7 +216,8 @@ class InstallController extends Controller
                 'community' => [
                     'name' => $data['community_name'],
                     'birthday' => ($options) ? $options->community->birthday : now()->format('Y-m-d H:i')->toDateTimeString()
-                ]
+                ],
+                'display_cookie_consent' => ($data['display_cookie_consent'] == 'on')
             ];
 
             // make options file

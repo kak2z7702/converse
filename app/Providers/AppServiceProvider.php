@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cookie;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // community options
+        // application options
         $options = null;
 
         // read options file
@@ -50,9 +51,18 @@ class AppServiceProvider extends ServiceProvider
             // new messages count
             $messages = (auth()->check()) ? \App\Message::where('receiver_id', auth()->user()->id)->where('is_seen', false)->count() : 0;
 
-            $view->with('menus', $menus)
+            // cookie consent result
+            $cookie_consent = Cookie::get('converse_cookie_consent', false);
+
+            // convert to boolean
+            if (is_string($cookie_consent) && $cookie_consent === 'true')
+                $cookie_consent = true;
+
+            $view
+                ->with('menus', $menus)
                 ->with('messages', $messages)
-                ->with('is_installed', Storage::exists('installed'));
+                ->with('is_installed', Storage::exists('installed'))
+                ->with('has_cookie_consent', $cookie_consent);
         });
     }
 }
