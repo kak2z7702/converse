@@ -63,7 +63,7 @@
                                 <div class="custom-file">
                                     <input id="photo" name="photo" type="file" class="custom-file-input @error('photo') is-invalid @enderror">
                                     <label for="photo" class="custom-file-label" data-browse="{{ __('Browse') }}">{{ __('Choose an image...') }}</label>
-                                    <small id="photoHelpInline" class="text-muted">{{ __('Must be a 64px by 64px image (jpeg, png, bmp, gif, svg, or webp) and less than equal 1 MB.') }}</small>
+                                    <small class="text-muted">{{ __('Must be a 64px by 64px image (jpeg, png, bmp, gif, svg, or webp) and less than equal 1 MB.') }}</small>
                                 </div>
 
                                 @error('photo')
@@ -121,7 +121,7 @@
                                     <option value="{{ $role->id }}"@isset($user) @if (in_array($role->id, $user_roles)) {{ 'selected' }} @endif @endisset>{{ $role->title }}</option>
                                     @endforeach
                                 </select>
-                                <small id="rolesHelpInline" class="text-muted">{{ __('You can assign multiple roles by holding Ctrl key.') }}</small>
+                                <small class="text-muted">{{ __('You can assign multiple roles by holding Ctrl key.') }}</small>
 
                                 @error('roles')
                                 <span class="invalid-feedback" role="alert">

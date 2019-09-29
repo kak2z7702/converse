@@ -34,7 +34,7 @@
                                     <option value="{{ $permission->id }}"@isset($role) @if (in_array($permission->id, $role_permissions)) {{ 'selected' }} @endif @endisset>{{ $permission->title }}</option>
                                     @endforeach
                                 </select>
-                                <small id="permissionsHelpInline" class="text-muted">{{ __('You can assign multiple permissions by holding Ctrl key.') }}</small>
+                                <small class="text-muted">{{ __('You can assign multiple permissions by holding Ctrl key.') }}</small>
 
                                 @error('permissions')
                                 <span class="invalid-feedback" role="alert">
