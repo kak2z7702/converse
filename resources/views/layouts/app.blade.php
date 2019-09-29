@@ -51,6 +51,19 @@
         .img-border {
             border: 3px solid #cccccc;
         }
+        @if ($options && ($options->background->color || $options->background->image))
+        body {
+            @if ($options->background->color) 
+            background-color: {{ $options->background->color }};
+            @endif
+            @if ($options->background->image) 
+            background-image: url('{{ asset('storage') . '/' . $options->background->image }}');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            @endif
+        }
+        @endif
     </style>
 </head>
 <body class="h-100">

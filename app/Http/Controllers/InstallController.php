@@ -161,6 +161,10 @@ class InstallController extends Controller
                     'name' => $data['community_name'],
                     'birthday' => now()->format('Y-m-d H:i')
                 ],
+                'background' => [
+                    'color' => null,
+                    'image' => null
+                ],
                 'display_cookie_consent' => false
             ];
 
@@ -198,6 +202,8 @@ class InstallController extends Controller
         {
             $data = $request->validate([
                 'community_name' => 'required|string|max:64',
+                'background_color' => 'nullable|regex:/^#[0-9a-zA-Z]{6}$/i',
+                'background_image' => 'nullable|image|max:1024',
                 'display_cookie_consent' => 'required|in:on,off'
             ]);
 
@@ -211,11 +217,29 @@ class InstallController extends Controller
                 $options = json_decode(Storage::get('options.json'));
             }
 
+            // delete old background image
+            if ($request->has('no_background_image') && $request->no_background_image == 'on')
+            {
+                if (Storage::disk('public')->exists($options->background->image)) Storage::disk('public')->delete($options->background->image);
+
+                $options->background->image = null;
+            }
+            else if ($request->has('background_image'))
+            {
+                if ($options->background->image && Storage::disk('public')->exists($options->background->image)) Storage::disk('public')->delete($options->background->image);
+
+                $options->background->image = $request->background_image->store('images', 'public');
+            }
+
             // community options
             $options = [
                 'community' => [
                     'name' => $data['community_name'],
                     'birthday' => ($options) ? $options->community->birthday : now()->format('Y-m-d H:i')->toDateTimeString()
+                ],
+                'background' => [
+                    'color' => $data['background_color'],
+                    'image' => $options->background->image
                 ],
                 'display_cookie_consent' => ($data['display_cookie_consent'] == 'on')
             ];

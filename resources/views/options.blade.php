@@ -1,5 +1,15 @@
 @extends('layouts.app')
 
+@section('scripts')
+<!-- bootstrap-colorpicker js -->
+<script src="{{ asset('third-party/bootstrap-colorpicker-3.1.2/dist/js/bootstrap-colorpicker.js') }}" defer></script>
+@endsection
+
+@section('styles')
+<!-- bootstrap-colorpicker css -->
+<link href="{{ asset('third-party/bootstrap-colorpicker-3.1.2/dist/css/bootstrap-colorpicker.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -8,7 +18,7 @@
                 <div class="card-header">{{ __('Options') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('options', ['redirect' => request('redirect')]) }}">
+                    <form method="POST" action="{{ route('options', ['redirect' => request('redirect')]) }}" enctype="multipart/form-data">
                         @csrf
 
                         <div class="form-group row">
@@ -24,6 +34,51 @@
                                 @enderror
                             </div>
                         </div>
+
+                        <hr />
+
+                        <div class="form-group row">
+                            <label for="backgroundColor" class="col-md-2 col-form-label text-md-right">{{ __('Background Color') }}</label>
+
+                            <div class="col-md-8">
+                                <input id="backgroundColor" type="text" class="form-control @error('background_color') is-invalid @enderror" value="{{ old('background_color', isset($options) ? $options->background->color : null) }}" name="background_color">
+
+                                @error('background_color')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="backgroundImage" class="col-md-2 col-form-label text-md-right">{{ __('Background Image') }}</label>
+
+                            <div class="col-md-8">
+                                <div class="custom-file">
+                                    <input id="backgroundImage" name="background_image" type="file" class="custom-file-input @error('background_image') is-invalid @enderror">
+                                    <label for="backgroundImage" class="custom-file-label" data-browse="{{ __('Browse') }}">@isset($options->background->image){!! $options->background->image !!}@else{{ __('Choose an image...') }}@endisset</label>
+                                    <small class="text-muted">{{ __('Must be an image (jpeg, png, bmp, gif, svg, or webp) and less than equal 1 MB.') }}</small>
+                                </div>
+
+                                @error('background_image')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        @if ($options->background->image)
+                        <div class="form-group row">
+                            <div class="col-md-8 offset-md-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="no_background_image" id="noBackgroundImage" {{ old('no_background_image') ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="noBackgroundImage">{{ __('No Background Image') }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
 
                         <hr />
 
@@ -51,4 +106,15 @@
         </div>
     </div>
 </div>
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        $(function () {
+            $('#backgroundColor').colorpicker();
+
+            $('#backgroundColor').on('colorpickerChange', function(event) {
+                $('body').css('background-color', event.color.toString());
+            });
+        });
+    });
+</script>
 @endsection
