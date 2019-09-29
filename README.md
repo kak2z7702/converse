@@ -61,4 +61,5 @@ If you are willing to deploy, you can follow [deployment instructions](https://l
 - In-place content management.
 - Easy to use [summrnote](https://summernote.org/) WYSIWYG editor implementation for pages, threads and comments.
 - Human friendly URLs.
+- Background customizations.
 - Cookie consent notice display.
