@@ -62,7 +62,7 @@
                             <div class="col-md-8">
                                 <div class="custom-file">
                                     <input id="photo" name="photo" type="file" class="custom-file-input @error('photo') is-invalid @enderror">
-                                    <label for="photo" class="custom-file-label" data-browse="{{ __('Browse') }}">{{ __('Choose an image...') }}</label>
+                                    <label for="photo" class="custom-file-label" data-browse="{{ __('Browse') }}">@if (isset($user) && isset($user->photo)){!! $user->photo !!}@else{{ __('Choose an image...') }}@endif</label>
                                     <small class="text-muted">{{ __('Must be a 64px by 64px image (jpeg, png, bmp, gif, svg, or webp) and less than equal 1 MB.') }}</small>
                                 </div>
 
@@ -74,7 +74,7 @@
                             </div>
                         </div>
 
-                        @if(isset($user) && isset($user->photo))
+                        @if (isset($user) && isset($user->photo))
                         <div class="form-group row">
                             <div class="col-md-8 offset-md-2">
                                 <img src="{{ asset('storage') . '/' . $user->photo }}" class="rounded-circle img-border" alt="Avatar" width="64" height="64">
@@ -84,9 +84,8 @@
                         <div class="form-group row">
                             <div class="col-md-8 offset-md-2">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="no_photo" id="no_photo" {{ old('no_photo') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="no_photo">{{ __('No Photo') }}</label>
+                                    <input class="form-check-input" type="checkbox" name="no_photo" id="noPhoto" {{ old('no_photo') ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="noPhoto">{{ __('No Photo') }}</label>
                                 </div>
                             </div>
                         </div>
@@ -111,7 +110,7 @@
                         </div>
                         @endif
 
-                        @unless (isset($user) && $user->is_admin)
+                        @unless(isset($user) && $user->is_admin)
                         <div class="form-group row">
                             <label for="roles" class="col-md-2 col-form-label text-md-right">{{ __('Roles') }}</label>
 
