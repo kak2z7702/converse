@@ -114,6 +114,8 @@ Route::prefix('thread')->group(function () {
             Route::get('delete/{thread}', 'ThreadController@delete')->where(['thread' => '[0-9]+'])->name('delete');
             Route::get('open/{thread}', 'ThreadController@open')->where(['thread' => '[0-9]+'])->name('open');
             Route::get('close/{thread}', 'ThreadController@close')->where(['thread' => '[0-9]+'])->name('close');
+            Route::get('pin/{thread}', 'ThreadController@pin')->where(['thread' => '[0-9]+'])->name('pin');
+            Route::get('unpin/{thread}', 'ThreadController@unpin')->where(['thread' => '[0-9]+'])->name('unpin');
         });
     });
 });

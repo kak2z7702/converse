@@ -21,7 +21,7 @@ class TopicController extends Controller
     {
         $category = \App\Category::where('slug', $category_slug)->firstOrFail();
         $topic = $category->topics()->where('slug', $topic_slug)->firstOrFail();
-        $threads = $topic->threads()->orderBy('created_at', 'desc')->paginate();
+        $threads = $topic->threads()->orderBy('is_pinned', 'desc')->orderBy('created_at', 'desc')->paginate();
 
         return view('topic.show', [
             'topic' => $topic,

@@ -219,6 +219,50 @@ class ThreadController extends Controller
     }
 
     /**
+     * Pin a thread.
+     * 
+     * @param $request Incoming request.
+     * @param $thread Thread id.
+     */
+    public function pin(Request $request, $thread)
+    {
+        $thread = Thread::findOrFail($thread);
+
+        $this->authorize('pin', $thread);
+
+        $thread->is_pinned = true;
+
+        $thread->save();
+
+        return view('result', [
+            'message' => __('Thread was pinned successfully.'),
+            'redirect' => $this->getRedirect($request, null, $thread)
+        ]);
+    }
+
+    /**
+     * Unpin a thread.
+     * 
+     * @param $request Incoming request.
+     * @param $thread Thread id.
+     */
+    public function unpin(Request $request, $thread)
+    {
+        $thread = Thread::findOrFail($thread);
+
+        $this->authorize('pin', $thread);
+
+        $thread->is_pinned = false;
+
+        $thread->save();
+
+        return view('result', [
+            'message' => __('Thread was unpinned successfully.'),
+            'redirect' => $this->getRedirect($request, null, $thread)
+        ]);
+    }
+
+    /**
      * Find a free slug.
      * 
      * @param $slug Slug string.

@@ -18,6 +18,7 @@ class CreateThreadsTable extends Migration
             $table->string('title');
             $table->string('slug');
             $table->tinyInteger('is_open')->default(1);
+            $table->tinyInteger('is_pinned')->default(0);
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('topic_id');
             $table->timestamps();

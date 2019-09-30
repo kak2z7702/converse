@@ -44,7 +44,7 @@
                             </div>
                         </div>
                         @auth
-                        @canany(['update', 'delete'], $thread)
+                        @canany(['update', 'delete', 'open', 'pin'], $thread)
                         <div class="col-2">
                             <div class="dropdown float-right">
                                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="threadManageButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Manage') }}</button>
@@ -57,10 +57,15 @@
                                         data-toggle="modal" data-target="#threadDeleteModal" 
                                         onclick="$('#threadDeleteModal #deleteButton').attr('href', '{{ route('thread.delete', ['thread' => $thread->id, 'redirect=topic.show']) }}')">{{ __('Delete') }}</a>
                                     @endcan
-                                    @can('open', $thread)
+                                    @canany(['open', 'pin'], $thread)
                                     <div class="dropdown-divider"></div>
+                                    @can('open', $thread)
                                     <a href="{{ route($thread->is_open ? 'thread.close' : 'thread.open', ['thread' => $thread->id, 'redirect=thread.show']) }}" class="dropdown-item">{{ $thread->is_open ? __('Close') : __('Open') }}</a>
                                     @endcan
+                                    @can('pin', $thread)
+                                    <a href="{{ route($thread->is_pinned ? 'thread.unpin' : 'thread.pin', ['thread' => $thread->id, 'redirect=thread.show']) }}" class="dropdown-item">{{ $thread->is_pinned ? __('Unpin') : __('Pin') }}</a>
+                                    @endcan
+                                    @endcanany
                                 </div>
                             </div>
                         </div>

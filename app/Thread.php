@@ -21,7 +21,8 @@ class Thread extends Model
      * @var array
      */
     protected $casts = [
-        'is_open' => 'boolean'
+        'is_open' => 'boolean',
+        'is_pinned' => 'boolean'
     ];
 
     /**

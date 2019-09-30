@@ -179,6 +179,27 @@ class ThreadPolicy
     }
 
     /**
+     * Determine whether the user can pin/unpin the thread.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Thread  $thread
+     * @return mixed
+     */
+    public function pin(User $user, Thread $thread)
+    {
+        if ($user->is_admin) return true;
+        if ($user->is_banned) return false;
+
+        $has_topic_permission = $user->roles()->whereHas('permissions', function($query) use ($thread) {
+            $query->where('slug', 'topic_management_' . $thread->topic->hash);
+        })->first() !== null;
+
+        $has_topic_role = $user->roles()->where('slug', 'topic_management')->first() !== null;
+
+        return $has_topic_permission || $has_topic_role;
+    }
+
+    /**
      * Determine whether the user can post a comment on the thread.
      *
      * @param  \App\User  $user

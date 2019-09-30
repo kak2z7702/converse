@@ -52,13 +52,16 @@
                                 @if (!$thread->is_open)
                                 <span class="badge badge-danger">{{ __('Closed') }}</span>
                                 @endif
+                                @if ($thread->is_pinned)
+                                <span class="badge badge-info">{{ __('Pinned') }}</span>
+                                @endif
                             </h5>
                         </div>
                         <div class="@auth @canany(['update', 'delete'], $thread){{ 'col-2' }}@else{{ 'col-4' }}@endcanany @else{{ 'col-4' }}@endauth">
                             <div class="mt-2">{{ __('By') }} {{ $thread->user->name }}<br />@ {{ $thread->created_at->format('Y-m-d H:i') }}</div>
                         </div>
                         @auth
-                        @canany(['update', 'delete'], $thread)
+                        @canany(['update', 'delete', 'open', 'pin'], $thread)
                         <div class="col-2 pt-1">
                             <div class="dropdown float-right">
                                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="threadManageButton-{{ $thread->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Manage') }}</button>
@@ -71,10 +74,15 @@
                                         data-toggle="modal" data-target="#threadDeleteModal" 
                                         onclick="$('#threadDeleteModal #deleteButton').attr('href', '{{ route('thread.delete', ['thread' => $thread->id, 'redirect=topic.show']) }}')">{{ __('Delete') }}</a>
                                     @endcan
-                                    @can('open', $thread)
+                                    @canany(['open', 'pin'], $thread)
                                     <div class="dropdown-divider"></div>
+                                    @can('open', $thread)
                                     <a href="{{ route($thread->is_open ? 'thread.close' : 'thread.open', ['thread' => $thread->id, 'redirect=topic.show']) }}" class="dropdown-item">{{ $thread->is_open ? __('Close') : __('Open') }}</a>
                                     @endcan
+                                    @can('pin', $thread)
+                                    <a href="{{ route($thread->is_pinned ? 'thread.unpin' : 'thread.pin', ['thread' => $thread->id, 'redirect=topic.show']) }}" class="dropdown-item">{{ $thread->is_pinned ? __('Unpin') : __('Pin') }}</a>
+                                    @endcan
+                                    @endcanany
                                 </div>
                             </div>
                         </div>
