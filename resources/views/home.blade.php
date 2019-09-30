@@ -161,7 +161,7 @@
                         <div class="col-md-4">{{ $activity['threads_count'] }}</div>
                     </div>
                     <div class="row">
-                        <div class="col-md-2 text-md-right">{{ __('Latest Memeber') }}</div>
+                        <div class="col-md-2 text-md-right">{{ __('Latest Member') }}</div>
                         <div class="col-md-4">
                             @isset($activity['latest_user'])
                             {{ $activity['latest_user']->name }}
