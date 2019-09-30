@@ -53,6 +53,8 @@ class CommentController extends Controller
         else if ($request->has('thread'))
         {
             $model = \App\Thread::findOrFail($data['thread']);
+
+            $this->authorize('comment', $model);
         }
 
         $comment = new Comment($data);
@@ -118,6 +120,10 @@ class CommentController extends Controller
 
                 $data['content'] = strip_tags($data['content']);
             }
+            else if ($comment->entity_type == 'App\Thread')
+            {
+                $this->authorize('comment', $comment->thread);
+            }
 
             $comment->fill($data);
             
@@ -144,6 +150,8 @@ class CommentController extends Controller
 
         if ($comment->entity_type == 'App\Page')
             $this->authorize('comment', $comment->page);
+        else if ($comment->entity_type == 'App\Thread')
+            $this->authorize('comment', $comment->thread);
 
         $comment->delete();
 

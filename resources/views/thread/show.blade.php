@@ -23,6 +23,13 @@
 
 @section('content')
 <div class="container">
+    @if (!$thread->is_open)
+    <section class="mb-3">
+        <div class="alert alert-warning mb-0" role="alert">
+            {{ __('This thread has been closed!') }}
+        </div>
+    </section>
+    @endif
     <div class="row mb-3">
         <div class="col-12">
             <div class="card">
@@ -49,6 +56,10 @@
                                     <a href="#" class="dropdown-item" 
                                         data-toggle="modal" data-target="#threadDeleteModal" 
                                         onclick="$('#threadDeleteModal #deleteButton').attr('href', '{{ route('thread.delete', ['thread' => $thread->id, 'redirect=topic.show']) }}')">{{ __('Delete') }}</a>
+                                    @endcan
+                                    @can('open', $thread)
+                                    <div class="dropdown-divider"></div>
+                                    <a href="{{ route($thread->is_open ? 'thread.close' : 'thread.open', ['thread' => $thread->id, 'redirect=thread.show']) }}" class="dropdown-item">{{ $thread->is_open ? __('Close') : __('Open') }}</a>
                                     @endcan
                                 </div>
                             </div>
@@ -80,6 +91,7 @@
                                     {!! $comment->content !!}
                                 </div>
                                 @auth
+                                @can('comment', $thread)
                                 @canany(['update', 'delete'], $comment)
                                 <div class="col-2">
                                     <div class="dropdown float-right">
@@ -97,6 +109,7 @@
                                     </div>
                                 </div>
                                 @endcanany
+                                @endcan
                                 @endauth
                                 @if ($comment->user != auth()->user())
                                 <div class="col-12 d-flex align-items-end">
@@ -124,6 +137,7 @@
             </div>
 
             @auth
+            @can('comment', $thread)
             @can('create', 'App\Comment')
             <div class="card mt-4">
                 <div class="card-header">
@@ -155,6 +169,7 @@
                     </form>
                 </div>
             </div>
+            @endcan
             @endcan
             @endauth
         </div>

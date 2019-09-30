@@ -47,7 +47,12 @@
                     @forelse ($threads as $thread)
                     <div class="row @if (!$loop->last){{ 'mb-3' }}@endif">
                         <div class="col-8">
-                            <a href="{{ route('thread.show', ['category_slug' => $topic->category->slug, 'topic_slug' => $topic->slug, 'thread_slug' => $thread->slug]) }}"><h5 class="mt-2 mb-1">{{ $thread->title }}</h5></a>
+                            <h5 class="mt-2 mb-1">
+                                <a href="{{ route('thread.show', ['category_slug' => $topic->category->slug, 'topic_slug' => $topic->slug, 'thread_slug' => $thread->slug]) }}">{{ $thread->title }}</a>
+                                @if (!$thread->is_open)
+                                <span class="badge badge-danger">{{ __('Closed') }}</span>
+                                @endif
+                            </h5>
                         </div>
                         <div class="@auth @canany(['update', 'delete'], $thread){{ 'col-2' }}@else{{ 'col-4' }}@endcanany @else{{ 'col-4' }}@endauth">
                             <div class="mt-2">{{ __('By') }} {{ $thread->user->name }}<br />@ {{ $thread->created_at->format('Y-m-d H:i') }}</div>
@@ -65,6 +70,10 @@
                                     <a href="#" class="dropdown-item" 
                                         data-toggle="modal" data-target="#threadDeleteModal" 
                                         onclick="$('#threadDeleteModal #deleteButton').attr('href', '{{ route('thread.delete', ['thread' => $thread->id, 'redirect=topic.show']) }}')">{{ __('Delete') }}</a>
+                                    @endcan
+                                    @can('open', $thread)
+                                    <div class="dropdown-divider"></div>
+                                    <a href="{{ route($thread->is_open ? 'thread.close' : 'thread.open', ['thread' => $thread->id, 'redirect=topic.show']) }}" class="dropdown-item">{{ $thread->is_open ? __('Close') : __('Open') }}</a>
                                     @endcan
                                 </div>
                             </div>

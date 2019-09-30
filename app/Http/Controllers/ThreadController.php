@@ -175,6 +175,50 @@ class ThreadController extends Controller
     }
 
     /**
+     * Open a thread.
+     * 
+     * @param $request Incoming request.
+     * @param $thread Thread id.
+     */
+    public function open(Request $request, $thread)
+    {
+        $thread = Thread::findOrFail($thread);
+
+        $this->authorize('open', $thread);
+
+        $thread->is_open = true;
+
+        $thread->save();
+
+        return view('result', [
+            'message' => __('Thread was opened successfully.'),
+            'redirect' => $this->getRedirect($request, null, $thread)
+        ]);
+    }
+
+    /**
+     * Close a thread.
+     * 
+     * @param $request Incoming request.
+     * @param $thread Thread id.
+     */
+    public function close(Request $request, $thread)
+    {
+        $thread = Thread::findOrFail($thread);
+
+        $this->authorize('open', $thread);
+
+        $thread->is_open = false;
+
+        $thread->save();
+
+        return view('result', [
+            'message' => __('Thread was closed successfully.'),
+            'redirect' => $this->getRedirect($request, null, $thread)
+        ]);
+    }
+
+    /**
      * Find a free slug.
      * 
      * @param $slug Slug string.

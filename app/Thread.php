@@ -16,6 +16,15 @@ class Thread extends Model
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_open' => 'boolean'
+    ];
+
+    /**
      * The topic that owns the thread.
      */
     public function topic()
