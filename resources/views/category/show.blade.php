@@ -53,7 +53,7 @@
                             {{ $topic->description }}
                         </div>
                         @auth
-                        @canany(['update', 'delete'], $topic)
+                        @canany(['update', 'delete', 'move'], $topic)
                         <div class="col-2 pt-1">
                             <div class="dropdown float-right">
                                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="topicManageButton-{{ $topic->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Manage') }}</button>

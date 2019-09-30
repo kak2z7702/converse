@@ -27,7 +27,7 @@
                             <div class="mt-2">{{ $menu->url }}</div>
                         </div>
                         @auth
-                        @canany(['update', 'delete'], $menu)
+                        @canany(['update', 'delete', 'move'], $menu)
                         <div class="col-2 pt-1">
                             <div class="dropdown float-right">
                                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="menuManageButton-{{ $menu->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Manage') }}</button>
