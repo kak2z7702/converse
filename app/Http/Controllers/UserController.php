@@ -214,12 +214,34 @@ class UserController extends Controller
 
         $this->authorize('ban', $user);
 
-        $user->is_banned = !$user->is_banned;
+        $user->is_banned = true;
 
         $user->save();
 
         return view('result', [
-            'message' => __('User was :status successfully.', ['status' => ($user->is_banned ? 'banned' : 'unbanned')]),
+            'message' => __('User was banned successfully.'),
+            'redirect' => route('user.index')
+        ]);
+    }
+
+    /**
+     * Unban a user.
+     * 
+     * @param $request Incoming request.
+     * @param $user User id.
+     */
+    public function unban(Request $request, $user)
+    {
+        $user = User::findOrFail($user);
+
+        $this->authorize('ban', $user);
+
+        $user->is_banned = false;
+
+        $user->save();
+
+        return view('result', [
+            'message' => __('User was unbanned successfully.'),
             'redirect' => route('user.index')
         ]);
     }

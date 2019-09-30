@@ -49,7 +49,7 @@
                                     @endcan
                                     @can('ban', $user)
                                     <div class="dropdown-divider"></div>
-                                    <a href="{{ route('user.ban', ['user' => $user->id, 'redirect=user.index']) }}" class="dropdown-item">{{ (!$user->is_banned) ? __('Ban') : __('Unban') }}</a>
+                                    <a href="{{ route($user->is_banned ? 'user.unban' : 'user.ban', ['user' => $user->id, 'redirect=user.index']) }}" class="dropdown-item">{{ $user->is_banned ? __('Unban') : __('Ban') }}</a>
                                     @endcan
                                 </div>
                             </div>
