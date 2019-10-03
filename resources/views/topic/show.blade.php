@@ -58,7 +58,9 @@
                             </h5>
                         </div>
                         <div class="@auth @canany(['update', 'delete'], $thread){{ 'col-2' }}@else{{ 'col-4' }}@endcanany @else{{ 'col-4' }}@endauth">
-                            <div class="mt-2">{{ __('By') }} {{ $thread->user->name }}<br />@ {{ $thread->created_at->format('Y-m-d H:i') }}</div>
+                            <div class="mt-2">
+                                {{ __('By') }} <a href="{{ route('user.show', ['user' => $thread->user->id]) }}">{{ $thread->user->name }}</a><br />@ {{ $thread->created_at->format('Y-m-d H:i') }}
+                            </div>
                         </div>
                         @auth
                         @canany(['update', 'delete', 'open', 'pin'], $thread)

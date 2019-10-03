@@ -27,10 +27,10 @@
                             </h5>
                         </div>
                         <div class="col-2">
-                            <div class="mt-2">From {{ $message->user->name }}</div>
+                            <div class="mt-2">From <a href="{{ route('user.show', ['user' => $message->user->id]) }}">{{ $message->user->name }}</a></div>
                         </div>
                         <div class="col-2">
-                            <div class="mt-2">To {{ $message->receiver->name }}</div>
+                            <div class="mt-2">To <a href="{{ route('user.show', ['user' => $message->receiver->id]) }}">{{ $message->receiver->name }}</a></div>
                         </div>
                         <div class="@auth @canany(['update', 'delete'], $message){{ 'col-2' }}@else{{ 'col-4' }}@endcanany @else{{ 'col-4' }}@endauth">
                             <div class="mt-2">{{ $message->created_at }}</div>

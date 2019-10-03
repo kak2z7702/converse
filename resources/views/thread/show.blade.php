@@ -79,15 +79,15 @@
                     <div class="row @if (!$loop->last){{ 'mb-3' }}@endif">
                         <div class="col-md-2 text-center">
                             <strong @if ($comment->user->is_admin)style="color: hotpink"@elseif ($comment->user->badge && $comment->user->badge == 'Moderator')style="color: seagreen"@endif>
-                                {{ $comment->user->name }}
+                                <a href="{{ route('user.show', ['user' => $comment->user->id]) }}">{{ $comment->user->name }}</a>
                             </strong><br />
                             <img src="@isset($comment->user->photo){{ asset('storage') . '/' . $comment->user->photo }}@else{{ asset('img/64x64.png') }}@endisset" class="rounded-circle img-border" width="64" height="64"><br />
                             <h6 class="mt-2">
-                            @if ($comment->user->is_admin)
+                                @if ($comment->user->is_admin)
                                 <span class="badge badge-info">{{ __('Admin') }}</span>
-                            @elseif ($comment->user->badge && $comment->user->badge != 'None')
+                                @elseif ($comment->user->badge && $comment->user->badge != 'None')
                                 <span class="badge badge-info">{{ __($comment->user->badge) }}</span>
-                            @endif
+                                @endif
                             </h6>
                             <small>{{ __('Member Since') }}<br />{{ $comment->user->created_at->format('Y-m-d') }}</small><br />
                             <small>{{ __('Posted At') }}<br />{{ $comment->created_at->format('Y-m-d H:i') }}</small>

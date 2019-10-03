@@ -22,7 +22,7 @@
                     <div class="row @if (!$loop->last){{ 'mb-3' }}@endif">
                         <div class="@auth @canany(['update', 'delete'], $user){{ 'col-10' }}@else{{ 'col-12' }}@endcanany @else{{ 'col-12' }}@endauth">
                             <h5 class="mt-2 mb-1">
-                                {{ $user->name }} 
+                                <a href="{{ route('user.show', ['user' => $user->id]) }}">{{ $user->name }}</a>
                                 @if ($user->is_admin)
                                 <span class="badge badge-info">{{ __('Admin') }}</span>
                                 @elseif ($user->badge && $user->badge != 'None')

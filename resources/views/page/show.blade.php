@@ -29,7 +29,9 @@
     <div class="row mt-2">
         <div class="@auth @canany(['update', 'delete'], $comment){{ 'col-10' }}@else{{ 'col-12' }}@endcanany @else{{ 'col-12' }}@endauth">
             <img src="@isset($comment->user->photo){{ asset('storage') . '/' . $comment->user->photo }}@else{{ asset('img/64x64.png') }}@endisset" class="rounded-circle img-border float-left mr-3 d-none d-lg-block d-xl-block" width="64" height="64">
-            <h5 class="mt-2 mb-1">{{ $comment->user->name }} @ {{ $comment->created_at->format('Y-m-d H:i') }}</h5>
+            <h5 class="mt-2 mb-1">
+                <a href="{{ route('user.show', ['user' => $comment->user->id]) }}">{{ $comment->user->name }}</a> @ {{ $comment->created_at->format('Y-m-d H:i') }}
+            </h5>
             <p>{{ $comment->content }}</p>
         </div>
         @auth

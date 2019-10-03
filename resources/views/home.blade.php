@@ -140,7 +140,7 @@
                         <div class="col-md-2 text-md-right">{{ __('Active User') }}</div>
                         <div class="col-md-4">
                             @isset($activity['active_user'])
-                            {{ $activity['active_user']->name }}
+                            <a href="{{ route('user.show', ['user' => $activity['active_user']->id]) }}">{{ $activity['active_user']->name }}</a>
                             @else
                             {{ __('None') }}
                             @endisset
@@ -164,7 +164,7 @@
                         <div class="col-md-2 text-md-right">{{ __('Latest Member') }}</div>
                         <div class="col-md-4">
                             @isset($activity['latest_user'])
-                            {{ $activity['latest_user']->name }}
+                            <a href="{{ route('user.show', ['user' => $activity['latest_user']->id]) }}">{{ $activity['latest_user']->name }}</a>
                             @else
                             {{ __('None') }}
                             @endisset

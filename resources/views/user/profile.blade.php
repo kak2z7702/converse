@@ -39,6 +39,17 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <div class="col-md-8 offset-md-2">
+                                <div class="form-check">
+                                    <input type="hidden" name="show_email" value="off" /> <!-- This field will be sent as check box value when it's not checked -->
+                                    <input class="form-check-input" type="checkbox" name="show_email" id="show_email" {{ old('show_email', auth()->user()->show_email) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="show_email">{{ __('Show Email') }}</label>
+                                    <small class="text-muted">{{ __('Display your email in different sections of community.') }}</small>
+                                </div>
+                            </div>
+                        </div>
+
                         <hr />
 
                         <div class="form-group row">
@@ -75,6 +86,23 @@
                             </div>
                         </div>
                         @endif
+
+                        <hr />
+
+                        <div class="form-group row">
+                            <label for="bio" class="col-md-2 col-form-label text-md-right">{{ __('Bio') }}</label>
+
+                            <div class="col-md-8">
+                                <textarea id="bio" class="form-control @error('bio') is-invalid @enderror" name="bio">{{ old('bio', auth()->user()->bio) }}</textarea>
+                                <small class="text-muted">{{ __('Lay it on us.') }}</small>
+
+                                @error('bio')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
 
                         <hr />
 

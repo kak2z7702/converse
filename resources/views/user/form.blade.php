@@ -91,6 +91,20 @@
                         </div>
                         @endif
 
+                        <div class="form-group row">
+                            <label for="bio" class="col-md-2 col-form-label text-md-right">{{ __('Bio') }}</label>
+
+                            <div class="col-md-8">
+                                <textarea id="bio" class="form-control @error('bio') is-invalid @enderror" name="bio">{{ old('bio', isset($user) ? $user->bio : null) }}</textarea>
+
+                                @error('bio')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
                         @if (!isset($user) || (isset($user) && !$user->is_admin))
                         <div class="form-group row">
                             <label for="badge" class="col-md-2 col-form-label text-md-right">{{ __('Badge') }}</label>

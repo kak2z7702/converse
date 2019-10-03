@@ -16,7 +16,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'badge'
+        'name', 
+        'email', 
+        'show_email',
+        'password', 
+        'badge', 
+        'bio'
     ];
 
     /**
@@ -36,7 +41,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'is_admin' => 'boolean',
-        'is_banned' => 'boolean'
+        'is_banned' => 'boolean',
+        'show_email' => 'boolean'
     ];
 
     /**
@@ -45,5 +51,15 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany('App\Role', 'role_user');
+    }
+
+    /**
+     * Show email mutator.
+     * 
+     * @param $value Incoming value.
+     */
+    public function setShowEmailAttribute($value)
+    {
+        $this->attributes['show_email'] = is_bool($value) ? $value : ($value == 'on');
     }
 }

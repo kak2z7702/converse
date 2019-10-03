@@ -26,6 +26,7 @@ Route::prefix('user')->group(function () {
         // custom auth routes
         Route::get('result', 'UserController@result')->name('result');
         Route::match(['get', 'post'], 'profile', 'UserController@profile')->middleware('auth')->name('profile');
+        Route::get('/{user}', 'UserController@show')->where(['user' => '[0-9]+'])->name('show');
 
         Route::middleware('auth', 'admin')->group(function () {
             Route::match(['get', 'post'], 'create', 'UserController@create')->name('create');

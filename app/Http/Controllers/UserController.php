@@ -12,16 +12,6 @@ use Illuminate\Validation\Rule;
 class UserController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
      * Show the users management page.
      *
      * @return \Illuminate\Contracts\Support\Renderable
@@ -33,6 +23,21 @@ class UserController extends Controller
         $users = User::orderBy('created_at', 'asc')->paginate();
 
         return view('user.index', ['users' => $users]);
+    }
+
+    /**
+     * Show the user page.
+     *
+     * @param $user User id.
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function show($user)
+    {
+        $user = \App\User::findOrFail($user);
+
+        return view('user.show', [
+            'user' => $user
+        ]);
     }
 
     /**
@@ -107,7 +112,7 @@ class UserController extends Controller
                 'user' => $user,
                 'user_roles' => $user->roles->pluck('id')->toArray(),
                 'roles' => $roles,
-                'redirect' => route('user.index')
+                'redirect' => $this->getRedirect($request, $user)
             ]);
         }
         else if ($request->isMethod('post'))
@@ -116,12 +121,12 @@ class UserController extends Controller
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user)],
                 'password' => ['nullable', 'string', 'min:8'],
-                'photo' => 'nullable|image|max:1024',
-                'badge' => 'nullable|string|in:None,Moderator'
+                'photo' => ['nullable', 'image', 'max:1024']
             );
 
             if (!$user->is_admin)
             {
+                $rules['badge'] = ['nullable', 'string', 'in:None,Moderator'];
                 $rules['roles'] = ['required', 'array', 'min:1'];
                 $rules['roles.*'] = ['required', 'numeric', 'distinct'];
             }
@@ -132,7 +137,8 @@ class UserController extends Controller
             {
                 return redirect()
                     ->route('user.update', [
-                        'user' => $user->id
+                        'user' => $user->id,
+                        'redirect' => $request->filled('redirect') ? $request->redirect : 'index'
                     ])
                     ->withErrors($validator)
                     ->withInput();
@@ -143,8 +149,11 @@ class UserController extends Controller
             $user_data = array(
                 'name' => $data['name'],
                 'email' => $data['email'],
-                'badge' => $data['badge']
+                'bio' => $data['bio']
             );
+
+            if (!$user->is_admin)
+                $user_data['badge'] = $data['badge'];
 
             if (!empty($data['password']))
                 $user_data['password'] = Hash::make($data['password']);
@@ -170,7 +179,7 @@ class UserController extends Controller
 
             return view('result', [
                 'message' => __('User was updated successfully.'),
-                'redirect' => route('user.index')
+                'redirect' => $this->getRedirect($request, $user)
             ]);
         }
     }
@@ -198,7 +207,7 @@ class UserController extends Controller
 
         return view('result', [
             'message' => __('User was deleted successfully.'),
-            'redirect' => route('user.index')
+            'redirect' => $this->getRedirect($request, $user)
         ]);
     }
 
@@ -220,7 +229,7 @@ class UserController extends Controller
 
         return view('result', [
             'message' => __('User was banned successfully.'),
-            'redirect' => route('user.index')
+            'redirect' => $this->getRedirect($request, $user)
         ]);
     }
 
@@ -242,7 +251,7 @@ class UserController extends Controller
 
         return view('result', [
             'message' => __('User was unbanned successfully.'),
-            'redirect' => route('user.index')
+            'redirect' => $this->getRedirect($request, $user)
         ]);
     }
 
@@ -269,7 +278,9 @@ class UserController extends Controller
                 }],
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user)],
+                'show_email' => 'required|in:on,off',
                 'photo' => ['nullable', 'image', 'max:1024'],
+                'bio' => ['nullable', 'string'],
                 'new_password' => ['nullable', 'string', 'min:8', 'confirmed'],
             );
 
@@ -288,6 +299,8 @@ class UserController extends Controller
             $user_data = array(
                 'name' => $data['name'],
                 'email' => $data['email'],
+                'show_email' => $data['show_email'],
+                'bio' => strip_tags($data['bio'])
             );
 
             if (!empty($data['new_password']))
@@ -325,5 +338,32 @@ class UserController extends Controller
     public function result()
     {
         return view('auth.result');
+    }
+
+    /**
+     * Get redirection link.
+     * 
+     * @param $request Incoming request.
+     * @param $user Current user.
+     * @return string
+     */
+    private function getRedirect(Request $request, ?User $user)
+    {
+        $redirect = route('index');
+
+        if ($request->filled('redirect'))
+        {
+            switch ($request->redirect)
+            {
+                case 'user.index':
+                    $redirect = route($request->redirect);
+                break;
+                case 'user.show':
+                    $redirect = route($request->redirect, ['user' => $user->id]);
+                break;
+            }
+        }
+
+        return $redirect;
     }
 }
