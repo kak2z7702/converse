@@ -78,9 +78,11 @@
                     @foreach ($comments as $comment)
                     <div class="row @if (!$loop->last){{ 'mb-3' }}@endif">
                         <div class="col-md-2 text-center">
-                            <strong @if ($comment->user->is_admin)style="color: hotpink"@elseif ($comment->user->badge && $comment->user->badge == 'Moderator')style="color: seagreen"@endif>
-                                <a href="{{ route('user.show', ['user' => $comment->user->id]) }}">{{ $comment->user->name }}</a>
-                            </strong><br />
+                            <a href="{{ route('user.show', ['user' => $comment->user->id]) }}">
+                                <strong @if ($comment->user->is_admin)style="color: hotpink"@elseif ($comment->user->badge && $comment->user->badge == 'Moderator')style="color: seagreen"@endif>
+                                    {{ $comment->user->name }}
+                                </strong>
+                            </a><br />
                             <img src="@isset($comment->user->photo){{ asset('storage') . '/' . $comment->user->photo }}@else{{ asset('img/64x64.png') }}@endisset" class="rounded-circle img-border" width="64" height="64"><br />
                             <h6 class="mt-2">
                                 @if ($comment->user->is_admin)
