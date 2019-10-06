@@ -117,6 +117,8 @@ Route::prefix('thread')->group(function () {
             Route::get('close/{thread}', 'ThreadController@close')->where(['thread' => '[0-9]+'])->name('close');
             Route::get('pin/{thread}', 'ThreadController@pin')->where(['thread' => '[0-9]+'])->name('pin');
             Route::get('unpin/{thread}', 'ThreadController@unpin')->where(['thread' => '[0-9]+'])->name('unpin');
+            Route::get('subscribe/{thread}', 'ThreadController@subscribe')->where(['thread' => '[0-9]+'])->name('subscribe');
+            Route::get('unsubscribe/{thread}', 'ThreadController@unsubscribe')->where(['thread' => '[0-9]+'])->name('unsubscribe');
         });
     });
 });

@@ -180,6 +180,28 @@
             </div>
             @endcan
             @endcan
+            @canany(['subscribe', 'favorite'], $thread)
+            <div class="card mt-4">
+                <div class="card-header">
+                    {{ __('Options') }}
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        @can('subscribe', $thread)
+                        <div class="col-md-2">
+                            <a href="{{ route($is_subscribed ? 'thread.unsubscribe' : 'thread.subscribe', ['thread' => $thread->id, 'redirect=thread.show']) }}" class="btn {{ $is_subscribed ? 'btn-warning' : 'btn-primary' }}">
+                                {{ __($is_subscribed ? 'Unsubscribe' : 'Subscribe') }}
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            Subscribe to this thread and receive a notification in your email when a new comment is posted.
+                        </div>
+                        @endcan
+                    </div>
+                </div>
+            </div>
+            @endcanany
             @endauth
         </div>
     </div>

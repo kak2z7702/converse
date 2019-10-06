@@ -54,6 +54,14 @@ class User extends Authenticatable
     }
 
     /**
+     * The subscriptions related to the user.
+     */
+    public function subscriptions()
+    {
+        return $this->hasMany('App\Subscription');
+    }
+
+    /**
      * Show email mutator.
      * 
      * @param $value Incoming value.

@@ -48,4 +48,13 @@ class Thread extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    /**
+     * The subscriptions related to the thread.
+     */
+    public function subscriptions()
+    {
+        return $this->hasMany('App\Subscription');
+    }
+
 }

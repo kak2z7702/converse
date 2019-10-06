@@ -200,6 +200,20 @@ class ThreadPolicy
     }
 
     /**
+     * Determine whether the user can subscribe/unsubscribe to the thread.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Thread  $thread
+     * @return mixed
+     */
+    public function subscribe(User $user, Thread $thread)
+    {
+        if ($user->is_banned) return false;
+
+        return true;
+    }
+
+    /**
      * Determine whether the user can post a comment on the thread.
      *
      * @param  \App\User  $user

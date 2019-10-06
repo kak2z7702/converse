@@ -36,6 +36,12 @@ Installation wizard makes a seal proof file at *storage/app/installation* so we 
 
 After installation you are going to be logged in as administration to make changes.
 
+One last thing to mention is queued jobs. Emails sent for thread subscription are queued as jobs in the database. For these jobs to be processed, run the following command to start a queue worker:
+
+`php artisan queue:work`
+
+Note that once the `queue:work` command has started, it will continue to run until it is manually stopped or you close your terminal.
+
 ## Re-installation
 
 If you want to perform a re-installation for any purpose you can delete installation seal proof file and run the following command:
@@ -43,6 +49,10 @@ If you want to perform a re-installation for any purpose you can delete installa
 `php artisan migrate:fresh`
 
 Then you can go to */install* route on your host to perform a fresh installation.
+
+Remember to run the following command to restart the queue workers if you have any:
+
+`php artisan queue:restart`
 
 ## Deployment
 
@@ -59,6 +69,7 @@ If you are willing to deploy, you can follow [deployment instructions](https://l
 - Profile editor.
 - User ban.
 - Thread closing, pinning.
+- Thread subscription.
 - In-place content management.
 - Easy to use [summrnote](https://summernote.org/) WYSIWYG editor implementation for pages, threads and comments.
 - Human friendly URLs.

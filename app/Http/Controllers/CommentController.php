@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
+use App\Events\CommentPosted;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -61,6 +62,8 @@ class CommentController extends Controller
         $comment->user_id = auth()->user()->id;
 
         $model->comments()->save($comment);
+
+        event(new CommentPosted($comment));
 
         return view('result', [
             'message' => __('Comment was posted successfully.'),

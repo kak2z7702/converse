@@ -28,9 +28,11 @@ class ThreadController extends Controller
         if (!$request->has('page'))
             $comments = $thread->comments()->orderBy('created_at', 'asc')->paginate(null, ['*'], 'page', $comments->lastPage());
 
+        $is_subscribed = $thread->subscriptions()->where('user_id', auth()->user()->id)->first();
         return view('thread.show', [
             'thread' => $thread,
-            'comments' => $comments
+            'comments' => $comments,
+            'is_subscribed' => $is_subscribed,
         ]);
     }
 
@@ -258,6 +260,54 @@ class ThreadController extends Controller
 
         return view('result', [
             'message' => __('Thread was unpinned successfully.'),
+            'redirect' => $this->getRedirect($request, null, $thread)
+        ]);
+    }
+
+    /**
+     * Subscribe to a thread.
+     * 
+     * @param $request Incoming request.
+     * @param $thread Thread id.
+     */
+    public function subscribe(Request $request, $thread)
+    {
+        $thread = Thread::findOrFail($thread);
+
+        $this->authorize('subscribe', $thread);
+
+        $is_subscribed = $thread->subscriptions()->where('user_id', auth()->user()->id)->first();
+
+        if ($is_subscribed) return redirect()->back();
+
+        $thread->subscriptions()->save(new \App\Subscription(['user_id' => auth()->user()->id]));
+
+        return view('result', [
+            'message' => __('You subscribed to this thread successfully.'),
+            'redirect' => $this->getRedirect($request, null, $thread)
+        ]);
+    }
+
+    /**
+     * Unsubscribe to a thread.
+     * 
+     * @param $request Incoming request.
+     * @param $thread Thread id.
+     */
+    public function unsubscribe(Request $request, $thread)
+    {
+        $thread = Thread::findOrFail($thread);
+
+        $this->authorize('subscribe', $thread);
+
+        $is_subscribed = $thread->subscriptions()->where('user_id', auth()->user()->id)->first();
+
+        if (!$is_subscribed) return redirect()->back();
+
+        $thread->subscriptions()->where('user_id', auth()->user()->id)->delete();
+
+        return view('result', [
+            'message' => __('You unsubscribed from this thread successfully.'),
             'redirect' => $this->getRedirect($request, null, $thread)
         ]);
     }

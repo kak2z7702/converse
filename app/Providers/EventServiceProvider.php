@@ -20,6 +20,9 @@ class EventServiceProvider extends ServiceProvider
             \App\Listeners\AddNormalUserRoles::class,
             \App\Listeners\SendWelcomeMessage::class
         ],
+        'App\Events\CommentPosted' => [
+            'App\Listeners\SendSubscriptionNotification'
+        ]
     ];
 
     /**
