@@ -101,6 +101,8 @@ class PagePolicy
      */
     public function comment(User $user, Page $page)
     {
+        if ($user->is_banned) return false;
+        
         return $page->can_have_comments;
     }
 }

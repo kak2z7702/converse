@@ -208,6 +208,8 @@ class ThreadPolicy
      */
     public function comment(User $user, Thread $thread)
     {
+        if ($user->is_banned) return false;
+        
         return $thread->is_open;
     }
 }
