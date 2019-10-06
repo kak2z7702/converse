@@ -117,15 +117,16 @@ class CategoryController extends Controller
      */
     public function delete(Request $request, $category)
     {
-        $category = Category::with('topics')->findOrFail($category);
+        $category = Category::with('topics.threads')->findOrFail($category);
 
         $this->authorize('delete', $category);
 
         foreach ($category->topics as $topic)
         {
-            $permission = \App\Permission::where('slug', 'topic_management_' . $topic->hash)->first();
+            \App\Permission::where('slug', 'topic_management_' . $topic->hash)->delete();
 
-            if ($permission) $permission->delete();
+            foreach ($topic->threads as $thread)
+                $thread->comments()->delete();
 
             if ($topic->photo && Storage::disk('public')->exists($topic->photo)) Storage::disk('public')->delete($topic->photo);
         }
