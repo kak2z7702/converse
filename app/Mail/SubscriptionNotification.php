@@ -39,7 +39,7 @@ class SubscriptionNotification extends Mailable
         $admin = \App\User::where('is_admin', 1)->firstOrFail();
 
         return $this
-            ->from($admin->email, config('app_name', 'Converse'))
+            ->from($admin->email, config('app.name', 'Converse'))
             ->subject(__('Subscription Notification: New comment posted on ":thread"', ['thread' => $this->comment->thread->title]))
             ->view('emails.subscription')
             ->with('comment', $this->comment);

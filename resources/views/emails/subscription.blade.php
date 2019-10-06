@@ -68,7 +68,7 @@
 <body>
     <div class="container">
         <div style="width: 640px; margin: 30px auto">
-            <h1>{{ config('app_name', 'Converse') }}</h1>
+            <h1>{{ config('app.name', 'Converse') }}</h1>
             <h2>{{ __('Subscription Notification') }}</h2>
             <p>There has been a new comment posted on this thread.</p>
             <h3>
