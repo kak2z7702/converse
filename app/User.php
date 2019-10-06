@@ -62,6 +62,14 @@ class User extends Authenticatable
     }
 
     /**
+     * The favorites related to the user.
+     */
+    public function favorites()
+    {
+        return $this->hasMany('App\Favorite');
+    }
+
+    /**
      * Show email mutator.
      * 
      * @param $value Incoming value.

@@ -29,10 +29,13 @@ class ThreadController extends Controller
             $comments = $thread->comments()->orderBy('created_at', 'asc')->paginate(null, ['*'], 'page', $comments->lastPage());
 
         $is_subscribed = $thread->subscriptions()->where('user_id', auth()->user()->id)->first();
+        $is_favorited = $thread->favorites()->where('user_id', auth()->user()->id)->first();
+
         return view('thread.show', [
             'thread' => $thread,
             'comments' => $comments,
             'is_subscribed' => $is_subscribed,
+            'is_favorited' => $is_favorited
         ]);
     }
 
@@ -313,6 +316,54 @@ class ThreadController extends Controller
     }
 
     /**
+     * Favorite a thread.
+     * 
+     * @param $request Incoming request.
+     * @param $thread Thread id.
+     */
+    public function favorite(Request $request, $thread)
+    {
+        $thread = Thread::findOrFail($thread);
+
+        $this->authorize('favorite', $thread);
+
+        $is_favorited = $thread->favorites()->where('user_id', auth()->user()->id)->first();
+
+        if ($is_favorited) return redirect()->back();
+
+        $thread->favorites()->save(new \App\Favorite(['user_id' => auth()->user()->id]));
+
+        return view('result', [
+            'message' => __('Thread was favorited successfully.'),
+            'redirect' => $this->getRedirect($request, null, $thread)
+        ]);
+    }
+
+    /**
+     * Unfavorite a thread.
+     * 
+     * @param $request Incoming request.
+     * @param $thread Thread id.
+     */
+    public function unfavorite(Request $request, $thread)
+    {
+        $thread = Thread::findOrFail($thread);
+
+        $this->authorize('favorite', $thread);
+
+        $is_favorited = $thread->favorites()->where('user_id', auth()->user()->id)->first();
+
+        if (!$is_favorited) return redirect()->back();
+
+        $thread->favorites()->where('user_id', auth()->user()->id)->delete();
+
+        return view('result', [
+            'message' => __('Thread was unfavorited successfully.'),
+            'redirect' => $this->getRedirect($request, null, $thread)
+        ]);
+    }
+
+    /**
      * Find a free slug.
      * 
      * @param $slug Slug string.
@@ -388,6 +439,9 @@ class ThreadController extends Controller
                         'topic_slug' => $thread->topic->slug,
                         'thread_slug' => $thread->slug
                     ]);
+                break;
+                case 'user.favorites':
+                    $redirect = route($request->redirect);
                 break;
             }
         }

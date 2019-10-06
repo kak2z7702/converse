@@ -70,6 +70,7 @@ If you are willing to deploy, you can follow [deployment instructions](https://l
 - User ban.
 - Thread closing, pinning.
 - Thread subscription.
+- Favorite threads list.
 - In-place content management.
 - Easy to use [summrnote](https://summernote.org/) WYSIWYG editor implementation for pages, threads and comments.
 - Human friendly URLs.

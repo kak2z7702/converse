@@ -214,6 +214,20 @@ class ThreadPolicy
     }
 
     /**
+     * Determine whether the user can favorite/unfavorite the thread.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Thread  $thread
+     * @return mixed
+     */
+    public function favorite(User $user, Thread $thread)
+    {
+        if ($user->is_banned) return false;
+
+        return true;
+    }
+
+    /**
      * Determine whether the user can post a comment on the thread.
      *
      * @param  \App\User  $user

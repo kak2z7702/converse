@@ -57,4 +57,11 @@ class Thread extends Model
         return $this->hasMany('App\Subscription');
     }
 
+    /**
+     * The favorites related to the thread.
+     */
+    public function favorites()
+    {
+        return $this->hasMany('App\Favorite');
+    }
 }

@@ -25,6 +25,7 @@ Route::prefix('user')->group(function () {
 
         // custom auth routes
         Route::get('result', 'UserController@result')->name('result');
+        Route::get('favorites', 'UserController@favorites')->name('favorites');
         Route::match(['get', 'post'], 'profile', 'UserController@profile')->middleware('auth')->name('profile');
         Route::get('/{user}', 'UserController@show')->where(['user' => '[0-9]+'])->name('show');
 
@@ -119,6 +120,8 @@ Route::prefix('thread')->group(function () {
             Route::get('unpin/{thread}', 'ThreadController@unpin')->where(['thread' => '[0-9]+'])->name('unpin');
             Route::get('subscribe/{thread}', 'ThreadController@subscribe')->where(['thread' => '[0-9]+'])->name('subscribe');
             Route::get('unsubscribe/{thread}', 'ThreadController@unsubscribe')->where(['thread' => '[0-9]+'])->name('unsubscribe');
+            Route::get('favorite/{thread}', 'ThreadController@favorite')->where(['thread' => '[0-9]+'])->name('favorite');
+            Route::get('unfavorite/{thread}', 'ThreadController@unfavorite')->where(['thread' => '[0-9]+'])->name('unfavorite');
         });
     });
 });

@@ -144,7 +144,7 @@
                     @endif
                 </div>
             </div>
-
+            
             @auth
             @can('comment', $thread)
             @can('create', 'App\Comment')
@@ -196,6 +196,16 @@
                         </div>
                         <div class="col-md-4">
                             Subscribe to this thread and receive a notification in your email when a new comment is posted.
+                        </div>
+                        @endcan
+                        @can('favorite', $thread)
+                        <div class="col-md-2">
+                            <a href="{{ route($is_favorited ? 'thread.unfavorite' : 'thread.favorite', ['thread' => $thread->id, 'redirect=thread.show']) }}" class="btn {{ $is_favorited ? 'btn-warning' : 'btn-primary' }}">
+                                {{ __($is_favorited ? 'Unfavorite' : 'Favorite') }}
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            Favorite this thread to save it in your favorite threads list.
                         </div>
                         @endcan
                     </div>

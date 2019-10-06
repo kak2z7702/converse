@@ -256,6 +256,18 @@ class UserController extends Controller
     }
 
     /**
+     * Show the users favorites page.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function favorites()
+    {
+        $favorites = \App\Favorite::orderBy('created_at', 'asc')->paginate();
+
+        return view('user.favorites', ['favorites' => $favorites]);
+    }
+
+    /**
      * Show the user profile to update information.
      * 
      * @param $request Incoming request.
