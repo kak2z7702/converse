@@ -16,23 +16,29 @@ Go to the source path where you can see *composer.json* file and run below comma
 
 `composer update`
 
-Create a database and tweak the configuration in your *.env* file for database connection then run following command to migrate database tables:
+In order to configure your Converse instance, you can create a *.env* file to store your environment settings or tweak files in *config/* folder directly.
+
+Tweak the configuration in your *.env* file for database connection and create a database respectively, then run the following command to migrate database tables:
 
 `php artisan migrate`
 
-Next we have to make a symbolic link for storage folder by running following command:
+Next we have to make a symbolic link for storage folder by running the following command:
 
 `php artisan storage:link`
 
-You can use NGINX or Apache as your webserver, but you can also use PHP's development server for testing purposes by going to source path and running the below command like so:
+Almost good to go! 
+
+To start Converse, you can use NGINX or Apache as your webserver, but you can also use PHP's development server for testing purposes by going to installation path and running the below command:
 
 `php artisan serve`
 
-After you are satisfied with the web server of your choice go the host address that is running Converse in your browser and you will be prompted with the installation message.
+After you are satisfied with the web server of your choice, let's go to the host address that is running Converse in the browser of your choice. If everything went as planned, you will be prompted with the installation message.
 
 For example, let's say you have started Converse via PHP's development server, you can go to http://localhost:8000/install to proceed with the installation.
 
-Installation wizard makes a seal proof file at *storage/app/installation* so we can tell if installation is already done. There is also an *options.json* file which stores Converse configuration.
+Follow the installation wizard instructions and install Converse.
+
+Installation wizard makes a seal proof file at *storage/app/installation* at the end so we can tell if installation is already done. There is also an *options.json* file which stores Converse configurations.
 
 After installation you are going to be logged in as administration to make changes.
 
@@ -41,6 +47,8 @@ One last thing to mention is queued jobs. Emails sent for thread subscription ar
 `php artisan queue:work`
 
 Note that once the `queue:work` command has started, it will continue to run until it is manually stopped or you close your terminal.
+
+Also make sure your mail configurations are set properly to send emails.
 
 ## Re-installation
 
