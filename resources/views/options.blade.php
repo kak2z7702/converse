@@ -88,7 +88,7 @@
                                     <input type="hidden" name="display_cookie_consent" value="off" /> <!-- This field will be sent as check box value when it's not checked -->
                                     <input class="form-check-input" type="checkbox" name="display_cookie_consent" id="display_cookie_consent" {{ old('display_cookie_consent', $options->display_cookie_consent) ? 'checked' : '' }}>
 
-                                    <label class="form-check-label" for="display_cookie_consent">{{ __('Display cookie consent') }}</label>
+                                    <label class="form-check-label" for="display_cookie_consent">{{ __('Display Cookie Consent') }}</label>
                                     <small class="text-muted">{{ __('Display a notice regarding compliance with the EU Cookies Directive.') }}</small>
                                 </div>
                             </div>
