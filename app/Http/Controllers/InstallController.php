@@ -14,13 +14,13 @@ use Illuminate\Support\Facades\Storage;
 class InstallController extends Controller
 {
     /**
-     * Show the application help page.
+     * Show the application welcome page.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function help()
+    public function welcome()
     {   
-        return view('help');
+        return view('welcome');
     }
 
     /**

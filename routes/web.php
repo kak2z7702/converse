@@ -14,7 +14,7 @@
 Route::get('/', 'HomeController@index')->name('index');
 Route::get('/consent', 'HomeController@consent')->name('consent');
 
-Route::get('/help', 'InstallController@help')->name('help');
+Route::get('/welcome', 'InstallController@welcome')->name('welcome');
 Route::match(['get', 'post'], '/install', 'InstallController@install')->name('install');
 Route::match(['get', 'post'], '/options', 'InstallController@options')->middleware('auth', 'admin')->name('options');
 

@@ -16,8 +16,8 @@ class RedirectIfNotInstalled
      */
     public function handle($request, Closure $next)
     {
-        if (!Storage::exists('installed') && $request->path() != 'help' && $request->path() != 'install') 
-            return redirect()->route('help');
+        if (!Storage::exists('installed') && $request->path() != 'welcome' && $request->path() != 'install') 
+            return redirect()->route('welcome');
 
         return $next($request);
     }
