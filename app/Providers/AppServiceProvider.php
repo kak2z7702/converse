@@ -48,8 +48,14 @@ class AppServiceProvider extends ServiceProvider
             }
         }
 
-        // view composer for app
-        view()->composer('layouts.app', function ($view) {
+        // theme layout view name
+        $theme_layout = config('app.theme', 'light') . '.layout';
+
+        // set theme layout config
+        config(['theme.layout' => $theme_layout]);
+
+        // view composer for theme layout
+        view()->composer($theme_layout, function ($view) {
             // header menus
             $menus = \App\Menu::orderBy('order', 'asc')->get();
 

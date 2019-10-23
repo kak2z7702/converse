@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends(config('theme.layout'))
 
 @if (!isset($thread))
 @section('scripts')

@@ -20,7 +20,7 @@ class InstallController extends Controller
      */
     public function welcome()
     {   
-        return view('welcome');
+        return view($this->findView('welcome'));
     }
 
     /**
@@ -36,7 +36,7 @@ class InstallController extends Controller
 
         if ($request->isMethod('get'))
         {
-            return view('install');
+            return view($this->findView('install'));
         }
         else if ($request->isMethod('post'))
         {

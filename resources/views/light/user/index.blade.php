@@ -1,5 +1,5 @@
 @can('viewAny', 'App\User')
-@extends('layouts.app')
+@extends(config('theme.layout'))
 
 @section('content')
 <div class="container">
