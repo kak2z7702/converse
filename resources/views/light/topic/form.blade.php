@@ -57,9 +57,19 @@
                             </div>
                         </div>
 
+                        <div id="photoPreviewRow" class="form-group row" style="display: none">
+                            <label class="col-md-2 col-form-label text-md-right">{{ __('New Photo') }}</label>
+
+                            <div class="col-md-8">
+                                <img id="photoPreview" src="#" class="rounded-circle img-border" alt="Preview" width="64" height="64">
+                            </div>
+                        </div>
+
                         @if (isset($topic) && isset($topic->photo))
                         <div class="form-group row">
-                            <div class="col-md-8 offset-md-2">
+                            <label class="col-md-2 col-form-label text-md-right">{{ __('Current Photo') }}</label>
+                        
+                            <div class="col-md-8">
                                 <img src="{{ asset('storage') . '/' . $topic->photo }}" class="rounded-circle img-border" alt="{{ $topic->title }}" width="64" height="64">
                             </div>
                         </div>
@@ -104,4 +114,18 @@
         </div>
     </div>
 </div>
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        $(function () {
+            $('#photo').on('change', function(event) {
+                let blob = URL.createObjectURL(event.target.files[0]);
+
+                $('#photoPreviewRow').show();
+                $('#photoPreview').attr('src', blob);
+
+                URL.revokeObjectURL(blob);
+            });
+        });
+    });
+</script>
 @endsection

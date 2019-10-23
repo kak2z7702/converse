@@ -132,6 +132,17 @@
             $('#backgroundColor').on('colorpickerChange', function(event) {
                 $('body').css('background-color', event.color.toString());
             });
+
+            $('#backgroundImage').on('change', function(event) {
+                let blob = URL.createObjectURL(event.target.files[0]);
+
+                $('body').css({
+                    'background-image': 'url(\'' + blob + '\')',
+                    'background-position': 'center',
+                    'background-repeat': 'no-repeat',
+                    'background-size': 'cover'
+                });
+            });
         });
     });
 </script>
