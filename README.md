@@ -2,7 +2,7 @@
 
 Converse is a forum engine that is based on Laravel.
 
-![](screenshot.png)
+![Converse](screenshot.png)
 
 Brief features are installation wizard, role editor, summernote implementation ...
 
@@ -71,6 +71,7 @@ If you are willing to deploy, you can follow [deployment instructions](https://l
 - Installation wizard.
 - User editor with role assignment.
 - Role editor for different authorization rules.
+- Theme customization.
 - Dynamic menu and page editor.
 - Categorization of topics and threads.
 - Direct messaging.
