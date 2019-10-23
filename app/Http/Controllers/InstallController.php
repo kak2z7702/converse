@@ -41,7 +41,7 @@ class InstallController extends Controller
         else if ($request->isMethod('post'))
         {
             $data = $request->validate([
-                'community_name' => 'required|string|max:64',
+                'name' => 'required|string|max:64',
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:8|confirmed'
             ]);
@@ -157,16 +157,12 @@ class InstallController extends Controller
 
             // community options
             $options = [
-                'community' => [
-                    'name' => $data['community_name'],
-                    'birthday' => now()->format('Y-m-d H:i'),
-                    'theme' => 'light'
-                ],
-                'background' => [
-                    'color' => null,
-                    'image' => null
-                ],
-                'display_cookie_consent' => false
+                'app.name' => $data['name'],
+                'app.birthday' => now()->format('Y-m-d H:i'),
+                'app.theme' => 'light',
+                'app.background.color' => null,
+                'app.background.image' => null,
+                'app.display_cookie_consent' => false
             ];
 
             // make options file
@@ -232,8 +228,8 @@ class InstallController extends Controller
         else if ($request->isMethod('post'))
         {
             $data = $request->validate([
-                'community_name' => 'required|string|max:64',
-                'community_theme' => 'required|string|max:64',
+                'name' => 'required|string|max:64',
+                'theme' => 'required|string|max:64',
                 'background_color' => 'nullable|regex:/^#[0-9a-zA-Z]{6}$/i',
                 'background_image' => 'nullable|image|max:1024',
                 'display_cookie_consent' => 'required|in:on,off'
@@ -246,35 +242,31 @@ class InstallController extends Controller
             if (Storage::exists('options.json'))
             {
                 // decode from json
-                $options = json_decode(Storage::get('options.json'));
+                $options = json_decode(Storage::get('options.json'), true);
             }
 
             // delete old background image
             if ($request->has('no_background_image') && $request->no_background_image == 'on')
             {
-                if (Storage::disk('public')->exists($options->background->image)) Storage::disk('public')->delete($options->background->image);
+                if (Storage::disk('public')->exists($options['app.background.image'])) Storage::disk('public')->delete($options['app.background.image']);
 
-                $options->background->image = null;
+                $options['app.background.image'] = null;
             }
             else if ($request->has('background_image'))
             {
-                if ($options->background->image && Storage::disk('public')->exists($options->background->image)) Storage::disk('public')->delete($options->background->image);
+                if ($options['app.background.image'] && Storage::disk('public')->exists($options['app.background.image'])) Storage::disk('public')->delete($options['app.background.image']);
 
-                $options->background->image = $request->background_image->store('images', 'public');
+                $options['app.background.image'] = $request->background_image->store('images', 'public');
             }
 
-            // community options
+            // set community options
             $options = [
-                'community' => [
-                    'name' => $data['community_name'],
-                    'birthday' => ($options) ? $options->community->birthday : now()->format('Y-m-d H:i')->toDateTimeString(),
-                    'theme' => $data['community_theme']
-                ],
-                'background' => [
-                    'color' => $data['background_color'],
-                    'image' => $options->background->image
-                ],
-                'display_cookie_consent' => ($data['display_cookie_consent'] == 'on')
+                'app.name' => $data['name'],
+                'app.birthday' => $options['app.birthday'],
+                'app.theme' => $data['theme'],
+                'app.background.color' => $data['background_color'],
+                'app.background.image' => $options['app.background.image'],
+                'app.display_cookie_consent' => ($data['display_cookie_consent'] == 'on')
             ];
 
             // make options file

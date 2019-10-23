@@ -51,13 +51,13 @@
         .img-border {
             border: 3px solid #cccccc;
         }
-        @if ($options && ($options->background->color || $options->background->image))
+        @if (config('app.background.color') || config('app.background.image'))
         body {
-            @if ($options->background->color) 
-            background-color: {{ $options->background->color }};
+            @if (config('app.background.color')) 
+            background-color: {{ config('app.background.color') }};
             @endif
-            @if ($options->background->image) 
-            background-image: url('{{ asset('storage') . '/' . $options->background->image }}');
+            @if (config('app.background.image')) 
+            background-image: url('{{ asset('storage') . '/' . config('app.background.image') }}');
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
@@ -169,7 +169,7 @@
             </div>
         </footer>
 
-        @if ($is_installed && $options && $options->display_cookie_consent && !$has_cookie_consent)
+        @if (config('app.is_installed') && config('app.display_cookie_consent') && !config('user.has_cookie_consent', false))
         <section id="cookieConsent" class="fixed-bottom bg-white p-3">
             <div class="container">
                 <div class="row">

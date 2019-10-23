@@ -25,26 +25,28 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // application options
-        $options = null;
-
         // read options file
         if (Storage::exists('options.json'))
         {
             // decode from json
-            $options = json_decode(Storage::get('options.json'));
+            $options = json_decode(Storage::get('options.json'), true);
 
-            // set app name
-            config(['app.name' => $options->community->name]);
+            // set config from options
+            config($options);
 
-            // set app theme
-            config(['app.theme' => $options->community->theme]);
+            // set is installed config
+            config(['app.is_installed' => Storage::exists('installed')]);
+
+            // if cookie consent is being displayed
+            if ($options['app.display_cookie_consent'])
+            {
+                // cookie consent result
+                $cookie_consent = Cookie::get('converse_cookie_consent', false);
+
+                // set has cookie consent config
+                config(['user.has_cookie_consent' => is_string($cookie_consent) && $cookie_consent === 'true']);
+            }
         }
-
-        // view composer for all views
-        view()->composer('*', function ($view) use ($options) {
-            $view->with('options', $options);
-        });
 
         // view composer for app
         view()->composer('layouts.app', function ($view) {
@@ -54,18 +56,9 @@ class AppServiceProvider extends ServiceProvider
             // new messages count
             $messages = (auth()->check()) ? \App\Message::where('receiver_id', auth()->user()->id)->where('is_seen', false)->count() : 0;
 
-            // cookie consent result
-            $cookie_consent = Cookie::get('converse_cookie_consent', false);
-
-            // convert to boolean
-            if (is_string($cookie_consent) && $cookie_consent === 'true')
-                $cookie_consent = true;
-
             $view
                 ->with('menus', $menus)
-                ->with('messages', $messages)
-                ->with('is_installed', Storage::exists('installed'))
-                ->with('has_cookie_consent', $cookie_consent);
+                ->with('messages', $messages);
         });
     }
 }
