@@ -27,8 +27,8 @@ class SendWelcomeMessage
     public function handle(Registered $event)
     {
         $message = new \App\Message([
-            'title' => 'Welcome to ' . config('app.name') . ' community!',
-            'content' => 'You are great!<br />Be sure to check the rules :)',
+            'title' => __('Welcome to the community!'),
+            'content' => __('You are great! Be sure to check the rules :)'),
         ]);
 
         $message->receiver_id = $event->user->id;
