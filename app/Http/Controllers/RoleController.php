@@ -18,7 +18,7 @@ class RoleController extends Controller
 
         $roles = Role::orderBy('created_at', 'asc')->paginate();
 
-        return view('role.index', ['roles' => $roles]);
+        return view($this->findView('role.index'), ['roles' => $roles]);
     }
 
     /**
@@ -34,7 +34,7 @@ class RoleController extends Controller
         {
             $permissions = \App\Permission::orderBy('created_at', 'asc')->get();
 
-            return view('role.form', [
+            return view($this->findView('role.form'), [
                 'permissions' => $permissions,
                 'redirect' => route('role.index')
             ]);
@@ -53,7 +53,7 @@ class RoleController extends Controller
             
             $role->permissions()->attach(\App\Permission::whereIn('id', $data['permissions'])->get());
 
-            return view('result', [
+            return view($this->findView('result'), [
                 'message' => __('Role was created successfully.'),
                 'redirect' => route('role.index')
             ]);
@@ -76,7 +76,7 @@ class RoleController extends Controller
         {
             $permissions = \App\Permission::orderBy('created_at', 'asc')->get();
 
-            return view('role.form', [
+            return view($this->findView('role.form'), [
                 'role' => $role,
                 'role_permissions' => $role->permissions->pluck('id')->toArray(),
                 'permissions' => $permissions,
@@ -95,7 +95,7 @@ class RoleController extends Controller
             
             $role->permissions()->sync(\App\Permission::whereIn('id', $data['permissions'])->get());
 
-            return view('result', [
+            return view($this->findView('result'), [
                 'message' => __('Role was updated successfully.'),
                 'redirect' => route('role.index')
             ]);
@@ -116,7 +116,7 @@ class RoleController extends Controller
 
         $role->delete();
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('Role was deleted successfully.'),
             'redirect' => route('role.index')
         ]);

@@ -31,7 +31,7 @@ class ThreadController extends Controller
         $is_subscribed = $thread->subscriptions()->where('user_id', auth()->user()->id)->first();
         $is_favorited = $thread->favorites()->where('user_id', auth()->user()->id)->first();
 
-        return view('thread.show', [
+        return view($this->findView('thread.show'), [
             'thread' => $thread,
             'comments' => $comments,
             'is_subscribed' => $is_subscribed,
@@ -53,7 +53,7 @@ class ThreadController extends Controller
             $categories = \App\Category::with('topics')->orderBy('created_at', 'asc')->get();
             $topic = \App\Topic::findOrFail($request->topic);
 
-            return view('thread.form', [
+            return view($this->findView('thread.form'), [
                 'categories' => $categories,
                 'topic_id' => $request->topic,
                 'redirect' => $this->getRedirect($request, $topic, null)
@@ -91,7 +91,7 @@ class ThreadController extends Controller
     
             $thread->comments()->save($comment);
 
-            return view('result', [
+            return view($this->findView('result'), [
                 'message' => __('Thread was created successfully.'),
                 'redirect' => $this->getRedirect($request, null, $thread)
             ]);
@@ -114,7 +114,7 @@ class ThreadController extends Controller
         {
             $categories = \App\Category::with('topics')->orderBy('created_at', 'asc')->get();
 
-            return view('thread.form', [
+            return view($this->findView('thread.form'), [
                 'thread' => $thread,
                 'categories' => $categories,
                 'redirect' => $this->getRedirect($request, null, $thread)
@@ -150,7 +150,7 @@ class ThreadController extends Controller
             
             $topic->threads()->save($thread);
 
-            return view('result', [
+            return view($this->findView('result'), [
                 'message' => __('Thread was updated successfully.'),
                 'redirect' => $this->getRedirect($request, null, $thread)
             ]);
@@ -173,7 +173,7 @@ class ThreadController extends Controller
 
         $thread->delete();
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('Thread was deleted successfully.'),
             'redirect' => $this->getRedirect($request, null, $thread)
         ]);
@@ -195,7 +195,7 @@ class ThreadController extends Controller
 
         $thread->save();
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('Thread was opened successfully.'),
             'redirect' => $this->getRedirect($request, null, $thread)
         ]);
@@ -217,7 +217,7 @@ class ThreadController extends Controller
 
         $thread->save();
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('Thread was closed successfully.'),
             'redirect' => $this->getRedirect($request, null, $thread)
         ]);
@@ -239,7 +239,7 @@ class ThreadController extends Controller
 
         $thread->save();
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('Thread was pinned successfully.'),
             'redirect' => $this->getRedirect($request, null, $thread)
         ]);
@@ -261,7 +261,7 @@ class ThreadController extends Controller
 
         $thread->save();
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('Thread was unpinned successfully.'),
             'redirect' => $this->getRedirect($request, null, $thread)
         ]);
@@ -285,7 +285,7 @@ class ThreadController extends Controller
 
         $thread->subscriptions()->save(new \App\Subscription(['user_id' => auth()->user()->id]));
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('You subscribed to this thread successfully.'),
             'redirect' => $this->getRedirect($request, null, $thread)
         ]);
@@ -309,7 +309,7 @@ class ThreadController extends Controller
 
         $thread->subscriptions()->where('user_id', auth()->user()->id)->delete();
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('You unsubscribed from this thread successfully.'),
             'redirect' => $this->getRedirect($request, null, $thread)
         ]);
@@ -333,7 +333,7 @@ class ThreadController extends Controller
 
         $thread->favorites()->save(new \App\Favorite(['user_id' => auth()->user()->id]));
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('Thread was favorited successfully.'),
             'redirect' => $this->getRedirect($request, null, $thread)
         ]);
@@ -357,7 +357,7 @@ class ThreadController extends Controller
 
         $thread->favorites()->where('user_id', auth()->user()->id)->delete();
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('Thread was unfavorited successfully.'),
             'redirect' => $this->getRedirect($request, null, $thread)
         ]);

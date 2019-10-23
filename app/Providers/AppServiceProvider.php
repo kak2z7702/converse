@@ -36,6 +36,9 @@ class AppServiceProvider extends ServiceProvider
 
             // set app name
             config(['app.name' => $options->community->name]);
+
+            // set app theme
+            config(['app.theme' => $options->community->theme]);
         }
 
         // view composer for all views

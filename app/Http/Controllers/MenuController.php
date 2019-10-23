@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Menu;
 use Illuminate\Http\Request;
+use App\Traits\FindsView;
 
 class MenuController extends Controller
 {
+    use FindsView;
+
     /**
      * Show the menus management page.
      *
@@ -19,7 +22,7 @@ class MenuController extends Controller
         $menus = Menu::orderBy('order', 'asc')->paginate();
         $last_menu_order = Menu::max('order');
 
-        return view('menu.index', [
+        return view($this->findView('menu.index'), [
             'menus' => $menus,
             'last_menu_order' => $last_menu_order
         ]);
@@ -36,7 +39,7 @@ class MenuController extends Controller
 
         if ($request->isMethod('get'))
         {
-            return view('menu.form', [
+            return view($this->findView('menu.form'), [
                 'redirect' => route('menu.index')
             ]);
         }
@@ -53,7 +56,7 @@ class MenuController extends Controller
 
             $menu->save();
 
-            return view('result', [
+            return view($this->findView('result'), [
                 'message' => __('Menu was created successfully.'),
                 'redirect' => route('menu.index')
             ]);
@@ -74,7 +77,7 @@ class MenuController extends Controller
 
         if ($request->isMethod('get'))
         {
-            return view('menu.form', [
+            return view($this->findView('menu.form'), [
                 'menu' => $menu,
                 'redirect' => route('menu.index')
             ]);
@@ -88,7 +91,7 @@ class MenuController extends Controller
 
             $menu->fill($data)->save();
 
-            return view('result', [
+            return view($this->findView('result'), [
                 'message' => __('Menu was updated successfully.'),
                 'redirect' => route('menu.index')
             ]);
@@ -109,7 +112,7 @@ class MenuController extends Controller
 
         $menu->delete();
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('Menu was deleted successfully.'),
             'redirect' => route('menu.index')
         ]);
@@ -165,7 +168,7 @@ class MenuController extends Controller
             }
         }
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('Menu was moved successfully.'),
             'redirect' => route('menu.index')
         ]);

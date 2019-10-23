@@ -21,7 +21,7 @@ class PageController extends Controller
 
         $pages = Page::orderBy('created_at', 'asc')->paginate();
 
-        return view('page.index', ['pages' => $pages]);
+        return view($this->findView('page.index'), ['pages' => $pages]);
     }
 
     /**
@@ -39,7 +39,7 @@ class PageController extends Controller
         if (!$request->has('comments_page'))
             $comments = $page->comments()->orderBy('created_at', 'asc')->paginate(null, ['*'], 'comments_page', $comments->lastPage());
 
-        return view('page.show', [
+        return view($this->findView('page.show'), [
             'page' => $page,
             'comments' => $comments
         ]);
@@ -56,7 +56,7 @@ class PageController extends Controller
 
         if ($request->isMethod('get'))
         {
-            return view('page.form', [
+            return view($this->findView('page.form'), [
                 'redirect' => route('page.index')
             ]);
         }
@@ -74,7 +74,7 @@ class PageController extends Controller
 
             $page->save();
 
-            return view('result', [
+            return view($this->findView('result'), [
                 'message' => __('Page was created successfully.'),
                 'redirect' => route('page.index')
             ]);
@@ -95,7 +95,7 @@ class PageController extends Controller
 
         if ($request->isMethod('get'))
         {
-            return view('page.form', [
+            return view($this->findView('page.form'), [
                 'page' => $page,
                 'redirect' => $this->getRedirect($request, $page)
             ]);
@@ -129,7 +129,7 @@ class PageController extends Controller
 
             $page->save();
 
-            return view('result', [
+            return view($this->findView('result'), [
                 'message' => __('Page was updated successfully.'),
                 'redirect' => $this->getRedirect($request, $page)
             ]);
@@ -152,7 +152,7 @@ class PageController extends Controller
 
         $page->delete();
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('Page was deleted successfully.'),
             'redirect' => $this->getRedirect($request, $page)
         ]);

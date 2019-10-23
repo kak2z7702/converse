@@ -65,7 +65,7 @@ class CommentController extends Controller
 
         event(new CommentPosted($comment));
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('Comment was posted successfully.'),
             'redirect' => $this->getRedirect($request, $comment)
         ]);
@@ -85,7 +85,7 @@ class CommentController extends Controller
 
         if ($request->isMethod('get'))
         {
-            return view('comment.form', [
+            return view($this->findView('comment.form'), [
                 'comment' => $comment,
                 'redirect' => $this->getRedirect($request, $comment)
             ]);
@@ -132,7 +132,7 @@ class CommentController extends Controller
             
             $comment->save();
 
-            return view('result', [
+            return view($this->findView('result'), [
                 'message' => __('Comment was updated successfully.'),
                 'redirect' => $this->getRedirect($request, $comment)
             ]);
@@ -158,7 +158,7 @@ class CommentController extends Controller
 
         $comment->delete();
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('Comment was deleted successfully.'),
             'redirect' => $this->getRedirect($request, $comment)
         ]);

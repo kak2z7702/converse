@@ -22,7 +22,7 @@ class UserController extends Controller
 
         $users = User::orderBy('created_at', 'asc')->paginate();
 
-        return view('user.index', ['users' => $users]);
+        return view($this->findView('user.index'), ['users' => $users]);
     }
 
     /**
@@ -35,7 +35,7 @@ class UserController extends Controller
     {
         $user = \App\User::findOrFail($user);
 
-        return view('user.show', [
+        return view($this->findView('user.show'), [
             'user' => $user
         ]);
     }
@@ -55,7 +55,7 @@ class UserController extends Controller
         {
             $roles = \App\Role::orderBy('created_at', 'asc')->get();
 
-            return view('user.form', [
+            return view($this->findView('user.form'), [
                 'roles' => $roles,
                 'redirect' => route('user.index')
             ]);
@@ -85,7 +85,7 @@ class UserController extends Controller
             
             $user->roles()->attach(\App\Role::whereIn('id', $data['roles'])->get());
 
-            return view('result', [
+            return view($this->findView('result'), [
                 'message' => __('User was created successfully.'),
                 'redirect' => route('user.index')
             ]);
@@ -108,7 +108,7 @@ class UserController extends Controller
         {
             $roles = \App\Role::orderBy('created_at', 'asc')->get();
 
-            return view('user.form', [
+            return view($this->findView('user.form'), [
                 'user' => $user,
                 'user_roles' => $user->roles->pluck('id')->toArray(),
                 'roles' => $roles,
@@ -177,7 +177,7 @@ class UserController extends Controller
             
             if (!$user->is_admin) $user->roles()->sync(\App\Role::whereIn('id', $data['roles'])->get());
 
-            return view('result', [
+            return view($this->findView('result'), [
                 'message' => __('User was updated successfully.'),
                 'redirect' => $this->getRedirect($request, $user)
             ]);
@@ -205,7 +205,7 @@ class UserController extends Controller
 
         $user->delete();
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('User was deleted successfully.'),
             'redirect' => $this->getRedirect($request, $user)
         ]);
@@ -227,7 +227,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('User was banned successfully.'),
             'redirect' => $this->getRedirect($request, $user)
         ]);
@@ -249,7 +249,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('User was unbanned successfully.'),
             'redirect' => $this->getRedirect($request, $user)
         ]);
@@ -264,7 +264,7 @@ class UserController extends Controller
     {
         $favorites = \App\Favorite::orderBy('created_at', 'asc')->paginate();
 
-        return view('user.favorites', ['favorites' => $favorites]);
+        return view($this->findView('user.favorites'), ['favorites' => $favorites]);
     }
 
     /**
@@ -276,7 +276,7 @@ class UserController extends Controller
     {
         if ($request->isMethod('get'))
         {
-            return view('user.profile', [
+            return view($this->findView('user.profile'), [
                 'redirect' => route('index')
             ]);
         }
@@ -335,7 +335,7 @@ class UserController extends Controller
 
             $user->save();
 
-            return view('result', [
+            return view($this->findView('result'), [
                 'message' => __('Your profile was updated successfully.'),
                 'redirect' => route('index')
             ]);
@@ -349,7 +349,10 @@ class UserController extends Controller
      */
     public function result()
     {
-        return view('auth.result');
+        return view($this->findView('result'), [
+            'message' => __('You are logged in!'),
+            'redirect' => route('index')
+        ]);
     }
 
     /**

@@ -23,7 +23,7 @@ class TopicController extends Controller
         $topic = $category->topics()->where('slug', $topic_slug)->firstOrFail();
         $threads = $topic->threads()->orderBy('is_pinned', 'desc')->orderBy('created_at', 'desc')->paginate();
 
-        return view('topic.show', [
+        return view($this->findView('topic.show'), [
             'topic' => $topic,
             'threads' => $threads
         ]);
@@ -43,7 +43,7 @@ class TopicController extends Controller
             $categories = \App\Category::orderBy('created_at', 'asc')->get();
             $category = \App\Category::findOrFail($request->category);
 
-            return view('topic.form', [
+            return view($this->findView('topic.form'), [
                 'categories' => $categories,
                 'category_id' => $request->category,
                 'redirect' => $this->getRedirect($request, $category, null)
@@ -87,7 +87,7 @@ class TopicController extends Controller
 
             $permission->save();
 
-            return view('result', [
+            return view($this->findView('result'), [
                 'message' => __('Topic was created successfully.'),
                 'redirect' => $this->getRedirect($request, null, $topic)
             ]);
@@ -110,7 +110,7 @@ class TopicController extends Controller
         {
             $categories = \App\Category::orderBy('created_at', 'asc')->get();
 
-            return view('topic.form', [
+            return view($this->findView('topic.form'), [
                 'topic' => $topic,
                 'categories' => $categories,
                 'redirect' => $this->getRedirect($request, null, $topic)
@@ -173,7 +173,7 @@ class TopicController extends Controller
                 }
             }
             
-            return view('result', [
+            return view($this->findView('result'), [
                 'message' => __('Topic was updated successfully.'),
                 'redirect' => $this->getRedirect($request, null, $topic)
             ]);
@@ -201,7 +201,7 @@ class TopicController extends Controller
 
         $topic->delete();
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('Topic was deleted successfully.'),
             'redirect' => $this->getRedirect($request, null, $topic)
         ]);
@@ -255,7 +255,7 @@ class TopicController extends Controller
             }
         }
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('Topic was moved successfully.'),
             'redirect' =>  $this->getRedirect($request, null, $topic)
         ]);

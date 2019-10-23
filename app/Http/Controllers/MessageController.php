@@ -23,7 +23,7 @@ class MessageController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate();
 
-        return view('message.index', ['messages' => $messages]);
+        return view($this->findView('message.index'), ['messages' => $messages]);
     }
 
     /**
@@ -40,7 +40,7 @@ class MessageController extends Controller
 
         $message->save();
 
-        return view('message.show', ['message' => $message]);
+        return view($this->findView('message.show'), ['message' => $message]);
     }
 
     /**
@@ -56,7 +56,7 @@ class MessageController extends Controller
         {
             $users = \App\User::where('id', '!=', auth()->user()->id)->orderBy('name', 'asc')->get();
 
-            return view('message.form', [
+            return view($this->findView('message.form'), [
                 'title' => $request->title,
                 'users' => $users,
                 'receiver' => $request->receiver,
@@ -89,7 +89,7 @@ class MessageController extends Controller
 
             $message->save();
 
-            return view('result', [
+            return view($this->findView('result'), [
                 'message' => __('Message was created successfully.'),
                 'redirect' => route('message.index')
             ]);
@@ -110,7 +110,7 @@ class MessageController extends Controller
 
         if ($request->isMethod('get'))
         {
-            return view('message.form', [
+            return view($this->findView('message.form'), [
                 'message' => $message,
                 'redirect' => $this->getRedirect($request, $message)
             ]);
@@ -141,7 +141,7 @@ class MessageController extends Controller
 
             $message->save();
 
-            return view('result', [
+            return view($this->findView('result'), [
                 'message' => __('Message was updated successfully.'),
                 'redirect' => $this->getRedirect($request, $message)
             ]);
@@ -162,7 +162,7 @@ class MessageController extends Controller
 
         $message->delete();
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('Message was deleted successfully.'),
             'redirect' => $this->getRedirect($request, $message)
         ]);

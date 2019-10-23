@@ -22,7 +22,7 @@ class CategoryController extends Controller
             $query->orderBy('order', 'asc');
         }])->firstOrFail();
 
-        return view('category.show', ['category' => $category]);
+        return view($this->findView('category.show'), ['category' => $category]);
     }
 
     /**
@@ -34,7 +34,7 @@ class CategoryController extends Controller
 
         if ($request->isMethod('get'))
         {
-            return view('category.form', [
+            return view($this->findView('category.form'), [
                 'redirect' => route('index')
             ]);
         }
@@ -51,7 +51,7 @@ class CategoryController extends Controller
 
             $category->save();
 
-            return view('result', [
+            return view($this->findView('result'), [
                 'message' => __('Category was created successfully.'),
                 'redirect' => route('index')
             ]);
@@ -71,7 +71,7 @@ class CategoryController extends Controller
 
         if ($request->isMethod('get'))
         {
-            return view('category.form', [
+            return view($this->findView('category.form'), [
                 'category' => $category,
                 'redirect' => $this->getRedirect($request, $category)
             ]);
@@ -103,7 +103,7 @@ class CategoryController extends Controller
 
             $category->save();
 
-            return view('result', [
+            return view($this->findView('result'), [
                 'message' => __('Category was updated successfully.'),
                 'redirect' => $this->getRedirect($request, $category)
             ]);
@@ -133,7 +133,7 @@ class CategoryController extends Controller
 
         $category->delete();
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('Category was deleted successfully.'),
             'redirect' => route('index')
         ]);
@@ -189,7 +189,7 @@ class CategoryController extends Controller
             }
         }
 
-        return view('result', [
+        return view($this->findView('result'), [
             'message' => __('Category was moved successfully.'),
             'redirect' => route('index')
         ]);

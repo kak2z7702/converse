@@ -29,7 +29,7 @@ class HomeController extends Controller
         // latest comment
         $latest_comment = \App\Comment::orderBy('created_at', 'desc')->first();
 
-        return view('home', [
+        return view($this->findView('home'), [
             'categories' => $categories,
             'last_category_order' => $last_category_order,
             'activity' => [

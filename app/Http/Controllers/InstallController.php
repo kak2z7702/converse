@@ -159,7 +159,8 @@ class InstallController extends Controller
             $options = [
                 'community' => [
                     'name' => $data['community_name'],
-                    'birthday' => now()->format('Y-m-d H:i')
+                    'birthday' => now()->format('Y-m-d H:i'),
+                    'theme' => 'light'
                 ],
                 'background' => [
                     'color' => null,
@@ -177,7 +178,7 @@ class InstallController extends Controller
             // login admin user
             auth()->guard()->login($user);
 
-            return view('result', [
+            return view($this->findView('result'), [
                 'message' => __('Installation was successful.'),
                 'redirect' => route('index')
             ]);
@@ -194,14 +195,45 @@ class InstallController extends Controller
     {   
         if ($request->isMethod('get'))
         {
-            return view('options', [
-                'redirect' => route('index')
+            // community themes
+            $themes = array();
+
+            // views path
+            $views_path = resource_path('views');
+
+            // views directory file infos
+            $file_infos = new \DirectoryIterator($views_path);
+            
+            // get theme directories
+            foreach ($file_infos as $file_info)
+            {
+                if ($file_info->isDir() && !$file_info->isDot() && $file_info->getFilename() != 'layouts')
+                {
+                    $theme_folder = $file_info->getFilename();
+                    $theme_xml = $views_path . DIRECTORY_SEPARATOR . $theme_folder . DIRECTORY_SEPARATOR . 'theme.xml';
+
+                    if (file_exists($theme_xml))
+                    {
+                        $theme_doc = simplexml_load_file($theme_xml);
+                        
+                        $theme = json_decode(json_encode($theme_doc), false);
+                        $theme->id = $theme_folder;
+    
+                        $themes[] = $theme;
+                    }
+                }
+            }
+
+            return view($this->findView('options'), [
+                'redirect' => route('index'),
+                'themes' => $themes
             ]);
         }
         else if ($request->isMethod('post'))
         {
             $data = $request->validate([
                 'community_name' => 'required|string|max:64',
+                'community_theme' => 'required|string|max:64',
                 'background_color' => 'nullable|regex:/^#[0-9a-zA-Z]{6}$/i',
                 'background_image' => 'nullable|image|max:1024',
                 'display_cookie_consent' => 'required|in:on,off'
@@ -235,7 +267,8 @@ class InstallController extends Controller
             $options = [
                 'community' => [
                     'name' => $data['community_name'],
-                    'birthday' => ($options) ? $options->community->birthday : now()->format('Y-m-d H:i')->toDateTimeString()
+                    'birthday' => ($options) ? $options->community->birthday : now()->format('Y-m-d H:i')->toDateTimeString(),
+                    'theme' => $data['community_theme']
                 ],
                 'background' => [
                     'color' => $data['background_color'],
@@ -247,7 +280,7 @@ class InstallController extends Controller
             // make options file
             Storage::put('options.json', json_encode($options));
 
-            return view('result', [
+            return view($this->findView('result'), [
                 'message' => __('Options updated successfully.'),
                 'redirect' => route('index')
             ]);

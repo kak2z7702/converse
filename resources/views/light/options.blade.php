@@ -35,6 +35,24 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="communityTheme" class="col-md-2 col-form-label text-md-right">{{ __('Community Theme') }}</label>
+
+                            <div class="col-md-8">
+                                <select id="communityTheme" class="form-control @error('community_theme') is-invalid @enderror" name="community_theme" required>
+                                    @foreach ($themes as $theme)
+                                    <option value="{{ $theme->id }}"{{ ($theme->id == old('community_theme', $options->community->theme)) ? 'selected' : '' }}>{{ $theme->name }} ({{ __('By') }} {{ $theme->author }}) {{ __('Version') }} {{ $theme->version }}</option>
+                                    @endforeach
+                                </select>
+
+                                @error('community_theme')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
                         <hr />
 
                         <div class="form-group row">

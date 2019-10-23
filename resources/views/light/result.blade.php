@@ -8,6 +8,12 @@
                 <div class="card-header">Result</div>
 
                 <div class="card-body">
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+
                     {{ $message }}<br /><a href="{{ $redirect }}">&larr; {{ __('Back') }}</a>
                 </div>
             </div>
