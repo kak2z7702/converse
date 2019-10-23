@@ -69,19 +69,20 @@ If you are willing to deploy, you can follow [deployment instructions](https://l
 ## Features
 
 - Installation wizard.
-- User editor with role assignment.
-- Role editor for different authorization rules.
 - Theme customization.
+- Background customizations.
+- User editor with role assignment.
+- Role editor with dynamic authorization rules.
 - Dynamic menu and page editor.
 - Categorization of topics and threads.
 - Direct messaging.
 - Profile editor.
 - User ban.
-- Thread closing, pinning.
+- Thread closing.
+- Thread pinning.
 - Thread subscription.
 - Favorite threads list.
 - In-place content management.
-- Easy to use [summrnote](https://summernote.org/) WYSIWYG editor implementation for pages, threads and comments.
 - Human friendly URLs.
-- Background customizations.
 - Cookie consent notice display.
+- [summrnote](https://summernote.org/) WYSIWYG editor implementation for pages, threads and comments.
