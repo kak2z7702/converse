@@ -64,15 +64,13 @@
                         </div>
                     </div>
                     @endif
+                    @if ($user->bio)
                     <div class="row mt-1">
                         <div class="col-md-8 offset-md-2">
-                            @if ($user->bio)
                             {{ $user->bio }}
-                            @else
-                            {{ __('This user has no bio.') }}
-                            @endif
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
