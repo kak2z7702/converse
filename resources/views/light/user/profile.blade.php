@@ -117,6 +117,26 @@
                         <hr />
 
                         <div class="form-group row">
+                            <label for="timezone" class="col-md-2 col-form-label text-md-right">{{ __('Time Zone') }}</label>
+
+                            <div class="col-md-8">
+                                <select id="timezone" class="form-control @error('timezone') is-invalid @enderror" name="timezone" required>
+                                    @foreach ($timezones as $timezone)
+                                    <option value="{{ $timezone }}"{{ ($timezone == auth()->user()->timezone) ? 'selected' : '' }}>{{ $timezone }}</option>
+                                    @endforeach
+                                </select>
+
+                                @error('timezone')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="form-group row">
                             <label for="newPassword" class="col-md-2 col-form-label text-md-right">{{ __('New Password') }}</label>
 
                             <div class="col-md-8">

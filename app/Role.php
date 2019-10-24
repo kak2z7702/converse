@@ -31,4 +31,30 @@ class Role extends Model
     {
         return $this->belongsToMany('App\Permission', 'permission_role');
     }
+
+    /**
+     * Created at accessor.
+     * 
+     * @param $value Field value.
+     */
+    public function getCreatedAtAttribute($value)
+    {
+        if (auth()->check()) 
+            return \Carbon::createFromFormat('Y-m-d H:i:s', $value, config('app.timezone'))->setTimezone(auth()->user()->timezone);
+
+        return $value;
+    }
+
+    /**
+     * Updated at accessor.
+     * 
+     * @param $value Field value.
+     */
+    public function getUpdatedAtAttribute($value)
+    {
+        if (auth()->check()) 
+            return \Carbon::createFromFormat('Y-m-d H:i:s', $value, config('app.timezone'))->setTimezone(auth()->user()->timezone);
+
+        return $value;
+    }
 }

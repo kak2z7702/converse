@@ -21,7 +21,8 @@ class User extends Authenticatable
         'show_email',
         'password', 
         'badge', 
-        'bio'
+        'bio',
+        'timezone'
     ];
 
     /**
@@ -67,6 +68,32 @@ class User extends Authenticatable
     public function favorites()
     {
         return $this->hasMany('App\Favorite');
+    }
+
+    /**
+     * Created at accessor.
+     * 
+     * @param $value Field value.
+     */
+    public function getCreatedAtAttribute($value)
+    {
+        if (auth()->check()) 
+            return \Carbon::createFromFormat('Y-m-d H:i:s', $value, config('app.timezone'))->setTimezone(auth()->user()->timezone);
+
+        return $value;
+    }
+
+    /**
+     * Updated at accessor.
+     * 
+     * @param $value Field value.
+     */
+    public function getUpdatedAtAttribute($value)
+    {
+        if (auth()->check()) 
+            return \Carbon::createFromFormat('Y-m-d H:i:s', $value, config('app.timezone'))->setTimezone(auth()->user()->timezone);
+
+        return $value;
     }
 
     /**

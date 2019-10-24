@@ -57,6 +57,7 @@ class UserController extends Controller
 
             return view($this->findView('user.form'), [
                 'roles' => $roles,
+                'timezones' => \DateTimeZone::listIdentifiers(\DateTimeZone::ALL),
                 'redirect' => route('user.index')
             ]);
         }
@@ -68,6 +69,7 @@ class UserController extends Controller
                 'password' => 'required|string|min:8',
                 'photo' => 'nullable|image|max:1024',
                 'bio' => 'nullable|string',
+                'timezone' => 'nullable|string',
                 'badge' => 'nullable|string|in:None,Moderator',
                 'roles' => 'required|array|min:1',
                 'roles.*' => 'required|numeric|distinct',
@@ -79,6 +81,7 @@ class UserController extends Controller
                 'password' => Hash::make($data['password']),
                 'badge' => $data['badge'],
                 'bio' => $data['bio'],
+                'timezone' => $data['timezone']
             ]);
 
             if ($request->has('photo')) $user->photo = $request->photo->store('images/avatars', 'public');
@@ -114,6 +117,7 @@ class UserController extends Controller
                 'user' => $user,
                 'user_roles' => $user->roles->pluck('id')->toArray(),
                 'roles' => $roles,
+                'timezones' => \DateTimeZone::listIdentifiers(\DateTimeZone::ALL),
                 'redirect' => $this->getRedirect($request, $user)
             ]);
         }
@@ -125,6 +129,7 @@ class UserController extends Controller
                 'password' => ['nullable', 'string', 'min:8'],
                 'photo' => ['nullable', 'image', 'max:1024'],
                 'bio' => ['nullable', 'string'],
+                'timezone' => ['nullable', 'string'],
             );
 
             if (!$user->is_admin)
@@ -153,6 +158,7 @@ class UserController extends Controller
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'bio' => $data['bio'],
+                'timezone' => $data['timezone']
             );
 
             if (!$user->is_admin)
@@ -280,7 +286,8 @@ class UserController extends Controller
         if ($request->isMethod('get'))
         {
             return view($this->findView('user.profile'), [
-                'redirect' => route('index')
+                'redirect' => route('index'),
+                'timezones' => \DateTimeZone::listIdentifiers(\DateTimeZone::ALL)
             ]);
         }
         else if ($request->isMethod('post'))
@@ -296,6 +303,7 @@ class UserController extends Controller
                 'show_email' => 'required|in:on,off',
                 'photo' => ['nullable', 'image', 'max:1024'],
                 'bio' => ['nullable', 'string'],
+                'timezone' => ['nullable', 'string'],
                 'new_password' => ['nullable', 'string', 'min:8', 'confirmed'],
             );
 
@@ -315,7 +323,8 @@ class UserController extends Controller
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'show_email' => $data['show_email'],
-                'bio' => strip_tags($data['bio'])
+                'bio' => strip_tags($data['bio']),
+                'timezone' => $data['timezone']
             );
 
             if (!empty($data['new_password']))

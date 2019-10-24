@@ -158,7 +158,7 @@ class InstallController extends Controller
             // community options
             $options = [
                 'app.name' => $data['name'],
-                'app.birthday' => now()->format('Y-m-d H:i'),
+                'app.birthday' => now()->format('Y-m-d H:i:s'),
                 'app.theme' => 'light',
                 'app.background.color' => null,
                 'app.background.image' => null,
