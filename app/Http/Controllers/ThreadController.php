@@ -28,8 +28,14 @@ class ThreadController extends Controller
         if (!$request->has('page'))
             $comments = $thread->comments()->orderBy('created_at', 'asc')->paginate(null, ['*'], 'page', $comments->lastPage());
 
-        $is_subscribed = $thread->subscriptions()->where('user_id', auth()->user()->id)->first();
-        $is_favorited = $thread->favorites()->where('user_id', auth()->user()->id)->first();
+        $is_subscribed = false; 
+        $is_favorited = false;
+
+        if (auth()->check())
+        {
+            $is_subscribed = $thread->subscriptions()->where('user_id', auth()->user()->id)->first();
+            $is_favorited = $thread->favorites()->where('user_id', auth()->user()->id)->first();
+        }
 
         return view($this->findView('thread.show'), [
             'thread' => $thread,
