@@ -50,7 +50,7 @@ class Topic extends Model
         if (auth()->check()) 
             return \Carbon::createFromFormat('Y-m-d H:i:s', $value, config('app.timezone'))->setTimezone(auth()->user()->timezone);
 
-        return $value;
+        return new \Carbon($value);
     }
 
     /**
@@ -63,6 +63,6 @@ class Topic extends Model
         if (auth()->check()) 
             return \Carbon::createFromFormat('Y-m-d H:i:s', $value, config('app.timezone'))->setTimezone(auth()->user()->timezone);
 
-        return $value;
+        return new \Carbon($value);
     }
 }
