@@ -33,8 +33,8 @@ class ThreadController extends Controller
 
         if (auth()->check())
         {
-            $is_subscribed = $thread->subscriptions()->where('user_id', auth()->user()->id)->first();
-            $is_favorited = $thread->favorites()->where('user_id', auth()->user()->id)->first();
+            $is_subscribed = ($thread->subscriptions()->where('user_id', auth()->user()->id)->first() != null);
+            $is_favorited = ($thread->favorites()->where('user_id', auth()->user()->id)->first() != null);
         }
 
         return view($this->findView('thread.show'), [
