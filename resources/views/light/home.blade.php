@@ -120,9 +120,9 @@
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-md-2 text-md-right">{{ __('Today') }}</div>
-                        <div class="col-md-4">{{ now()->setTimezone(auth()->user()->timezone)->format('Y-m-d H:i') }}</div>
+                        <div class="col-md-4">{{ $activity['today_date'] }}</div>
                         <div class="col-md-2 text-md-right">{{ __('Born') }}</div>
-                        <div class="col-md-4">{{ now()->createFromFormat('Y-m-d H:i:s', config('app.birthday'), 'UTC')->setTimezone(auth()->user()->timezone)->format('Y-m-d H:i') }}</div>
+                        <div class="col-md-4">{{ $activity['birth_date'] }}</div>
                     </div>
                     <div class="row">
                         <div class="col-md-2 text-md-right">{{ __('Active Thread') }}</div>
