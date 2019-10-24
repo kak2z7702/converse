@@ -67,6 +67,7 @@ class UserController extends Controller
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:8',
                 'photo' => 'nullable|image|max:1024',
+                'bio' => 'nullable|string',
                 'badge' => 'nullable|string|in:None,Moderator',
                 'roles' => 'required|array|min:1',
                 'roles.*' => 'required|numeric|distinct',
@@ -76,7 +77,8 @@ class UserController extends Controller
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
-                'badge' => $data['badge']
+                'badge' => $data['badge'],
+                'bio' => $data['bio'],
             ]);
 
             if ($request->has('photo')) $user->photo = $request->photo->store('images/avatars', 'public');
@@ -121,7 +123,8 @@ class UserController extends Controller
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user)],
                 'password' => ['nullable', 'string', 'min:8'],
-                'photo' => ['nullable', 'image', 'max:1024']
+                'photo' => ['nullable', 'image', 'max:1024'],
+                'bio' => ['nullable', 'string'],
             );
 
             if (!$user->is_admin)
@@ -149,7 +152,7 @@ class UserController extends Controller
             $user_data = array(
                 'name' => $data['name'],
                 'email' => $data['email'],
-                'bio' => $data['bio']
+                'bio' => $data['bio'],
             );
 
             if (!$user->is_admin)
