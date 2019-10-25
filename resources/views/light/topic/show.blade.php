@@ -94,7 +94,7 @@
                     @empty
                     {{ __('Start creating some threads!') }}
                     @endforelse
-                    @if ($threads->hasMorePages())
+                    @if ($threads->lastPage() > 1)
                     <div class="row mt-3">
                         <div class="col-12 d-flex justify-content-center">
                         {{ $threads->links() }}

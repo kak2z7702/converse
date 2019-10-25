@@ -60,7 +60,7 @@
                     @empty
                     {{ __('This community has no users.') }}
                     @endforelse
-                    @if ($users->hasMorePages())
+                    @if ($users->lastPage() > 1)
                     <div class="row mt-3">
                         <div class="col-12">
                         {{ $users->links() }}

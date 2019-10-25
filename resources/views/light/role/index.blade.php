@@ -46,7 +46,7 @@
                     @empty
                     {{ __('This community has no roles.') }}
                     @endforelse
-                    @if ($roles->hasMorePages())
+                    @if ($roles->lastPage() > 1)
                     <div class="row mt-3">
                         <div class="col-12">
                         {{ $roles->links() }}

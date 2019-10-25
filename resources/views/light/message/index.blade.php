@@ -58,7 +58,7 @@
                     @empty
                     {{ __('You have no messages.') }}
                     @endforelse
-                    @if ($messages->hasMorePages())
+                    @if ($messages->lastPage() > 1)
                     <div class="row mt-3">
                         <div class="col-12">
                         {{ $messages->links() }}
