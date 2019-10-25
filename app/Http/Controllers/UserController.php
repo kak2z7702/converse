@@ -14,13 +14,27 @@ class UserController extends Controller
     /**
      * Show the users management page.
      *
+     * @param $request Incoming request.
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('viewAny', 'App\User');
 
-        $users = User::orderBy('created_at', 'asc')->paginate();
+        $users = null;
+
+        if (!$request->filled('q'))
+        {
+            $users = User::orderBy('created_at', 'asc')->paginate();
+        }
+        else
+        {
+            $data = $request->validate(['q' => 'string|max:256']);
+
+            $users = User::where('name', 'like', $data['q'] . '%')->orderBy('created_at', 'asc')->paginate();
+
+            $users->appends(['q' => request()->q]);
+        }
 
         return view($this->findView('user.index'), ['users' => $users]);
     }
@@ -267,13 +281,29 @@ class UserController extends Controller
     /**
      * Show the users favorites page.
      *
+     * @param $request Incoming request.
      * @return \Illuminate\Contracts\Support\Renderable
      */
-            $favorites = \App\Favorite::where('user_id', auth()->user()->id)->orderBy('created_at', 'asc')->paginate();
+    public function favorites(Request $request)
     {
-        $favorites = \App\Favorite::orderBy('created_at', 'asc')->paginate();
+        $favorites = \App\Favorite::where('user_id', auth()->user()->id)->orderBy('created_at', 'asc')->pluck('thread_id');
+        
+        $threads = null;
 
-        return view($this->findView('user.favorites'), ['favorites' => $favorites]);
+        if (!$request->filled('q'))
+        {
+            $threads = \App\Thread::whereIn('id', $favorites)->paginate();
+        }
+        else
+        {
+            $data = $request->validate(['q' => 'string|max:256']);
+
+            $threads = \App\Thread::where('title', 'like', $data['q'] . '%')->whereIn('id', $favorites)->paginate();
+
+            $threads->appends(['q' => request()->q]);
+        }
+
+        return view($this->findView('user.favorites'), ['threads' => $threads]);
     }
 
     /**

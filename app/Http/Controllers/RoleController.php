@@ -10,13 +10,27 @@ class RoleController extends Controller
     /**
      * Show the roles management page.
      *
+     * @param $request Incoming request.
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('viewAny', 'App\Role');
 
-        $roles = Role::orderBy('created_at', 'asc')->paginate();
+        $roles = null;
+
+        if (!$request->filled('q'))
+        {
+            $roles = Role::orderBy('created_at', 'asc')->paginate();
+        }
+        else
+        {
+            $data = $request->validate(['q' => 'string|max:256']);
+
+            $roles = Role::where('title', 'like', $data['q'] . '%')->orderBy('created_at', 'asc')->paginate();
+
+            $roles->appends(['q' => request()->q]);
+        }
 
         return view($this->findView('role.index'), ['roles' => $roles]);
     }

@@ -13,13 +13,27 @@ class PageController extends Controller
     /**
      * Show the pages management page.
      *
+     * @param $request Incoming request.
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('viewAny', 'App\Page');
 
-        $pages = Page::orderBy('created_at', 'asc')->paginate();
+        $pages = null;
+
+        if (!$request->filled('q'))
+        {
+            $pages = Page::orderBy('created_at', 'asc')->paginate();
+        }
+        else
+        {
+            $data = $request->validate(['q' => 'string|max:256']);
+
+            $pages = Page::where('title', 'like', $data['q'] . '%')->orderBy('created_at', 'asc')->paginate();
+
+            $pages->appends(['q' => request()->q]);
+        }  
 
         return view($this->findView('page.index'), ['pages' => $pages]);
     }

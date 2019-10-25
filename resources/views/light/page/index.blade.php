@@ -1,6 +1,18 @@
 @can('viewAny', 'App\Page')
 @extends(config('theme.layout'))
 
+@section('css')
+#search {
+    -webkit-border-top-right-radius: 0 !important;
+    -webkit-border-bottom-right-radius: 0 !important;
+    -moz-border-radius-topright: 0 !important;
+    -moz-border-radius-bottomright: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    min-width: 50px;
+}
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row mb-3">
@@ -10,20 +22,25 @@
                     {{ __('Pages') }}
                 </div>
 
-                <div class="card-body">
-                    @auth
+                <div class="card-body">                    
                     @can('create', 'App\Page')
                     <div class="row mb-3">
-                        <div class="col-12"><a href="{{ route('page.create') }}" class="btn btn-primary">{{ __('+ New Page') }}</a></div>
+                        <div class="col-5"><a href="{{ route('page.create') }}" class="btn btn-primary">{{ __('+ New Page') }}</a></div>
+                        <div class="col-7">
+                            <form action="{{ route('page.index') }}" method="get">
+                                <div class="btn-group float-right" role="group" aria-label="Search query">
+                                    <input id="search" name="q" type="text" class="form-control @error('search') is-invalid @enderror" value="{{ old('search', request()->filled('q') ? request()->q : '') }}" placeholder="Title..." autofocus>
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     @endcan
-                    @endauth
                     @forelse ($pages as $page)
                     <div class="row @if (!$loop->last){{ 'mb-3' }}@endif">
-                        <div class="@auth @canany(['update', 'delete'], $page){{ 'col-10' }}@else{{ 'col-12' }}@endcanany @else{{ 'col-12' }}@endauth">
+                        <div class="@canany(['update', 'delete'], $page){{ 'col-10' }}@else{{ 'col-12' }}@endcanany">
                             <a href="{{ route('page.show', ['slug' => $page->slug]) }}" target="_blank"><h5 class="mt-2 mb-1">{{ $page->title }}</h5></a>
                         </div>
-                        @auth
                         @canany(['update', 'delete'], $page)
                         <div class="col-2 pt-1">
                             <div class="dropdown float-right">
@@ -41,10 +58,9 @@
                             </div>
                         </div>
                         @endcanany
-                        @endauth
                     </div>
                     @empty
-                    {{ __('This community has no pages.') }}
+                    {{ __('There are no pages to display.') }}
                     @endforelse
                     @if ($pages->lastPage() > 1)
                     <div class="row mt-3">

@@ -13,15 +13,37 @@ class TopicController extends Controller
     /**
      * Show the topic page.
      *
+     * @param $request Incoming request.
      * @param $category_slug Topic's category slug.
      * @param $topic_slug Topic slug.
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function show($category_slug, $topic_slug)
+    public function show(Request $request, $category_slug, $topic_slug)
     {
         $category = \App\Category::where('slug', $category_slug)->firstOrFail();
         $topic = $category->topics()->where('slug', $topic_slug)->firstOrFail();
-        $threads = $topic->threads()->orderBy('is_pinned', 'desc')->orderBy('created_at', 'desc')->paginate();
+
+        $threads = null;
+
+        if (!$request->filled('q'))
+        {
+            $threads = $topic->threads()
+                ->orderBy('is_pinned', 'desc')
+                ->orderBy('created_at', 'desc')
+                ->paginate();
+        }
+        else
+        {
+            $data = $request->validate(['q' => 'string|max:256']);
+
+            $threads = $topic->threads()
+                ->where('title', 'like', $data['q'] . '%')
+                ->orderBy('is_pinned', 'desc')
+                ->orderBy('created_at', 'desc')
+                ->paginate();
+
+            $threads->appends(['q' => request()->q]);
+        }
 
         return view($this->findView('topic.show'), [
             'topic' => $topic,

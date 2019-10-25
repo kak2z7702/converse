@@ -1,6 +1,18 @@
 @can('viewAny', 'App\Menu')
 @extends(config('theme.layout'))
 
+@section('css')
+#search {
+    -webkit-border-top-right-radius: 0 !important;
+    -webkit-border-bottom-right-radius: 0 !important;
+    -moz-border-radius-topright: 0 !important;
+    -moz-border-radius-bottomright: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    min-width: 50px;
+}
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row mb-3">
@@ -11,22 +23,27 @@
                 </div>
 
                 <div class="card-body">
-                    @auth
                     @can('create', 'App\Menu')
                     <div class="row mb-3">
-                        <div class="col-12"><a href="{{ route('menu.create') }}" class="btn btn-primary">{{ __('+ New Menu') }}</a></div>
+                        <div class="col-5"><a href="{{ route('menu.create') }}" class="btn btn-primary">{{ __('+ New Menu') }}</a></div>
+                        <div class="col-7">
+                            <form action="{{ route('menu.index') }}" method="get">
+                                <div class="btn-group float-right" role="group" aria-label="Search query">
+                                    <input id="search" name="q" type="text" class="form-control @error('search') is-invalid @enderror" value="{{ old('search', request()->filled('q') ? request()->q : '') }}" placeholder="Title..." autofocus>
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     @endcan
-                    @endauth
                     @forelse ($menus as $menu)
                     <div class="row @if (!$loop->last){{ 'mb-3' }}@endif">
                         <div class="col-6">
                             <a href="{{ $menu->url }}" target="_blank"><h5 class="mt-2 mb-1">{{ $menu->title }}</h5></a>
                         </div>
-                        <div class="@auth @canany(['update', 'delete'], $menu){{ 'col-4' }}@else{{ 'col-6' }}@endcanany @else{{ 'col-6' }}@endauth">
+                        <div class="@canany(['update', 'delete'], $menu){{ 'col-4' }}@else{{ 'col-6' }}@endcanany">
                             <div class="mt-2">{{ $menu->url }}</div>
                         </div>
-                        @auth
                         @canany(['update', 'delete', 'move'], $menu)
                         <div class="col-2 pt-1">
                             <div class="dropdown float-right">
@@ -55,10 +72,9 @@
                             </div>
                         </div>
                         @endcanany
-                        @endauth
                     </div>
                     @empty
-                    {{ __('This community has no menus.') }}
+                    {{ __('There are no menus to display.') }}
                     @endforelse
                     @if ($menus->lastPage() > 1)
                     <div class="row mt-3">

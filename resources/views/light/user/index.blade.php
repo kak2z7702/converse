@@ -1,6 +1,18 @@
 @can('viewAny', 'App\User')
 @extends(config('theme.layout'))
 
+@section('css')
+#search {
+    -webkit-border-top-right-radius: 0 !important;
+    -webkit-border-bottom-right-radius: 0 !important;
+    -moz-border-radius-topright: 0 !important;
+    -moz-border-radius-bottomright: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    min-width: 50px;
+}
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row mb-3">
@@ -11,16 +23,22 @@
                 </div>
 
                 <div class="card-body">
-                    @auth
                     @can('create', 'App\User')
                     <div class="row mb-3">
-                        <div class="col-12"><a href="{{ route('user.create', ['redirect=user.index']) }}" class="btn btn-primary">{{ __('+ New User') }}</a></div>
+                        <div class="col-5"><a href="{{ route('user.create', ['redirect=user.index']) }}" class="btn btn-primary">{{ __('+ New User') }}</a></div>
+                        <div class="col-7">
+                            <form action="{{ route('user.index') }}" method="get">
+                                <div class="btn-group float-right" role="group" aria-label="Search query">
+                                    <input id="search" name="q" type="text" class="form-control @error('search') is-invalid @enderror" value="{{ old('search', request()->filled('q') ? request()->q : '') }}" placeholder="Name..." autofocus>
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     @endcan
-                    @endauth
                     @forelse ($users as $user)
                     <div class="row @if (!$loop->last){{ 'mb-3' }}@endif">
-                        <div class="@auth @canany(['update', 'delete'], $user){{ 'col-10' }}@else{{ 'col-12' }}@endcanany @else{{ 'col-12' }}@endauth">
+                        <div class="@canany(['update', 'delete'], $user){{ 'col-10' }}@else{{ 'col-12' }}@endcanany">
                             <h5 class="mt-2 mb-1">
                                 <a href="{{ route('user.show', ['user' => $user->id]) }}">{{ $user->name }}</a>
                                 @if ($user->is_admin)
@@ -33,7 +51,6 @@
                                 @endif
                             </h5>
                         </div>
-                        @auth
                         @canany(['update', 'delete', 'ban'], $user)
                         <div class="col-2 pt-1">
                             <div class="dropdown float-right">
@@ -55,10 +72,9 @@
                             </div>
                         </div>
                         @endcanany
-                        @endauth
                     </div>
                     @empty
-                    {{ __('This community has no users.') }}
+                    {{ __('There are no users to display.') }}
                     @endforelse
                     @if ($users->lastPage() > 1)
                     <div class="row mt-3">

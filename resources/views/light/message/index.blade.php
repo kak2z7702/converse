@@ -1,6 +1,18 @@
 @can('viewAny', 'App\Message')
 @extends(config('theme.layout'))
 
+@section('css')
+#search {
+    -webkit-border-top-right-radius: 0 !important;
+    -webkit-border-bottom-right-radius: 0 !important;
+    -moz-border-radius-topright: 0 !important;
+    -moz-border-radius-bottomright: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    min-width: 50px;
+}
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row mb-3">
@@ -11,13 +23,19 @@
                 </div>
 
                 <div class="card-body">
-                    @auth
                     @can('create', 'App\Message')
                     <div class="row mb-3">
-                        <div class="col-12"><a href="{{ route('message.create') }}" class="btn btn-primary">{{ __('+ New Message') }}</a></div>
+                        <div class="col-5"><a href="{{ route('message.create') }}" class="btn btn-primary">{{ __('+ New Message') }}</a></div>
+                        <div class="col-7">
+                            <form action="{{ route('message.index') }}" method="get">
+                                <div class="btn-group float-right" role="group" aria-label="Search query">
+                                    <input id="search" name="q" type="text" class="form-control @error('search') is-invalid @enderror" value="{{ old('search', request()->filled('q') ? request()->q : '') }}" placeholder="Title..." autofocus>
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     @endcan
-                    @endauth
                     @forelse ($messages as $message)
                     <div class="row @if (!$loop->last){{ 'mb-3' }}@endif">
                         <div class="col-4">
@@ -32,10 +50,9 @@
                         <div class="col-2">
                             <div class="mt-2">To <a href="{{ route('user.show', ['user' => $message->receiver->id]) }}">{{ $message->receiver->name }}</a></div>
                         </div>
-                        <div class="@auth @canany(['update', 'delete'], $message){{ 'col-2' }}@else{{ 'col-4' }}@endcanany @else{{ 'col-4' }}@endauth">
+                        <div class="@canany(['update', 'delete'], $message){{ 'col-2' }}@else{{ 'col-4' }}@endcanany">
                             <div class="mt-2">{{ $message->created_at }}</div>
                         </div>
-                        @auth
                         @canany(['update', 'delete'], $message)
                         <div class="col-2 pt-1">
                             <div class="dropdown float-right">
@@ -53,10 +70,9 @@
                             </div>
                         </div>
                         @endcanany
-                        @endauth
                     </div>
                     @empty
-                    {{ __('You have no messages.') }}
+                    {{ __('There are no messages to display.') }}
                     @endforelse
                     @if ($messages->lastPage() > 1)
                     <div class="row mt-3">

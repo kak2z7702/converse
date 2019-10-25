@@ -12,16 +12,34 @@ class MessageController extends Controller
     /**
      * Show the messages management page.
      *
+     * @param $request Incoming request.
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('viewAny', 'App\Message');
 
-        $messages = Message::where('user_id', auth()->user()->id)
-            ->orWhere('receiver_id', auth()->user()->id)
-            ->orderBy('created_at', 'desc')
-            ->paginate();
+        $messages = null;
+
+        if (!$request->filled('q'))
+        {
+            $messages = Message::where('user_id', auth()->user()->id)
+                ->orWhere('receiver_id', auth()->user()->id)
+                ->orderBy('created_at', 'desc')
+                ->paginate();
+        }
+        else
+        {
+            $data = $request->validate(['q' => 'string|max:256']);
+
+            $messages = Message::where('title', 'like', $data['q'] . '%')
+                ->where('user_id', auth()->user()->id)
+                ->orWhere('receiver_id', auth()->user()->id)
+                ->orderBy('created_at', 'desc')
+                ->paginate();
+
+            $messages->appends(['q' => request()->q]);
+        } 
 
         return view($this->findView('message.index'), ['messages' => $messages]);
     }

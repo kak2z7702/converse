@@ -13,13 +13,28 @@ class MenuController extends Controller
     /**
      * Show the menus management page.
      *
+     * @param $request Incoming request.
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('viewAny', 'App\Menu');
 
-        $menus = Menu::orderBy('order', 'asc')->paginate();
+        $menus = null;
+
+        if (!$request->filled('q'))
+        {
+            $menus = Menu::orderBy('order', 'asc')->paginate();
+        }
+        else
+        {
+            $data = $request->validate(['q' => 'string|max:256']);
+
+            $menus = Menu::where('title', 'like', $data['q'] . '%')->orderBy('order', 'asc')->paginate();
+
+            $menus->appends(['q' => request()->q]);
+        }        
+
         $last_menu_order = Menu::max('order');
 
         return view($this->findView('menu.index'), [

@@ -1,5 +1,17 @@
 @extends(config('theme.layout'))
 
+@section('css')
+#search {
+    -webkit-border-top-right-radius: 0 !important;
+    -webkit-border-bottom-right-radius: 0 !important;
+    -moz-border-radius-topright: 0 !important;
+    -moz-border-radius-bottomright: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    min-width: 50px;
+}
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row mb-3">
@@ -40,7 +52,15 @@
                     @auth
                     @can('create', 'App\Thread')
                     <div class="row mb-3">
-                        <div class="col-12"><a href="{{ route('thread.create', ['topic' => $topic->id, 'redirect=topic.show']) }}" class="btn btn-primary">{{ __('+ New Thread') }}</a></div>
+                        <div class="col-5"><a href="{{ route('thread.create', ['topic' => $topic->id, 'redirect=topic.show']) }}" class="btn btn-primary">{{ __('+ New Thread') }}</a></div>
+                        <div class="col-7">
+                            <form action="{{ route('topic.show', ['category_slug' => $topic->category->slug, 'topic_slug' => $topic->slug]) }}" method="get">
+                                <div class="btn-group float-right" role="group" aria-label="Search query">
+                                    <input id="search" name="q" type="text" class="form-control @error('search') is-invalid @enderror" value="{{ old('search', request()->filled('q') ? request()->q : '') }}" placeholder="Thread..." autofocus>
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     @endcan
                     @endauth
@@ -92,7 +112,7 @@
                         @endauth
                     </div>
                     @empty
-                    {{ __('Start creating some threads!') }}
+                    {{ __('There are no threads to display.') }}
                     @endforelse
                     @if ($threads->lastPage() > 1)
                     <div class="row mt-3">
