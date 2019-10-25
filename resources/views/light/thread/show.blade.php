@@ -8,17 +8,23 @@
 @section('styles')
 <!-- summernote css -->
 <link href="{{ asset('third-party/summernote-0.8.12/summernote-bs4.css') }}" rel="stylesheet">
+@endsection
 
-<style>
-    .quotefrom {
-        background: #eeeeee;
-        color: crimson;
-    }
+@section('css')
+.quotefrom {
+    background: #eeeeee;
+    color: crimson;
+}
 
-    .quotefrom > strong {
-        color: slategray;
-    }
-</style>
+.quotefrom > strong {
+    color: slategray;
+}
+
+.blockquote {
+    background: #eeeeee;
+    border-left: 5px solid lightsteelblue;
+    padding-left: 5px;
+}
 @endsection
 
 @section('content')

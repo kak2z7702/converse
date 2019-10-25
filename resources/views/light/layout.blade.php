@@ -42,15 +42,6 @@
     @endif
 
     <style>
-        .blockquote {
-            background: #eeeeee;
-            border-left: 5px solid lightsteelblue;
-            padding-left: 5px;
-        }
-
-        .img-border {
-            border: 3px solid #cccccc;
-        }
         @if (config('app.background.color') || config('app.background.image'))
         body {
             @if (config('app.background.color')) 
@@ -63,6 +54,14 @@
             background-size: cover;
             @endif
         }
+        @endif
+
+        .img-border {
+            border: 3px solid #cccccc;
+        }
+
+        @hasSection('css')
+        @yield('css')
         @endif
     </style>
 </head>
