@@ -137,7 +137,7 @@
                         <div class="col-md-4">{{ $activity['members_count'] }}</div>
                     </div>
                     <div class="row">
-                        <div class="col-md-2 text-md-right">{{ __('Active User') }}</div>
+                        <div class="col-md-2 text-md-right">{{ __('Active Member') }}</div>
                         <div class="col-md-4">
                             @isset($activity['active_user'])
                             <a href="{{ route('user.show', ['user' => $activity['active_user']->id]) }}">{{ $activity['active_user']->name }}</a>
