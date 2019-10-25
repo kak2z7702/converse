@@ -269,7 +269,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function favorites()
+            $favorites = \App\Favorite::where('user_id', auth()->user()->id)->orderBy('created_at', 'asc')->paginate();
     {
         $favorites = \App\Favorite::orderBy('created_at', 'asc')->paginate();
 
