@@ -8,11 +8,11 @@
                 <div class="card-header">
                     <a href="{{ route('index') }}">{{ __('Home') }}</a> >
                     <a href="{{ route('user.show', ['user' => auth()->user()->id]) }}">{{ __('User') }}</a> >
-                    <a href="{{ route('user.profile') }}">{{ __('Profile') }}</a>
+                    <a href="{{ route('user.profile', ['user' => auth()->user()->id]) }}">{{ __('Profile') }}</a>
                 </div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('user.profile', ['redirect' => request('redirect')]) }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('user.profile', ['user' => auth()->user()->id, 'redirect' => request('redirect')]) }}" enctype="multipart/form-data">
                         @csrf
 
                         <div class="form-group row">

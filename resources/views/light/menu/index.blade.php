@@ -99,7 +99,7 @@
     </div>
 </div>
 <!-- Menu Delete Form -->
-<form id="menuDeleteForm" action="{{ route('menu.delete') }}" method="post" class="d-none">
+<form id="menuDeleteForm" action="{{ route('menu.delete', ['menu' => 0]) }}" method="post" class="d-none">
     @csrf
     <input name="menus" type="hidden" value="" />
 </form>

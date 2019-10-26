@@ -471,7 +471,7 @@ class ThreadController extends Controller
                     ]);
                 break;
                 case 'user.favorites':
-                    $redirect = route($request->redirect);
+                    $redirect = route($request->redirect, ['user' => auth()->user()->id]);
                 break;
             }
         }

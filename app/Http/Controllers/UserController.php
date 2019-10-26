@@ -313,9 +313,10 @@ class UserController extends Controller
      * Show the users favorites page.
      *
      * @param $request Incoming request.
+     * @param $user User id.
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function favorites(Request $request)
+    public function favorites(Request $request, $user)
     {
         $threads = null;
 
@@ -347,9 +348,10 @@ class UserController extends Controller
     /**
      * Show the user profile to update information.
      * 
+     * @param $user User id.
      * @param $request Incoming request.
      */
-    public function profile(Request $request)
+    public function profile(Request $request, $user)
     {
         if ($request->isMethod('get'))
         {
@@ -380,7 +382,7 @@ class UserController extends Controller
             if ($validator->fails())
             {
                 return redirect()
-                    ->route('user.profile')
+                    ->route('user.profile', ['user' => auth()->user()->id])
                     ->withErrors($validator)
                     ->withInput();
             }

@@ -87,7 +87,7 @@
     </div>
 </div>
 <!-- Role Delete Form -->
-<form id="roleDeleteForm" action="{{ route('role.delete') }}" method="post" class="d-none">
+<form id="roleDeleteForm" action="{{ route('role.delete', ['role' => 0]) }}" method="post" class="d-none">
     @csrf
     <input name="roles" type="hidden" value="" />
 </form>

@@ -152,7 +152,7 @@
     </div>
 </div>
 <!-- Thread Delete Form -->
-<form id="threadDeleteForm" action="{{ route('thread.delete') }}" method="post" class="d-none">
+<form id="threadDeleteForm" action="{{ route('thread.delete', ['thread' => 0]) }}" method="post" class="d-none">
     @csrf
     <input name="redirect" type="hidden" value="topic.show" />
     <input name="threads" type="hidden" value="" />

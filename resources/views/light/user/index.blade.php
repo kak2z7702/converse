@@ -97,7 +97,7 @@
     </div>
 </div>
 <!-- User Delete Form -->
-<form id="userDeleteForm" action="{{ route('user.delete') }}" method="post" class="d-none">
+<form id="userDeleteForm" action="{{ route('user.delete', ['user' => 0]) }}" method="post" class="d-none">
     @csrf
     <input name="users" type="hidden" value="" />
 </form>

@@ -95,7 +95,7 @@
     </div>
 </div>
 <!-- Message Delete Form -->
-<form id="messageDeleteForm" action="{{ route('message.delete') }}" method="post" class="d-none">
+<form id="messageDeleteForm" action="{{ route('message.delete', ['message' => 0]) }}" method="post" class="d-none">
     @csrf
     <input name="messages" type="hidden" value="" />
 </form>

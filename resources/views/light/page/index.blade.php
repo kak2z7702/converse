@@ -84,7 +84,7 @@
     </div>
 </div>
 <!-- Page Delete Form -->
-<form id="pageDeleteForm" action="{{ route('page.delete') }}" method="post" class="d-none">
+<form id="pageDeleteForm" action="{{ route('page.delete', ['page' => 0]) }}" method="post" class="d-none">
     @csrf
     <input name="pages" type="hidden" value="" />
 </form>

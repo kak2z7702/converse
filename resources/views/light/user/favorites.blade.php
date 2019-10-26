@@ -20,13 +20,13 @@
                 <div class="card-header">
                     <a href="{{ route('index') }}">{{ __('Home') }}</a> >
                     <a href="{{ route('user.show', ['user' => auth()->user()->id]) }}">{{ __('User') }}</a> >
-                    <a href="{{ route('user.favorites') }}">{{ __('Favorites') }}</a>
+                    <a href="{{ route('user.favorites', ['user' => auth()->user()->id]) }}">{{ __('Favorites') }}</a>
                 </div>
 
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-12">
-                            <form action="{{ route('user.favorites') }}" method="get">
+                            <form action="{{ route('user.favorites', ['user' => auth()->user()->id]) }}" method="get">
                                 <div class="btn-group float-right" role="group" aria-label="Search query">
                                     <input id="search" name="q" type="text" class="form-control @error('search') is-invalid @enderror" value="{{ old('search', request()->filled('q') ? request()->q : '') }}" placeholder="Thread..." autofocus>
                                     <button type="submit" class="btn btn-primary">Search</button>
