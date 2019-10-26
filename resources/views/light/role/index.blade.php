@@ -163,7 +163,7 @@
         $('#roleDeleteModal #poluralMessage').addClass('d-none');
         $('#roleDeleteModal #deleteSingleButton').removeClass('d-none');
         $('#roleDeleteModal #deleteMultiButton').addClass('d-none');
-        $('#roleDeleteModal #deleteButton').attr('href', href);
+        $('#roleDeleteModal #deleteSingleButton').attr('href', href);
     }
 
     function deleteMulti()

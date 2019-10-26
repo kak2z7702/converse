@@ -171,7 +171,7 @@
         $('#messageDeleteModal #poluralMessage').addClass('d-none');
         $('#messageDeleteModal #deleteSingleButton').removeClass('d-none');
         $('#messageDeleteModal #deleteMultiButton').addClass('d-none');
-        $('#messageDeleteModal #deleteButton').attr('href', href);
+        $('#messageDeleteModal #deleteSingleButton').attr('href', href);
     }
 
     function deleteMulti()
