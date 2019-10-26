@@ -254,9 +254,9 @@ class UserController extends Controller
         
                     if (Storage::exists($photo_path)) Storage::delete($photo_path);
                 }
-        
-                $user->delete();
             }
+
+            User::whereIn('id', $users->pluck('id'))->delete();
     
             return view($this->findView('result'), [
                 'message' => __('Users were deleted successfully.'),
