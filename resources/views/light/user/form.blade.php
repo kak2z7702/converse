@@ -74,7 +74,7 @@
                             </div>
                         </div>
 
-                        <div id="photoPreviewRow" class="form-group row" style="display: none">
+                        <div id="photoPreviewRow" class="form-group row d-none">
                             <label class="col-md-2 col-form-label text-md-right">{{ __('New Avatar') }}</label>
 
                             <div class="col-md-8">
@@ -191,7 +191,7 @@
             $('#photo').on('change', function(event) {
                 let blob = URL.createObjectURL(event.target.files[0]);
 
-                $('#photoPreviewRow').show();
+                $('#photoPreviewRow').removeClass('d-none');
                 $('#photoPreview').attr('src', blob);
 
                 URL.revokeObjectURL(blob);
