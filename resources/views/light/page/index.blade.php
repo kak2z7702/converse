@@ -43,7 +43,9 @@
                     <div class="row @if (!$loop->last){{ 'mb-3' }}@endif">
                         <div class="@canany(['update', 'delete'], $page){{ 'col-10' }}@else{{ 'col-12' }}@endcanany">    
                             <h5 class="mt-2 mb-1">
+                                @can('delete', $page)
                                 <input type="checkbox" class="mr-2" value="{{ $page->id }}" onchange="trackDeletion(event)">
+                                @endcan
                                 <a href="{{ route('page.show', ['slug' => $page->slug]) }}" target="_blank">{{ $page->title }}</a>
                             </h5>
                         </div>

@@ -44,9 +44,9 @@
                     <div class="row @if (!$loop->last){{ 'mb-3' }}@endif">
                         <div class="@canany(['update', 'delete'], $user){{ 'col-10' }}@else{{ 'col-12' }}@endcanany">
                             <h5 class="mt-2 mb-1">
-                                @if (!$user->is_admin)
+                                @can('delete', $user)
                                 <input type="checkbox" class="mr-2" value="{{ $user->id }}" onchange="trackDeletion(event)">
-                                @endif
+                                @endcan
                                 <a href="{{ route('user.show', ['user' => $user->id]) }}">{{ $user->name }}</a>
                                 @if ($user->is_admin)
                                 <span class="badge badge-info">{{ __('Admin') }}</span>

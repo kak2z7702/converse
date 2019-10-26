@@ -43,9 +43,9 @@
                     <div class="row @if (!$loop->last){{ 'mb-3' }}@endif">
                         <div class="@canany(['update', 'delete'], $role){{ 'col-10' }}@else{{ 'col-12' }}@endcanany">
                             <h5 class="mt-2 mb-1">
-                                @if (!$role->is_protected)
+                                @can('delete', $role)
                                 <input type="checkbox" class="mr-2" value="{{ $role->id }}" onchange="trackDeletion(event)">
-                                @endif
+                                @endcan
                                 {{ $role->title }} 
                                 @if ($role->is_protected)
                                 <span class="badge badge-info">{{ __('Protected') }}</span>

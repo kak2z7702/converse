@@ -44,7 +44,9 @@
                     <div class="row @if (!$loop->last){{ 'mb-3' }}@endif">
                         <div class="col-6">
                             <h5 class="mt-2 mb-1">
+                                @can('delete', $menu)
                                 <input type="checkbox" class="mr-2" value="{{ $menu->id }}" onchange="trackDeletion(event)">
+                                @endcan
                                 <a href="{{ $menu->url }}" target="_blank">{{ $menu->title }}</a>
                             </h5>
                         </div>

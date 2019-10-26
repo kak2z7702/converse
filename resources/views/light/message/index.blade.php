@@ -44,7 +44,9 @@
                     <div class="row @if (!$loop->last){{ 'mb-3' }}@endif">
                         <div class="col-4">
                             <h5 class="mt-2 mb-1">
+                                @can('delete', $message)
                                 <input type="checkbox" class="mr-2" value="{{ $message->id }}" onchange="trackDeletion(event)">
+                                @endcan
                                 <a href="{{ route('message.show', ['message' => $message->id]) }}">{{ $message->title }}</a> 
                                 @if (!$message->is_seen && $message->receiver == auth()->user())<span class="badge badge-danger">New</span>@endif
                             </h5>
