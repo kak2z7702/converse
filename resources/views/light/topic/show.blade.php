@@ -70,7 +70,7 @@
                     @endauth
                     @forelse ($threads as $thread)
                     <div class="row @if (!$loop->last){{ 'mb-3' }}@endif">
-                        <div class="col-8">
+                        <div class="col-6">
                             <h5 class="mt-2 mb-1">
                                 @can('delete', $thread)
                                 <input type="checkbox" class="mr-2" value="{{ $thread->id }}" onchange="trackDeletion(event)">
@@ -84,9 +84,14 @@
                                 @endif
                             </h5>
                         </div>
-                        <div class="@auth @canany(['update', 'delete'], $thread){{ 'col-2' }}@else{{ 'col-4' }}@endcanany @else{{ 'col-4' }}@endauth">
+                        <div class="col-2">
                             <div class="mt-2">
                                 {{ __('By') }} <a href="{{ route('user.show', ['user' => $thread->user->id]) }}">{{ $thread->user->name }}</a><br />@ {{ $thread->created_at->format('Y-m-d H:i') }}
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="mt-2">
+                                {{ __('Last') }} <a href="{{ route('user.show', ['user' => $thread->comments()->latest()->first()->user->id]) }}">{{ $thread->comments()->latest()->first()->user->name }}</a><br />@ {{ $thread->comments()->latest()->first()->created_at->format('Y-m-d H:i') }}
                             </div>
                         </div>
                         @auth
