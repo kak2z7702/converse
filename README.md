@@ -81,7 +81,8 @@ If you are willing to deploy, you can follow [deployment instructions](https://l
 - Thread closing.
 - Thread pinning.
 - Thread subscription.
-- Favorite threads list.
+- Thread favoriting.
+- Subscribed, favorited threads list.
 - In-place content management.
 - Human friendly URLs.
 - Cookie consent notice display.
