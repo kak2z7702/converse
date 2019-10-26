@@ -25,6 +25,7 @@ Route::prefix('user')->group(function () {
 
         // custom auth routes
         Route::get('result', 'UserController@result')->name('result');
+        Route::get('{user}/subscriptions', 'UserController@subscriptions')->middleware('auth')->where(['user' => '[0-9]+'])->name('subscriptions');
         Route::get('{user}/favorites', 'UserController@favorites')->middleware('auth')->where(['user' => '[0-9]+'])->name('favorites');
         Route::match(['get', 'post'], '{user}/profile', 'UserController@profile')->middleware('auth')->where(['user' => '[0-9]+'])->name('profile');
         Route::get('/{user}', 'UserController@show')->where(['user' => '[0-9]+'])->name('show');
@@ -119,7 +120,7 @@ Route::prefix('thread')->group(function () {
             Route::get('{thread}/pin', 'ThreadController@pin')->where(['thread' => '[0-9]+'])->name('pin');
             Route::get('{thread}/unpin', 'ThreadController@unpin')->where(['thread' => '[0-9]+'])->name('unpin');
             Route::get('{thread}/subscribe', 'ThreadController@subscribe')->where(['thread' => '[0-9]+'])->name('subscribe');
-            Route::get('{thread}/unsubscribe', 'ThreadController@unsubscribe')->where(['thread' => '[0-9]+'])->name('unsubscribe');
+            Route::match(['get', 'post'], '{thread?}/unsubscribe', 'ThreadController@unsubscribe')->where(['thread' => '[0-9]+'])->name('unsubscribe');
             Route::get('{thread}/favorite', 'ThreadController@favorite')->where(['thread' => '[0-9]+'])->name('favorite');
             Route::match(['get', 'post'], '{thread?}/unfavorite', 'ThreadController@unfavorite')->where(['thread' => '[0-9]+'])->name('unfavorite');
         });

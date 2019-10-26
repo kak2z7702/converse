@@ -316,7 +316,7 @@ class ThreadController extends Controller
         $thread->subscriptions()->save(new \App\Subscription(['user_id' => auth()->user()->id]));
 
         return view($this->findView('result'), [
-            'message' => __('You subscribed to this thread successfully.'),
+            'message' => __('Thread was subscribed to successfully.'),
             'redirect' => $this->getRedirect($request, null, $thread)
         ]);
     }
@@ -327,22 +327,43 @@ class ThreadController extends Controller
      * @param $request Incoming request.
      * @param $thread Thread id.
      */
-    public function unsubscribe(Request $request, $thread)
+    public function unsubscribe(Request $request, $thread = null)
     {
-        $thread = Thread::findOrFail($thread);
+        if ($request->isMethod('get'))
+        {
+            $thread = Thread::findOrFail($thread);
 
-        $this->authorize('subscribe', $thread);
+            $this->authorize('subscribe', $thread);
 
-        $is_subscribed = $thread->subscriptions()->where('user_id', auth()->user()->id)->first();
+            $is_subscribed = $thread->subscriptions()->where('user_id', auth()->user()->id)->first();
 
-        if (!$is_subscribed) return redirect()->back();
+            if (!$is_subscribed) return redirect()->back();
 
-        $thread->subscriptions()->where('user_id', auth()->user()->id)->delete();
+            $thread->subscriptions()->where('user_id', auth()->user()->id)->delete();
 
-        return view($this->findView('result'), [
-            'message' => __('You unsubscribed from this thread successfully.'),
-            'redirect' => $this->getRedirect($request, null, $thread)
-        ]);
+            return view($this->findView('result'), [
+                'message' => __('Thread was unsubscribed from successfully.'),
+                'redirect' => $this->getRedirect($request, null, $thread)
+            ]);
+        }
+        else if ($request->isMethod('post'))
+        {
+            $data = $request->validate([
+                'threads' => 'required|regex:/[0-9]+,?/i'
+            ]);
+
+            $threads = Thread::whereIn('id', explode(",", $data['threads']))->get();
+
+            foreach ($threads as $thread)
+                $this->authorize('subscribe', $thread);
+
+            \App\Subscription::whereIn('thread_id', $threads->pluck('id'))->where('user_id', auth()->user()->id)->delete();
+    
+            return view($this->findView('result'), [
+                'message' => __('Threads were unsubscribed from successfully.'),
+                'redirect' => $this->getRedirect($request, null, $threads[0])
+            ]);
+        }
     }
 
     /**
@@ -490,6 +511,9 @@ class ThreadController extends Controller
                         'topic_slug' => $thread->topic->slug,
                         'thread_slug' => $thread->slug
                     ]);
+                break;
+                case 'user.subscriptions':
+                    $redirect = route($request->redirect, ['user' => auth()->user()->id]);
                 break;
                 case 'user.favorites':
                     $redirect = route($request->redirect, ['user' => auth()->user()->id]);

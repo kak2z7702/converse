@@ -310,6 +310,42 @@ class UserController extends Controller
     }
 
     /**
+     * Show the users subscriptions page.
+     *
+     * @param $request Incoming request.
+     * @param $user User id.
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function subscriptions(Request $request, $user)
+    {
+        $threads = null;
+
+        if (!$request->filled('q'))
+        {
+            $threads = \App\Thread::join('subscriptions', 'threads.id', '=', 'subscriptions.thread_id')
+                ->select('threads.*')
+                ->where('subscriptions.user_id', auth()->user()->id)
+                ->orderBy('subscriptions.created_at', 'desc')
+                ->paginate();
+        }
+        else
+        {
+            $data = $request->validate(['q' => 'string|max:256']);
+
+            $threads = \App\Thread::join('subscriptions', 'threads.id', '=', 'subscriptions.thread_id')
+                ->select('threads.*')
+                ->where('threads.title', 'like', $data['q'] . '%')
+                ->where('subscriptions.user_id', auth()->user()->id)
+                ->orderBy('subscriptions.created_at', 'desc')
+                ->paginate();
+            
+            $threads->appends(['q' => request()->q]);
+        }
+
+        return view($this->findView('user.subscriptions'), ['threads' => $threads]);
+    }
+
+    /**
      * Show the users favorites page.
      *
      * @param $request Incoming request.

@@ -126,6 +126,8 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('message.index') }}">{{ __('Messages') }} @if ($messages > 0)<span class="badge badge-pill badge-danger">{{ $messages }}</span>@endif</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{{ route('user.subscriptions', ['user' => auth()->user()->id]) }}">{{ __('Subscriptions') }}</a>
                                     <a class="dropdown-item" href="{{ route('user.favorites', ['user' => auth()->user()->id]) }}">{{ __('Favorites') }}</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('user.profile', ['user' => auth()->user()->id]) }}">{{ __('Profile') }}</a>
