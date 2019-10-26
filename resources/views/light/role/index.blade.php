@@ -63,7 +63,7 @@
                                     @can('delete', $role)
                                     <a href="#" class="dropdown-item" 
                                         data-toggle="modal" data-target="#roleDeleteModal" 
-                                        onclick="$('#roleDeleteModal #deleteButton').attr('href', '{{ route('role.delete', ['role' => $role->id]) }}')">{{ __('Delete') }}</a>
+                                        onclick="deleteSingle('{{ route('role.delete', ['role' => $role->id]) }}')">{{ __('Delete') }}</a>
                                     @endcan
                                 </div>
                             </div>

@@ -69,7 +69,7 @@
                                     @can('delete', $message)
                                     <a href="#" class="dropdown-item" 
                                         data-toggle="modal" data-target="#messageDeleteModal" 
-                                        onclick="$('#messageDeleteModal #deleteButton').attr('href', '{{ route('message.delete', ['message' => $message->id, 'redirect=message.index']) }}')">{{ __('Delete') }}</a>
+                                        onclick="deleteSingle('{{ route('message.delete', ['message' => $message->id, 'redirect=message.index']) }}')">{{ __('Delete') }}</a>
                                     @endcan
                                 </div>
                             </div>

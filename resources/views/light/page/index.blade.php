@@ -58,7 +58,7 @@
                                     @can('delete', $page)
                                     <a href="#" class="dropdown-item" 
                                         data-toggle="modal" data-target="#pageDeleteModal" 
-                                        onclick="$('#pageDeleteModal #deleteButton').attr('href', '{{ route('page.delete', ['page' => $page->id, 'redirect=page.index']) }}')">{{ __('Delete') }}</a>
+                                        onclick="deleteSingle('{{ route('page.delete', ['page' => $page->id, 'redirect=page.index']) }}')">{{ __('Delete') }}</a>
                                     @endcan
                                 </div>
                             </div>

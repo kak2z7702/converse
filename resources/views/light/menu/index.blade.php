@@ -62,7 +62,7 @@
                                     @can('delete', $menu)
                                     <a href="#" class="dropdown-item" 
                                         data-toggle="modal" data-target="#menuDeleteModal" 
-                                        onclick="$('#menuDeleteModal #deleteButton').attr('href', '{{ route('menu.delete', ['menu' => $menu->id]) }}')">{{ __('Delete') }}</a>
+                                        onclick="deleteSingle('{{ route('menu.delete', ['menu' => $menu->id]) }}')">{{ __('Delete') }}</a>
                                     @endcan
                                     @can('move', $menu)
                                     @if ($menu->order != 1 || $menu->order != $last_menu_order)
