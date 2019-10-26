@@ -26,7 +26,7 @@
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-6">
-                            <button id="checkAllButton" type="button" class="btn btn-primary mt-2 mt-md-0" onclick="checkAll()" disabled>{{ __('Check All') }}</button>
+                            <button id="checkAllButton" type="button" class="btn btn-primary" onclick="checkAll()" disabled>{{ __('Check All') }}</button>
                             <button id="unsubscribeAllButton" type="button" class="btn btn-primary mt-2 mt-md-0" onclick="unsubscribeMulti()" disabled>{{ __('Unsubscribe All') }} (<span>0</span>)</button>
                         </div>
                         <div class="col-6">
