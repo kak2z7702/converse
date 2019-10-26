@@ -9,6 +9,7 @@
                     <div class="row">
                         <div class="@auth @canany(['update', 'delete'], $message){{ 'col-10' }}@else{{ 'col-12' }}@endcanany @else{{ 'col-12' }}@endauth">
                             <div @auth @canany(['update', 'delete'], $message){!! 'class="mt-1"' !!}@endcan @endauth>
+                                <a href="{{ route('index') }}">{{ __('Home') }}</a> >
                                 <a href="{{ route('message.index') }}">{{ __('Messages') }}</a> >
                                 <a href="{{ route('message.show', ['message' => $message->id]) }}">{{ $message->title }}</a>
                             </div>
