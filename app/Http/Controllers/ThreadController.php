@@ -375,7 +375,7 @@ class ThreadController extends Controller
      * @param $request Incoming request.
      * @param $thread Thread id.
      */
-    public function unfavorite(Request $request, $thread)
+    public function unfavorite(Request $request, $thread = null)
     {
         if ($request->isMethod('get'))
         {
