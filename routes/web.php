@@ -113,7 +113,7 @@ Route::prefix('thread')->group(function () {
         Route::middleware('auth')->group(function () {
             Route::match(['get', 'post'], 'create', 'ThreadController@create')->where(['topic' => '[0-9]+'])->name('create');
             Route::match(['get', 'post'], 'update/{thread}', 'ThreadController@update')->where(['thread' => '[0-9]+'])->name('update');
-            Route::get('delete/{thread}', 'ThreadController@delete')->where(['thread' => '[0-9]+'])->name('delete');
+            Route::match(['get', 'post'], 'delete/{thread?}', 'ThreadController@delete')->where(['thread' => '[0-9]+'])->name('delete');
             Route::get('open/{thread}', 'ThreadController@open')->where(['thread' => '[0-9]+'])->name('open');
             Route::get('close/{thread}', 'ThreadController@close')->where(['thread' => '[0-9]+'])->name('close');
             Route::get('pin/{thread}', 'ThreadController@pin')->where(['thread' => '[0-9]+'])->name('pin');

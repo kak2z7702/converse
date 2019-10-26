@@ -50,24 +50,31 @@
 
                 <div class="card-body">
                     @auth
-                    @can('create', 'App\Thread')
                     <div class="row mb-3">
-                        <div class="col-5"><a href="{{ route('thread.create', ['topic' => $topic->id, 'redirect=topic.show']) }}" class="btn btn-primary">{{ __('+ New Thread') }}</a></div>
-                        <div class="col-7">
+                        @can('create', 'App\Thread')
+                        <div class="col-6">
+                            <a href="{{ route('thread.create', ['topic' => $topic->id, 'redirect=topic.show']) }}" class="btn btn-primary">{{ __('+ New Thread') }}</a>
+                            <button id="checkAllButton" type="button" class="btn btn-primary mt-2 mt-md-0" onclick="checkAll()" disabled>{{ __('Check All') }}</button>
+                            <button id="deleteAllButton" type="button" class="btn btn-primary mt-2 mt-md-0" data-toggle="modal" data-target="#threadDeleteModal" onclick="deleteMulti()" disabled>{{ __('Delete All') }} (<span>0</span>)</button>
+                        </div>
+                        @endcan
+                        <div class="@can('create', 'App\Thread'){{ 'col-6' }}@else{{ 'col-12' }}@endcan">
                             <form action="{{ route('topic.show', ['category_slug' => $topic->category->slug, 'topic_slug' => $topic->slug]) }}" method="get">
                                 <div class="btn-group float-right" role="group" aria-label="Search query">
-                                    <input id="search" name="q" type="text" class="form-control @error('search') is-invalid @enderror" value="{{ old('search', request()->filled('q') ? request()->q : '') }}" placeholder="Thread..." autofocus>
+                                    <input id="search" name="q" type="text" class="form-control @error('search') is-invalid @enderror" value="{{ old('search', request()->filled('q') ? request()->q : '') }}" placeholder="Thread...">
                                     <button type="submit" class="btn btn-primary">Search</button>
                                 </div>
                             </form>
                         </div>
                     </div>
-                    @endcan
                     @endauth
                     @forelse ($threads as $thread)
                     <div class="row @if (!$loop->last){{ 'mb-3' }}@endif">
                         <div class="col-8">
                             <h5 class="mt-2 mb-1">
+                                @can('delete', $thread)
+                                <input type="checkbox" class="mr-2" value="{{ $thread->id }}" onchange="trackDeletion(event)">
+                                @endcan
                                 <a href="{{ route('thread.show', ['category_slug' => $topic->category->slug, 'topic_slug' => $topic->slug, 'thread_slug' => $thread->slug]) }}">{{ $thread->title }}</a>
                                 @if (!$thread->is_open)
                                 <span class="badge badge-danger">{{ __('Closed') }}</span>
@@ -94,7 +101,7 @@
                                     @can('delete', $thread)
                                     <a href="#" class="dropdown-item" 
                                         data-toggle="modal" data-target="#threadDeleteModal" 
-                                        onclick="$('#threadDeleteModal #deleteButton').attr('href', '{{ route('thread.delete', ['thread' => $thread->id, 'redirect=topic.show']) }}')">{{ __('Delete') }}</a>
+                                        onclick="deleteSingle('{{ route('thread.delete', ['thread' => $thread->id, 'redirect=topic.show']) }}')">{{ __('Delete') }}</a>
                                     @endcan
                                     @canany(['open', 'pin'], $thread)
                                     <div class="dropdown-divider"></div>
@@ -144,6 +151,12 @@
         </div>
     </div>
 </div>
+<!-- Thread Delete Form -->
+<form id="threadDeleteForm" action="{{ route('thread.delete') }}" method="post" class="d-none">
+    @csrf
+    <input name="redirect" type="hidden" value="topic.show" />
+    <input name="threads" type="hidden" value="" />
+</form>
 <!-- Thread Delete Modal -->
 <div class="modal fade" id="threadDeleteModal" tabindex="-1" role="dialog" aria-labelledby="threadDeleteModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -152,14 +165,87 @@
                 <h5 class="modal-title" id="threadDeleteModal">{{ __('Are you sure?') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
-            <div class="modal-body">
+            <div id="singularMessage" class="modal-body d-none">
                 {{ __('Do you really want to delete this thread?') }}
+            </div>
+            <div id="poluralMessage" class="modal-body d-none">
+                {{ __('Do you really want to delete these threads?') }}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
-                <a id="deleteButton" href="#" class="btn btn-danger">{{ __('Delete') }}</a>
+                <a id="deleteSingleButton" href="#" class="btn btn-danger d-none">{{ __('Delete') }}</a>
+                <button id="deleteMultiButton" class="btn btn-danger d-none" onclick="$('#threadDeleteForm').submit()">{{ __('Delete') }}</button>
             </div>
         </div>
     </div>
 </div>
+<script>
+    var checked = false;
+    var deleted = [];
+    var total = 0;
+
+    function checkAll()
+    {
+        checked = !checked;
+        deleted = [];
+
+        $('input:checkbox').each(function (index, value) {
+            $(value).prop('checked', checked);
+
+            if (checked) deleted.push($(value).val());
+        });
+
+        $('#checkAllButton').text(checked ? "{{ __('Uncheck All') }}" : "{{ __('Check All') }}");
+        $('#deleteAllButton').prop('disabled', deleted.length == 0);
+        $('#deleteAllButton span').text(deleted.length);
+    }
+
+    function trackDeletion(event)
+    {
+        let key = event.target.value;
+        let pos = deleted.indexOf(key);
+
+        if (pos != -1) deleted.splice(pos, 1); else deleted.push(key);
+
+        $('#deleteAllButton').prop('disabled', deleted.length == 0);
+        $('#deleteAllButton span').text(deleted.length);
+
+        if (deleted.length == 0)
+        {   
+            checked = false;
+
+            $('#checkAllButton').text("{{ __('Check All') }}");
+        }
+        else if (deleted.length == total)
+        {
+            checked = true;
+
+            $('#checkAllButton').text("{{ __('Uncheck All') }}");
+        }
+    }
+
+    function deleteSingle(href)
+    {
+        $('#threadDeleteModal #singularMessage').removeClass('d-none');
+        $('#threadDeleteModal #poluralMessage').addClass('d-none');
+        $('#threadDeleteModal #deleteSingleButton').removeClass('d-none');
+        $('#threadDeleteModal #deleteMultiButton').addClass('d-none');
+        $('#threadDeleteModal #deleteSingleButton').attr('href', href);
+    }
+
+    function deleteMulti()
+    {
+        $('#threadDeleteModal #singularMessage').addClass('d-none');
+        $('#threadDeleteModal #poluralMessage').removeClass('d-none');
+        $('#threadDeleteModal #deleteSingleButton').addClass('d-none');
+        $('#threadDeleteModal #deleteMultiButton').removeClass('d-none');
+        $('#threadDeleteForm [name=threads]').val(deleted.join(','));
+    }
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+        total = $('input:checkbox').length;
+
+        $('#checkAllButton').prop('disabled', total == 0);
+    });
+</script>
 @endsection

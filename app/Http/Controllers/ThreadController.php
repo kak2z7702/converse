@@ -169,20 +169,44 @@ class ThreadController extends Controller
      * @param $request Incoming request.
      * @param $thread Thread id.
      */
-    public function delete(Request $request, $thread)
+    public function delete(Request $request, $thread = null)
     {
-        $thread = Thread::findOrFail($thread);
+        if ($request->isMethod('get'))
+        {
+            $thread = Thread::findOrFail($thread);
 
-        $this->authorize('delete', $thread);
+            $this->authorize('delete', $thread);
+    
+            $thread->comments()->delete();
+    
+            $thread->delete();
+    
+            return view($this->findView('result'), [
+                'message' => __('Thread was deleted successfully.'),
+                'redirect' => $this->getRedirect($request, null, $thread)
+            ]);
+        }
+        else if ($request->isMethod('post'))
+        {
+            $data = $request->validate([
+                'threads' => 'required|regex:/[0-9]+,?/i'
+            ]);
 
-        $thread->comments()->delete();
+            $threads = Thread::whereIn('id', explode(",", $data['threads']))->get();
 
-        $thread->delete();
+            foreach ($threads as $thread)
+                $this->authorize('delete', $thread);
+    
+            foreach ($threads as $thread)
+                $thread->comments()->delete();
+    
+            Thread::whereIn('id', $threads->pluck('id'))->delete();
 
-        return view($this->findView('result'), [
-            'message' => __('Thread was deleted successfully.'),
-            'redirect' => $this->getRedirect($request, null, $thread)
-        ]);
+            return view($this->findView('result'), [
+                'message' => __('Threads were deleted successfully.'),
+                'redirect' => $this->getRedirect($request, null, $threads[0])
+            ]);
+        }
     }
 
     /**
