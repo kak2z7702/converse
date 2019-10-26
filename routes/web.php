@@ -121,7 +121,7 @@ Route::prefix('thread')->group(function () {
             Route::get('{thread}/subscribe', 'ThreadController@subscribe')->where(['thread' => '[0-9]+'])->name('subscribe');
             Route::get('{thread}/unsubscribe', 'ThreadController@unsubscribe')->where(['thread' => '[0-9]+'])->name('unsubscribe');
             Route::get('{thread}/favorite', 'ThreadController@favorite')->where(['thread' => '[0-9]+'])->name('favorite');
-            Route::get('{thread}/unfavorite', 'ThreadController@unfavorite')->where(['thread' => '[0-9]+'])->name('unfavorite');
+            Route::match(['get', 'post'], '{thread?}/unfavorite', 'ThreadController@unfavorite')->where(['thread' => '[0-9]+'])->name('unfavorite');
         });
     });
 });

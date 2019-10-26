@@ -377,20 +377,41 @@ class ThreadController extends Controller
      */
     public function unfavorite(Request $request, $thread)
     {
-        $thread = Thread::findOrFail($thread);
+        if ($request->isMethod('get'))
+        {
+            $thread = Thread::findOrFail($thread);
 
-        $this->authorize('favorite', $thread);
+            $this->authorize('favorite', $thread);
 
-        $is_favorited = $thread->favorites()->where('user_id', auth()->user()->id)->first();
+            $is_favorited = $thread->favorites()->where('user_id', auth()->user()->id)->first();
 
-        if (!$is_favorited) return redirect()->back();
+            if (!$is_favorited) return redirect()->back();
 
-        $thread->favorites()->where('user_id', auth()->user()->id)->delete();
+            $thread->favorites()->where('user_id', auth()->user()->id)->delete();
 
-        return view($this->findView('result'), [
-            'message' => __('Thread was unfavorited successfully.'),
-            'redirect' => $this->getRedirect($request, null, $thread)
-        ]);
+            return view($this->findView('result'), [
+                'message' => __('Thread was unfavorited successfully.'),
+                'redirect' => $this->getRedirect($request, null, $thread)
+            ]);
+        }
+        else if ($request->isMethod('post'))
+        {
+            $data = $request->validate([
+                'threads' => 'required|regex:/[0-9]+,?/i'
+            ]);
+
+            $threads = Thread::whereIn('id', explode(",", $data['threads']))->get();
+
+            foreach ($threads as $thread)
+                $this->authorize('favorite', $thread);
+
+            \App\Favorite::whereIn('thread_id', $threads->pluck('id'))->where('user_id', auth()->user()->id)->delete();
+    
+            return view($this->findView('result'), [
+                'message' => __('Threads were unfavorited successfully.'),
+                'redirect' => $this->getRedirect($request, null, $threads[0])
+            ]);
+        }
     }
 
     /**
