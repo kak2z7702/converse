@@ -76,7 +76,7 @@ class ThreadController extends Controller
             if ($validator->fails())
             {
                 return redirect()
-                    ->route('thread.create', ['redirect' => 'topic.show'])
+                    ->route('thread.create', ['topic' => $request->topic, 'redirect' => 'topic.show'])
                     ->withErrors($validator)
                     ->withInput();
             }

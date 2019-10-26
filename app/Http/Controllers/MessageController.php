@@ -94,7 +94,10 @@ class MessageController extends Controller
             if ($validator->fails())
             {
                 return redirect()
-                    ->route('message.index')
+                    ->route('message.create', [
+                            'title' => $request->title,
+                            'receiver' => $request->receiver
+                        ])
                     ->withErrors($validator)
                     ->withInput();
             }
