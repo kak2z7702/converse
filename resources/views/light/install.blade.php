@@ -66,6 +66,7 @@
                                 <button type="submit" class="btn btn-primary" onclick="$(this).find('*[role=status]').show()">
                                     <span class="spinner-border spinner-border-sm" role="status"></span> {{ __('Install') }}
                                 </button>
+                                <a href="{{ route('welcome') }}" class="btn btn-link">{{ __('Cancel') }}</a>
                             </div>
                         </div>
                     </form>
