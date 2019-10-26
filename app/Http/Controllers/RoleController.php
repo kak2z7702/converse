@@ -122,17 +122,38 @@ class RoleController extends Controller
      * @param $request Incoming request.
      * @param $role Role id.
      */
-    public function delete(Request $request, $role)
+    public function delete(Request $request, $role = null)
     {
-        $role = Role::findOrFail($role);
+        if ($request->isMethod('get'))
+        {
+            $role = Role::findOrFail($role);
 
-        $this->authorize('delete', $role);
+            $this->authorize('delete', $role);
+    
+            $role->delete();
+    
+            return view($this->findView('result'), [
+                'message' => __('Role was deleted successfully.'),
+                'redirect' => route('role.index')
+            ]);
+        }
+        else if ($request->isMethod('post'))
+        {
+            $data = $request->validate([
+                'roles' => 'required|regex:/[0-9]+,?/i'
+            ]);
 
-        $role->delete();
+            $roles = Role::whereIn('id', explode(",", $data['roles']))->get();
 
-        return view($this->findView('result'), [
-            'message' => __('Role was deleted successfully.'),
-            'redirect' => route('role.index')
-        ]);
+            foreach ($roles as $role)
+                $this->authorize('delete', $role);
+
+            Role::whereIn('id', $roles->pluck('id'))->delete();
+
+            return view($this->findView('result'), [
+                'message' => __('Roles were deleted successfully.'),
+                'redirect' => route('role.index')
+            ]);
+        }
     }
 }

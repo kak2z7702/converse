@@ -119,18 +119,39 @@ class MenuController extends Controller
      * @param $request Incoming request.
      * @param $menu Menu id.
      */
-    public function delete(Request $request, $menu)
+    public function delete(Request $request, $menu = null)
     {
-        $menu = Menu::findOrFail($menu);
+        if ($request->isMethod('get'))
+        {
+            $menu = Menu::findOrFail($menu);
 
-        $this->authorize('delete', $menu);
+            $this->authorize('delete', $menu);
+    
+            $menu->delete();
+    
+            return view($this->findView('result'), [
+                'message' => __('Menu was deleted successfully.'),
+                'redirect' => route('menu.index')
+            ]);
+        }
+        else if ($request->isMethod('post'))
+        {
+            $data = $request->validate([
+                'menus' => 'required|regex:/[0-9]+,?/i'
+            ]);
 
-        $menu->delete();
+            $menus = Menu::whereIn('id', explode(",", $data['menus']))->get();
 
-        return view($this->findView('result'), [
-            'message' => __('Menu was deleted successfully.'),
-            'redirect' => route('menu.index')
-        ]);
+            foreach ($menus as $menu)
+                $this->authorize('delete', $menu);
+
+            Menu::whereIn('id', $menus->pluck('id'))->delete();
+
+            return view($this->findView('result'), [
+                'message' => __('Menus were deleted successfully.'),
+                'redirect' => route('menu.index')
+            ]);
+        }
     }
 
     /**

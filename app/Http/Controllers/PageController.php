@@ -156,20 +156,41 @@ class PageController extends Controller
      * @param $request Incoming request.
      * @param $page Page id.
      */
-    public function delete(Request $request, $page)
+    public function delete(Request $request, $page = null)
     {
-        $page = Page::findOrFail($page);
+        if ($request->isMethod('get'))
+        {
+            $page = Page::findOrFail($page);
 
-        $this->authorize('delete', $page);
+            $this->authorize('delete', $page);
+    
+            $page->comments()->delete();
+    
+            $page->delete();
+    
+            return view($this->findView('result'), [
+                'message' => __('Page was deleted successfully.'),
+                'redirect' => $this->getRedirect($request, $page)
+            ]);
+        }
+        else if ($request->isMethod('post'))
+        {
+            $data = $request->validate([
+                'pages' => 'required|regex:/[0-9]+,?/i'
+            ]);
 
-        $page->comments()->delete();
+            $pages = Page::whereIn('id', explode(",", $data['pages']))->get();
 
-        $page->delete();
+            foreach ($pages as $page)
+                $this->authorize('delete', $page);
 
-        return view($this->findView('result'), [
-            'message' => __('Page was deleted successfully.'),
-            'redirect' => $this->getRedirect($request, $page)
-        ]);
+            Page::whereIn('id', $pages->pluck('id'))->delete();
+
+            return view($this->findView('result'), [
+                'message' => __('Pages were deleted successfully.'),
+                'redirect' => route('page.index')
+            ]);
+        }
     }
 
     /**

@@ -172,18 +172,39 @@ class MessageController extends Controller
      * @param $request Incoming request.
      * @param $message Message id.
      */
-    public function delete(Request $request, $message)
+    public function delete(Request $request, $message = null)
     {
-        $message = Message::findOrFail($message);
+        if ($request->isMethod('get'))
+        {
+            $message = Message::findOrFail($message);
 
-        $this->authorize('delete', $message);
+            $this->authorize('delete', $message);
+    
+            $message->delete();
+    
+            return view($this->findView('result'), [
+                'message' => __('Message was deleted successfully.'),
+                'redirect' => $this->getRedirect($request, $message)
+            ]);
+        }
+        else if ($request->isMethod('post'))
+        {
+            $data = $request->validate([
+                'messages' => 'required|regex:/[0-9]+,?/i'
+            ]);
 
-        $message->delete();
+            $messages = Message::whereIn('id', explode(",", $data['messages']))->get();
 
-        return view($this->findView('result'), [
-            'message' => __('Message was deleted successfully.'),
-            'redirect' => $this->getRedirect($request, $message)
-        ]);
+            foreach ($messages as $message)
+                $this->authorize('delete', $message);
+
+            Message::whereIn('id', $messages->pluck('id'))->delete();
+
+            return view($this->findView('result'), [
+                'message' => __('Messages were deleted successfully.'),
+                'redirect' => route('message.index')
+            ]);
+        }
     }
 
     /**

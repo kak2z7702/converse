@@ -32,7 +32,7 @@ Route::prefix('user')->group(function () {
         Route::middleware('auth', 'admin')->group(function () {
             Route::match(['get', 'post'], 'create', 'UserController@create')->name('create');
             Route::match(['get', 'post'], 'update/{user}', 'UserController@update')->where(['user' => '[0-9]+'])->name('update');
-            Route::get('delete/{user}', 'UserController@delete')->where(['user' => '[0-9]+'])->name('delete');
+            Route::match(['get', 'post'], 'delete/{user?}', 'UserController@delete')->where(['user' => '[0-9]+'])->name('delete');
             Route::get('ban/{user}', 'UserController@ban')->where(['user' => '[0-9]+'])->name('ban');
             Route::get('unban/{user}', 'UserController@unban')->where(['user' => '[0-9]+'])->name('unban');
             Route::get('/', 'UserController@index')->name('index');
@@ -45,7 +45,7 @@ Route::prefix('role')->group(function () {
         Route::middleware('auth', 'admin')->group(function () {
             Route::match(['get', 'post'], 'create', 'RoleController@create')->name('create');
             Route::match(['get', 'post'], 'update/{role}', 'RoleController@update')->where(['role' => '[0-9]+'])->name('update');
-            Route::get('delete/{role}', 'RoleController@delete')->where(['role' => '[0-9]+'])->name('delete');
+            Route::match(['get', 'post'], 'delete/{role?}', 'RoleController@delete')->where(['role' => '[0-9]+'])->name('delete');
             Route::get('/', 'RoleController@index')->name('index');
         });
     });
@@ -56,7 +56,7 @@ Route::prefix('menu')->group(function () {
         Route::middleware('auth', 'admin')->group(function () {
             Route::match(['get', 'post'], 'create', 'MenuController@create')->name('create');
             Route::match(['get', 'post'], 'update/{menu}', 'MenuController@update')->where(['menu' => '[0-9]+'])->name('update');
-            Route::get('delete/{menu}', 'MenuController@delete')->where(['menu' => '[0-9]+'])->name('delete');
+            Route::match(['get', 'post'], 'delete/{menu?}', 'MenuController@delete')->where(['menu' => '[0-9]+'])->name('delete');
             Route::get('move/{menu}/{dir}', 'MenuController@move')->where(['menu' => '[0-9]+', 'dir' => 'up|down'])->name('move');
             Route::get('/', 'MenuController@index')->name('index');
         });
@@ -68,7 +68,7 @@ Route::prefix('page')->group(function () {
         Route::middleware('auth', 'admin')->group(function () {
             Route::match(['get', 'post'], 'create', 'PageController@create')->name('create');
             Route::match(['get', 'post'], 'update/{page}', 'PageController@update')->where(['page' => '[0-9]+'])->name('update');
-            Route::get('delete/{page}', 'PageController@delete')->where(['page' => '[0-9]+'])->name('delete');
+            Route::match(['get', 'post'], 'delete/{page?}', 'PageController@delete')->where(['page' => '[0-9]+'])->name('delete');
             Route::get('/', 'PageController@index')->name('index');
         });
     });
@@ -79,7 +79,7 @@ Route::prefix('message')->group(function () {
         Route::middleware('auth')->group(function () {
             Route::match(['get', 'post'], 'create', 'MessageController@create')->name('create');
             Route::match(['get', 'post'], 'update/{message}', 'MessageController@update')->where(['message' => '[0-9]+'])->name('update');
-            Route::get('delete/{message}', 'MessageController@delete')->where(['message' => '[0-9]+'])->name('delete');
+            Route::match(['get', 'post'], 'delete/{message?}', 'MessageController@delete')->where(['message' => '[0-9]+'])->name('delete');
             Route::get('/{message}', 'MessageController@show')->where(['message' => '[0-9]+'])->name('show');
             Route::get('/', 'MessageController@index')->name('index');
         });

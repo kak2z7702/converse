@@ -213,25 +213,56 @@ class UserController extends Controller
      * @param $request Incoming request.
      * @param $user User id.
      */
-    public function delete(Request $request, $user)
+    public function delete(Request $request, $user = null)
     {
-        $user = User::findOrFail($user);
-
-        $this->authorize('delete', $user);
-
-        if ($user->photo)
+        if ($request->isMethod('get'))
         {
-            $photo_path = 'public/' . $user->photo;
+            $user = User::findOrFail($user);
 
-            if (Storage::exists($photo_path)) Storage::delete($photo_path);
+            $this->authorize('delete', $user);
+    
+            if ($user->photo)
+            {
+                $photo_path = 'public/' . $user->photo;
+    
+                if (Storage::exists($photo_path)) Storage::delete($photo_path);
+            }
+    
+            $user->delete();
+    
+            return view($this->findView('result'), [
+                'message' => __('User was deleted successfully.'),
+                'redirect' => $this->getRedirect($request, $user)
+            ]);
         }
+        else if ($request->isMethod('post'))
+        {
+            $data = $request->validate([
+                'users' => 'required|regex:/[0-9]+,?/i'
+            ]);
 
-        $user->delete();
+            $users = User::whereIn('id', explode(",", $data['users']))->get();
 
-        return view($this->findView('result'), [
-            'message' => __('User was deleted successfully.'),
-            'redirect' => $this->getRedirect($request, $user)
-        ]);
+            foreach ($users as $user)
+                $this->authorize('delete', $user);
+    
+            foreach ($users as $user)
+            {
+                if ($user->photo)
+                {
+                    $photo_path = 'public/' . $user->photo;
+        
+                    if (Storage::exists($photo_path)) Storage::delete($photo_path);
+                }
+        
+                $user->delete();
+            }
+    
+            return view($this->findView('result'), [
+                'message' => __('Users were deleted successfully.'),
+                'redirect' => route('user.index')
+            ]);
+        }
     }
 
     /**
