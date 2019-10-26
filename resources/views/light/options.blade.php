@@ -15,7 +15,10 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">{{ __('Options') }}</div>
+                <div class="card-header">
+                    <a href="{{ route('index') }}">{{ __('Home') }}</a> >
+                    <a href="{{ route('options') }}">{{ __('Options') }}</a>
+                </div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('options', ['redirect' => request('redirect')]) }}" enctype="multipart/form-data">

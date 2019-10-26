@@ -19,7 +19,8 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    {{ __('Pages') }}
+                    <a href="{{ route('index') }}">{{ __('Home') }}</a> >
+                    <a href="{{ route('page.index') }}">{{ __('Pages') }}</a>
                 </div>
                 <div class="card-body">                    
                     <div class="row mb-3">

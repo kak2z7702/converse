@@ -18,7 +18,9 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    {{ __('Favorites') }}
+                    <a href="{{ route('index') }}">{{ __('Home') }}</a> >
+                    <a href="{{ route('user.show', ['user' => auth()->user()->id]) }}">{{ __('User') }}</a> >
+                    <a href="{{ route('user.favorites') }}">{{ __('Favorites') }}</a>
                 </div>
 
                 <div class="card-body">
