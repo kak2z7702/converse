@@ -286,20 +286,27 @@ class UserController extends Controller
      */
     public function favorites(Request $request)
     {
-        $favorites = \App\Favorite::where('user_id', auth()->user()->id)->orderBy('created_at', 'asc')->pluck('thread_id');
-        
         $threads = null;
 
         if (!$request->filled('q'))
         {
-            $threads = \App\Thread::whereIn('id', $favorites)->paginate();
+            $threads = \App\Thread::join('favorites', 'threads.id', '=', 'favorites.thread_id')
+                ->select('threads.*')
+                ->where('favorites.user_id', auth()->user()->id)
+                ->orderBy('favorites.created_at', 'asc')
+                ->paginate();
         }
         else
         {
             $data = $request->validate(['q' => 'string|max:256']);
 
-            $threads = \App\Thread::where('title', 'like', $data['q'] . '%')->whereIn('id', $favorites)->paginate();
-
+            $threads = \App\Thread::join('favorites', 'threads.id', '=', 'favorites.thread_id')
+                ->select('threads.*')
+                ->where('threads.title', 'like', $data['q'] . '%')
+                ->where('favorites.user_id', auth()->user()->id)
+                ->orderBy('favorites.created_at', 'asc')
+                ->paginate();
+            
             $threads->appends(['q' => request()->q]);
         }
 
